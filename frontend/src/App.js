@@ -1,12 +1,13 @@
 import './App.css';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import logo from './logo.svg';
 const data = [
-  {filename: "cuhk-2013.jpg", year:    2013, remarks: "Sunset over CUHK"},
-  {filename: "cuhk-2017.jpg", year:    2017, remarks: "Bird's-eye view of CUHK"},
-  {filename: "sci-2013.jpg", year:    2013, remarks: "The CUHK Emblem"},
-  {filename: "shb-2013.jpg", year:    2013, remarks: "The Engineering Buildings"},
-  {filename: "stream-2009.jpg", year:    2009, remarks: "Nature hidden in the campus"},
+  {filename: "cuhk-2013.jpg", year:    2013, remarks: "Restaurant Info1"},
+  {filename: "cuhk-2017.jpg", year:    2017, remarks: "Restaurant Info2"},
+  {filename: "sci-2013.jpg", year:    2013, remarks: "Restaurant Info3"},
+  {filename: "shb-2013.jpg", year:    2013, remarks: "Restaurant Info4"},
+  {filename: "stream-2009.jpg", year:    2009, remarks: "Restaurant Info5"},
 ];
 
 class Title extends React.Component {
