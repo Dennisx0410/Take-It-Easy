@@ -3,11 +3,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import logo from './logo.svg';
 const data = [
-  {filename: "cuhk-2013.jpg", year:    2013, remarks: "Restaurant Info1"},
-  {filename: "cuhk-2017.jpg", year:    2017, remarks: "Restaurant Info2"},
-  {filename: "sci-2013.jpg", year:    2013, remarks: "Restaurant Info3"},
-  {filename: "shb-2013.jpg", year:    2013, remarks: "Restaurant Info4"},
-  {filename: "stream-2009.jpg", year:    2009, remarks: "Restaurant Info5"},
+  {filename: "/cuhk-2013.jpg", year:    2013, remarks: "Restaurant Info1"},
+  {filename: "/cuhk-2017.jpg", year:    2017, remarks: "Restaurant Info2"},
+  {filename: "/sci-2013.jpg", year:    2013, remarks: "Restaurant Info3"},
+  {filename: "/shb-2013.jpg", year:    2013, remarks: "Restaurant Info4"},
+  {filename: "/stream-2009.jpg", year:    2009, remarks: "Restaurant Info5"},
 ];
 
 class Title extends React.Component {
@@ -52,7 +52,7 @@ class FileCard extends React.Component{
       return (
           <div className="card d-inline-block m-2" style={{width: this.state.selected===index ? '100%' : 200}} 
               onClick={(e) => this.handleClick(index,e)} >
-              <img src={"images/"+data[index].filename} className="w-100" />
+              <img src={process.env.PUBLIC_URL+data[index].filename} className="w-100" />
               <div className="card-body">
                    <h6 className="card-title"> {data[index].filename}</h6>
                   <p className="card-text"> {data[index].year}</p>
