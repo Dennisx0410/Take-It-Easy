@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './Login.css';
+import './login.css';
 
 //Just for testing, to be implemented with backend
 async function loginAttempt(input) {
- return fetch('http://localhost:8080/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(input)
-        })
-        .then(data => data.json())
+ return fetch('http://localhost:5000/login/signin', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(input)
+  })
+  .then(data => data.json())
 } 
 
 export default function Login( {setToken} ) {

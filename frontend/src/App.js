@@ -2,8 +2,8 @@ import './App.css';
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import Login from './loginPage/try_login';
-import Main from './mainPage/main';
+import Login from './login/login';
+import Main from './main/main';
 
 function App(){
     const [token, setToken] = useState();
