@@ -175,7 +175,6 @@ module.exports = {
     verifyToken: async (req, res, next) => {
         // TODO: verify token by matching docs in db
         console.log('> verify token');
-        // console.log(req.header('Authorization'));
         try {
             // extract token
             let token = req.header('Authorization').replace('Bearer ', '');
@@ -207,7 +206,6 @@ module.exports = {
             next();
         }
         catch (err) {
-            console.log(err);
             res.status(401).send(err); // 401: unauthorized
         }
     }, 
@@ -225,7 +223,7 @@ module.exports = {
 
             if (customer.activated == false) { // user created account but not activated
                 console.log('user not activate');
-                res.status(401).send({name: 'AccountNotActivated', value: 'account not activated'});
+                throw {name: 'AccountNotActivated', value: 'account not activated'};
             }
 
             // generate token for enter home page
