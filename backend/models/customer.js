@@ -16,18 +16,21 @@ const customerSchema = new Schema({
     },
     password : {type: String, require: true},
     phoneNum : String,
-    profilePic : String,
+    profilePic : Buffer,
     email : {type: String, required: true},
     point : Number,
+    lastLogin : Date,
+    online : {type: Boolean, default: false}, // true: new token is needed as (old token expired) or (old token not expired but user logged out)
+    activated: {type: Boolean, default: false}
     // registerDate : Date,
-}, { timestamps: true});
+}, {timestamps: true});
 
 // listen save action and hash the password before saving
 customerSchema.pre('save', async function (next) {
   console.log('save action detected, check changes');
   const customer = this;
 
-  console.log('orig pw: ', customer.password);
+  // console.log('orig pw: ', customer.password);
 
   if (customer.isModified('password')) {
     console.log('password changed, hash before saving');
@@ -40,7 +43,9 @@ customerSchema.pre('save', async function (next) {
 customerSchema.methods.genAuthToken = async function () {
   console.log('generating auth token');
   let customer = this;
-  let token = jwt.sign({_id: customer._id.toString()}, SECRET, {expiresIn: EXPIRE});
+  // assume never expire
+  let token = jwt.sign({_id: customer._id.toString()}, SECRET);
+  // let token = jwt.sign({_id: customer._id.toString()}, SECRET, {expiresIn: EXPIRE});
   console.log('generating done');
   return token;
 }
