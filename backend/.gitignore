@@ -9,7 +9,7 @@
 /coverage
 
 # credential
-/controllers/cred.json
+/cred.json
 
 # production
 /build

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 
-const SECRET = 'takeiteasyf4';
+const SECRET = require('../cred.json').secret;
 
 // handle for image upload
 const upload = multer({
@@ -133,7 +133,8 @@ module.exports = {
     getProfilePic: async(req, res) => {
         // TODO: view profile image
         try {
-            res.set('Content-Type', 'image/png');  // or jpg
+            // res.set('Content-Type', 'image/png');  // or jpg
+            // console.log(req.customer.profilePic);
             res.send(req.customer.profilePic);
         }
         catch (err) {
@@ -206,6 +207,7 @@ module.exports = {
             next();
         }
         catch (err) {
+            console.log(err);
             res.status(401).send(err); // 401: unauthorized
         }
     }, 

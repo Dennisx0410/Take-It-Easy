@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const sender = require('./cred.json');
+const sender = require('../cred.json').sender;
 
 module.exports = {
     verifyEmail: async (req, res) => { 

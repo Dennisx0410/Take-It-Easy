@@ -3,7 +3,8 @@ const mongoose = require('mongoose'),
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const SECRET = 'takeiteasyf4';
+
+const SECRET = require('../cred.json').secret;
 const SALTLEN = 8;
 const EXPIRE = 60 * 30; // 30 min
 
