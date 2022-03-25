@@ -1,9 +1,24 @@
 import './App.css';
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {useMatch, useParams, useLocation} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import Login from './login/login';
 import Main from './main/main';
+import Restaurant from './main/restaurant';
+import HeaderBar from './HeaderBar';
+
+function NoMatch() {
+    let location = useLocation();
+    return (
+      <div>
+        <h3>
+          No match for <code>{location.pathname}</code>
+        </h3>
+      </div>
+    );
+}
 
 function App(){
     const [token, setToken] = useState();
@@ -12,23 +27,19 @@ function App(){
     }
     return (
         <>
-            {/* <div className="wrapper">
-                <h1>Hello :)</h1> */}
+            <div>
                 <BrowserRouter>
+                    {/* Header Bar */}
+                    <HeaderBar/>
                     <Routes>
-                        <Route path="/" element={<Main name="Take It Easy!"/>}>  
-                            {/* <Route path="main" element={<Main />}> </Route>  */}
-                            {/* <Route path="try_login" element={<Login setToken={setToken}/>}> </Route> */}
-                        </Route>
+                        <Route path="/" element={<Main name="Take It Easy!"/>} />  
+                        <Route path="/restaurant/:rid" element={<Restaurant />} />
+                        <Route path="*" element={<NoMatch/>} />
                     </Routes>
                 </BrowserRouter>
-            {/* </div> */}
-              
-            {/* <Title name={this.props.name}/>
-            <Gallery /> */}
+            </div>
         </>
     );
-//   }
 }
 
 

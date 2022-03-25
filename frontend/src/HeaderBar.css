@@ -1,0 +1,23 @@
+.header {
+    display: flex;
+    justify-content: center;
+  }
+  
+.header-title {
+    color: black;
+    text-decoration: none;
+    padding: 0 5px;
+}
+  
+.header-dot {
+    color: #567ace;
+    margin-top: -0.5rem;
+    opacity: 0;
+    transition: opacity 200ms linear;
+}
+  
+.header-dot-active {
+    margin-top: -0.5rem;
+    display: block;
+}
+  
