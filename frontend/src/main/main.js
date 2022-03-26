@@ -79,16 +79,19 @@ class FileCard extends React.Component{
     render() {
         let index = this.props.i;
         return (
-            <div className="card d-inline-block m-2" style={{width: this.state.selected==index ? 220 : 200}} 
-                onMouseOver={(e) => this.handleMOver(index,e)} onMouseOut={(e) => this.handleMOut(index,e)} 
-                onClick={(e) => this.handleCLick(index,e)}>
-                <img src={process.env.PUBLIC_URL+data[index].filename} className="w-100" />
-                <div className="card-body">
-                    <h6 className="card-title"> {restaurantList[index]}</h6>
-                    <p className="card-text"> {data[index].location}</p>
-                    { this.state.selected===index && <p className="card-text">{data[index].remarks}</p> }
+            <Link to={"/restaurant/"+index}>
+                <div className="card d-inline-block m-2" style={{width: this.state.selected==index ? 220 : 200}} 
+                    onMouseOver={(e) => this.handleMOver(index,e)} onMouseOut={(e) => this.handleMOut(index,e)} 
+                    onClick={(e) => this.handleCLick(index,e)}>
+                    <img src={process.env.PUBLIC_URL+data[index].filename} className="w-100" />
+                    <div className="card-body">
+                        <h6 className="card-title"> {restaurantList[index]}</h6>
+                        <p className="card-text"> {data[index].location}</p>
+                        { this.state.selected===index && <p className="card-text">{data[index].remarks}</p> }
+                    </div>
                 </div>
-            </div>
+            </Link>
+                
         );
     }
 
