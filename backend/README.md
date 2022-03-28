@@ -1,50 +1,50 @@
 # Backend
 ---
 ## Sign up 
-### URL: 
+#### URL: 
 ```
 POST /signup
 ```
-### Header
+#### Header
 - `Content-type: application/json`
-### Body
+#### Body
 - `username`: String (unique)
 - `password`: String
 - `email`: String
 - `phoneNum`: String (optional)
 - `profile`: File(jpg/png) (optional)
-### Return(json)
+#### Return(json)
 - `UserAlreadyExisted`
 - `OtpNotFound`
 - `PendingOtp`
 - `VerificationEmailSent`
 
 ## Reverify
-### URL
+#### URL
 ```
 /reverify
 ```
-### Header
+#### Header
 - `Content-type: application/json`
-### Body
+#### Body
 - `username`: String (unique)
 - `email`: String
-### Return(json)
+#### Return(json)
 - `OtpNotFound`
 - `PendingOtp`
 - `VerificationEmailSent`
 
 ## Verify/Activate
-### URL
+#### URL
 ```
 /activate
 ```
-### Header
+#### Header
 - `Content-type: application/json`
-### Body
+#### Body
 - `username`: String (unique)
 - `otp`: Integer (6 digit)
-### Return(json)
+#### Return(json)
 - `token`
 - `OtpNotFound`
 - `OtpExpired`
@@ -54,16 +54,16 @@ POST /signup
 - `VerificationEmailSent`
 
 ## Signin
-### URL
+#### URL
 ```
 /signin
 ```
-### Header
+#### Header
 - `Content-type: application/json`
-### Body
+#### Body
 - `username`: String (unique)
 - `password`: String
-### Return(json)
+#### Return(json)
 - `token`
 - `AccountNotActivated`
 - `UserNotFound`
@@ -71,56 +71,56 @@ POST /signup
 
 ## Update Account Info 
 **Not implement yet**
-### URL
+#### URL
 ```
 /update
 ```
-### Header
+#### Header
 - `Content-type: application/json`
-### Body
+#### Body
 <!-- - `username`: String (unique)
 - `password`: String -->
-### Return(json)
+#### Return(json)
 
 ## Logout
-### URL
+#### URL
 ```
 /logout
 ```
-### Header
+#### Header
 - `Authorization: Bearer <token>`
-### Body
+#### Body
 - N/A
-### Return(json)
+#### Return(json)
 - `VerifyError`
 - `InactiveUserRequest`
 - `SuccessfullyLogout`
 
 ## Set Profile Picture
-### URL
+#### URL
 ```
 /setProfilePic
 ```
-### Header
+#### Header
 - `Authorization: Bearer <token>`
-### Body
+#### Body
 - `profile`: File (jpg/png)
-### Return(json)
+#### Return(json)
 - File info
 - `VerifyError`
 - `InactiveUserRequest`
 - `FileExtensionError`
 
 ## Get Profile Picture
-### URL
+#### URL
 ```
 /getProfilePic
 ```
-### Header
+#### Header
 - `Authorization: Bearer <token>`
-### Body
+#### Body
 - N\A
-### Return(json)
+#### Return(json)
 - File
 - `VerifyError`
 - `InactiveUserRequest`
