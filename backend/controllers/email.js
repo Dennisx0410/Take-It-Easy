@@ -64,7 +64,6 @@ module.exports = {
             let currentTime = new Date();
             let expireTime = new Date(currentTime.getTime() + EXPIRE * 1000);
             
-            
             if (req.customer) { // 1st time verify
                 console.log('> 1st verify');
                 username = req.customer.username

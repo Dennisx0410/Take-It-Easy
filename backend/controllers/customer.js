@@ -31,7 +31,7 @@ const authCustomer = async (username, password) => {
     // fetch user by username
     let customer = await Customers.findOne({username});
     if (customer == null) {
-        throw {name: 'UserNotExist', value: 'User does not exist'};
+        throw {name: 'UserNotFound', value: 'User does not exist'};
     }
     console.log('customer doc:', customer.username, customer.lastLogin);
 
@@ -266,7 +266,7 @@ module.exports = {
             // check customer currently logging in
             if (!customer.online) {
                 console.log('customer request token verification but his is not logging in');
-                throw {name: 'InactiveUserRequestError', value: 'customer request token verification but his is not logging in'};
+                throw {name: 'InactiveUserRequest', value: 'customer request token verification but his is not logging in'};
             }
 
             // pass to next middleware/function
@@ -319,11 +319,15 @@ module.exports = {
     logout: async (req, res) => {
         // TODO: logout customer after token verification
         console.log('> logout');
+        try {
+            // update active status
+            req.customer.online = false;
+            await req.customer.save();
 
-        // update active status
-        req.customer.online = false;
-        req.customer.save();
-
-        res.status(200).send({name: 'SuccessfullyLogout', value: 'Successfully logout'});
+            res.status(200).send({name: 'SuccessfullyLogout', value: 'Successfully logout'});
+        }
+        catch (err) {
+            res.send(err);
+        }
     }
 }
