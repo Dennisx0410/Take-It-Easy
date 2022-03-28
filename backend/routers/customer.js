@@ -1,11 +1,17 @@
 const express = require('express');
-const { uploadProfilePic, addCustomer, login, verifyToken, getCustomerData, logout, setProfilePic, getProfilePic, activateAccount, updateCustomer } = require('../controllers/customer');
+const { 
+    uploadProfilePic, addCustomer, login, 
+    verifyToken, getCustomerData, logout, 
+    setProfilePic, getProfilePic, activateAccount, 
+    updateCustomer, verifyOTP 
+} = require('../controllers/customer');
 const { verifyEmail } = require('../controllers/email');
 
 const app = express.Router();
 
 app.post('/signup', addCustomer, verifyEmail); 
-app.get('/activate/:id', activateAccount); 
+app.post('/reverify', verifyEmail); 
+app.post('/activate', verifyOTP, activateAccount); 
 app.post('/signin', login);
 app.post('/update', verifyToken, updateCustomer);
 app.post('/getinfo', verifyToken, getCustomerData);

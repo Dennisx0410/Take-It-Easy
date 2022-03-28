@@ -1,15 +1,14 @@
-const mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
-
+// packages
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-const SECRET = require('../cred.json').secret;
+// const
 const SALTLEN = 8;
 const EXPIRE = 60 * 30; // 30 min
 
 const customerSchema = new Schema({
-    // memberID : Number,
     username : {
       type: String, 
       required: true,
@@ -23,7 +22,6 @@ const customerSchema = new Schema({
     lastLogin : Date,
     online : {type: Boolean, default: false}, // true: new token is needed as (old token expired) or (old token not expired but user logged out)
     activated: {type: Boolean, default: false}
-    // registerDate : Date,
 }, {timestamps: true});
 
 // listen save action and hash the password before saving
@@ -45,8 +43,8 @@ customerSchema.methods.genAuthToken = async function () {
   console.log('generating auth token');
   let customer = this;
   // assume never expire
-  let token = jwt.sign({_id: customer._id.toString()}, SECRET);
-  // let token = jwt.sign({_id: customer._id.toString()}, SECRET, {expiresIn: EXPIRE});
+  // let token = jwt.sign({_id: customer._id.toString()}, process.env.SECRET);
+  let token = jwt.sign({_id: customer._id.toString()}, process.env.SECRET, {expiresIn: EXPIRE});
   console.log('generating done');
   return token;
 }

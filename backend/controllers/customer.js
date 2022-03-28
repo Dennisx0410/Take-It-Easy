@@ -1,9 +1,14 @@
-const Customers = require("../models/customer")
+// model
+const Customers = require('../models/customer');
+const Otp = require('../models/otp').Otp;
+
+// package
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 
-const SECRET = require('../cred.json').secret;
+// const
+const { MAX_TRIAL } = require('../models/otp');
 
 // handle for image upload
 const upload = multer({
@@ -14,6 +19,7 @@ const upload = multer({
             cb(null, true);
         }
         else {
+            console.log('cant upload!')
             cb(null, false);
         }
     }
@@ -25,7 +31,7 @@ const authCustomer = async (username, password) => {
     // fetch user by username
     let customer = await Customers.findOne({username});
     if (customer == null) {
-        throw {name : 'UserNotExist', value: 'user does not exist'};
+        throw {name: 'UserNotExist', value: 'User does not exist'};
     }
     console.log('customer doc:', customer.username, customer.lastLogin);
 
@@ -33,8 +39,20 @@ const authCustomer = async (username, password) => {
     let matched = await bcrypt.compare(password, customer.password);
     console.log('compare result:', matched);
     if (!matched) {
-        throw {name : 'passwordUnmatched', value: 'password unmatched'};
+        throw {name: 'InvalidPassword', value: 'Invalid password'};
     }
+
+    return customer;
+}
+
+const getCustomerByUsername = async (username) => {
+    // TODO: get customer by username
+    console.log('searching customer with username:', username);
+    let customer = await Customers.findOne({username});
+    if (customer == null) {
+        throw {name : 'UserNotExist', value: 'User does not exist'};
+    }
+    console.log('customer doc:', customer.username, customer.lastLogin);
 
     return customer;
 }
@@ -44,7 +62,7 @@ const getCustomerById = async (id) => {
     console.log('searching customer with id:', id);
     let customer = await Customers.findOne({_id: id});
     if (customer == null) {
-        throw {name : 'UserNotExist', value: 'user does not exist'};
+        throw {name : 'UserNotExist', value: 'User does not exist'};
     }
     console.log('customer doc:', customer.username, customer.lastLogin);
 
@@ -74,9 +92,16 @@ module.exports = {
         console.log('> register new accout');
         console.log('req.body:', req.body); // username, pw.. etc
         try {
+            // check user with same username already exists
+            let customer = await Customers.findOne({username: req.body.username});
+
+            if (customer) { // already exists
+                throw {name: 'UserAlreadyExisted', value: 'User with same username already registed'};
+            }
+
             // create customer account
-            let customer = await Customers.create(req.body);
-            console.log(customer)
+            customer = await Customers.create(req.body);
+            // console.log(customer)
 
             req.customer = customer
 
@@ -104,7 +129,11 @@ module.exports = {
         try {
             return upload.single('profile')(req, res, () => {
                 if (!req.file) {
-                    return res.send({name: "FileExtensionError", value: "image should be jpg or png"});
+                    console.log('> upload failed')
+                    return res.status(400).send({name: "FileExtensionError", value: "image should be jpg or png"});
+                }
+                else {
+                    console.log('> Upload Success')
                 }
 
                 // continue to set store profile pic
@@ -135,6 +164,7 @@ module.exports = {
         try {
             // res.set('Content-Type', 'image/png');  // or jpg
             // console.log(req.customer.profilePic);
+            console.log('> sent profile');
             res.send(req.customer.profilePic);
         }
         catch (err) {
@@ -142,12 +172,51 @@ module.exports = {
         }
     },
 
+    verifyOTP: async (req, res, next) => {
+        // TODO: verify the OTP with db before activating account
+        try {
+            let otpContainer = await Otp.findOne({username: req.body.username});
+            if (otpContainer == null) {
+                throw {name: 'OtpNotFound', value: 'User did not sent account verification request/account activated'};
+            }
+
+            // check otp expired
+            if (otpContainer.expiresAt < new Date()) {
+                console.log('> otp expired', otpContainer.expiresAt, new Date());
+                throw {name: 'OtpExpired', value: 'OTP expired, please send request to generate OTP again'};
+            }
+
+            // check if the same user having too much wrong trials (3 times)
+            if (otpContainer.wrongTrial >= MAX_TRIAL) {
+                throw {name: 'TooMuchTrials', value: 'User entered too much wrong trials, please send request to generate OTP again'};
+            }
+
+            // check if otp match
+            let matched = await bcrypt.compare(req.body.otp, otpContainer.otp);
+            console.log('compare result:', matched);
+            if (!matched) {
+                // add one trial
+                otpContainer.wrongTrial += 1;
+                otpContainer.save();
+                throw {name: 'InvalidOtp', value: 'Invalid OTP'};
+            }
+            
+            // delete OTP when success
+            await Otp.deleteOne({username: req.body.username});
+
+            next()
+        }
+        catch (err) {
+            res.status(400).send(err);
+        }
+    },
+
     activateAccount: async (req, res) => {
         // TODO: activate account by clicking the link in email
-        console.log(`> user with id${req.params.id} activate account`);
+        console.log(`> user ${req.body.username} activate account`);
 
         try {
-            let customer = await getCustomerById(req.params.id);
+            let customer = await getCustomerByUsername(req.body.username);
             console.log('customer doc:', customer);
 
             console.log('activated account, now generate token for login')
@@ -160,7 +229,7 @@ module.exports = {
             customer.lastLogin = new Date();
             customer.activated = true;
             customer.online = true;
-            customer.save();
+            await customer.save();
 
             console.log("you get token:", token)
 
@@ -183,7 +252,7 @@ module.exports = {
 
             // decode playload
             console.log('ready to decode');
-            let data = jwt.verify(token, SECRET);
+            let data = jwt.verify(token, process.env.SECRET);
             console.log('decoded with data:', data);
 
             // check with db and pull out customer doc
@@ -204,6 +273,7 @@ module.exports = {
             req.token = token;
             req.customer = customer;
         
+            console.log('> verify success')
             next();
         }
         catch (err) {
@@ -223,6 +293,7 @@ module.exports = {
             let customer = await authCustomer(req.body.username, req.body.password);
             // console.log('authenticate successful, with user=', customer);
 
+            // check account if activated
             if (customer.activated == false) { // user created account but not activated
                 console.log('user not activate');
                 throw {name: 'AccountNotActivated', value: 'account not activated'};
