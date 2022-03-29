@@ -3,7 +3,7 @@
 ## Sign up 
 #### URL: 
 ```
-POST /signup
+POST /customer/signup
 ```
 #### Header
 - `Content-type: application/json`
@@ -22,7 +22,7 @@ POST /signup
 ## Reverify
 #### URL
 ```
-/reverify
+POST /customer/reverify
 ```
 #### Header
 - `Content-type: application/json`
@@ -37,7 +37,7 @@ POST /signup
 ## Verify/Activate
 #### URL
 ```
-/activate
+POST /customer/activate
 ```
 #### Header
 - `Content-type: application/json`
@@ -56,7 +56,7 @@ POST /signup
 ## Signin
 #### URL
 ```
-/signin
+POST /customer/signin
 ```
 #### Header
 - `Content-type: application/json`
@@ -73,7 +73,7 @@ POST /signup
 **Not implement yet**
 #### URL
 ```
-/update
+POST /customer/update
 ```
 #### Header
 - `Content-type: application/json`
@@ -85,7 +85,7 @@ POST /signup
 ## Logout
 #### URL
 ```
-/logout
+POST /customer/logout
 ```
 #### Header
 - `Authorization: Bearer <token>`
@@ -99,7 +99,7 @@ POST /signup
 ## Set Profile Picture
 #### URL
 ```
-/setProfilePic
+POST /customer/setProfilePic
 ```
 #### Header
 - `Authorization: Bearer <token>`
@@ -114,12 +114,12 @@ POST /signup
 ## Get Profile Picture
 #### URL
 ```
-/getProfilePic
+POST /customer/getProfilePic
 ```
 #### Header
 - `Authorization: Bearer <token>`
 #### Body
-- N\A
+- N/A
 #### Return(json)
 - File
 - `VerifyError`
