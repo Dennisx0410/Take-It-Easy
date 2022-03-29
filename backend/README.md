@@ -132,6 +132,6 @@ GET /customer/profilePic
 #### Body
 - N/A
 #### Return(json)
-- File
+- File buffer
 - `VerifyError`
 - `InactiveUserRequest`
