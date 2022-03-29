@@ -13,11 +13,11 @@ app.post('/signup', addCustomer, verifyEmail);
 app.post('/reverify', verifyEmail); 
 app.post('/activate', verifyOTP, activateAccount); 
 app.post('/signin', login);
-app.post('/update', verifyToken, updateCustomer);
-app.post('/getinfo', verifyToken, getCustomerData);
+// app.post('/update', verifyToken, updateCustomer); // not implemented yet
+// app.post('/getinfo', verifyToken, getCustomerData); // not completed
 app.post('/logout', verifyToken, logout);
-app.post('/setProfilePic', verifyToken, uploadProfilePic, setProfilePic);
-app.post('/getProfilePic', verifyToken, getProfilePic);
+app.post('/profilePic', verifyToken, uploadProfilePic, setProfilePic); // set profile pic
+app.get('/profilePic', verifyToken, getProfilePic); // get profile pic
 app.all('/*', (req, res) => {
     res.status(403).send({});
 })

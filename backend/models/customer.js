@@ -40,12 +40,12 @@ customerSchema.pre('save', async function (next) {
 
 // instance method for generating jwt token
 customerSchema.methods.genAuthToken = async function () {
-  console.log('generating auth token');
+  console.log('> generating auth token');
   let customer = this;
   // assume never expire
   // let token = jwt.sign({_id: customer._id.toString()}, process.env.SECRET);
   let token = jwt.sign({_id: customer._id.toString()}, process.env.SECRET, {expiresIn: EXPIRE});
-  console.log('generating done');
+  console.log('> generated token');
   return token;
 }
 

@@ -6,6 +6,7 @@ const Otp = require('../models/otp').Otp;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
+const sharp = require('sharp');
 
 // const
 const { MAX_TRIAL } = require('../models/otp');
@@ -15,7 +16,7 @@ const upload = multer({
     limits: {fileSize: 3 * 1024 * 1024}, // 3MB
     fileFilter(req, file, cb) {
         console.log('file info:', file)
-        if (file.mimetype == 'image/png' || file.mimetype == 'image/jpeg') {
+        if (file.mimetype == 'image/png' || file.mimetype == 'image/jpeg') { // jpg, jpeg, jfif are udner image/jpeg
             cb(null, true);
         }
         else {
@@ -31,7 +32,7 @@ const authCustomer = async (username, password) => {
     // fetch user by username
     let customer = await Customers.findOne({username});
     if (customer == null) {
-        throw {name: 'UserNotFound', value: 'User does not exist'};
+        throw {name: 'UserNotFound', message: 'User does not exist'};
     }
     console.log('customer doc:', customer.username, customer.lastLogin);
 
@@ -39,7 +40,7 @@ const authCustomer = async (username, password) => {
     let matched = await bcrypt.compare(password, customer.password);
     console.log('compare result:', matched);
     if (!matched) {
-        throw {name: 'InvalidPassword', value: 'Invalid password'};
+        throw {name: 'InvalidPassword', message: 'Invalid password'};
     }
 
     return customer;
@@ -50,7 +51,7 @@ const getCustomerByUsername = async (username) => {
     console.log('searching customer with username:', username);
     let customer = await Customers.findOne({username});
     if (customer == null) {
-        throw {name : 'UserNotExist', value: 'User does not exist'};
+        throw {name : 'UserNotExist', message: 'User does not exist'};
     }
     console.log('customer doc:', customer.username, customer.lastLogin);
 
@@ -62,7 +63,7 @@ const getCustomerById = async (id) => {
     console.log('searching customer with id:', id);
     let customer = await Customers.findOne({_id: id});
     if (customer == null) {
-        throw {name : 'UserNotExist', value: 'User does not exist'};
+        throw {name : 'UserNotExist', message: 'User does not exist'};
     }
     console.log('customer doc:', customer.username, customer.lastLogin);
 
@@ -96,7 +97,7 @@ module.exports = {
             let customer = await Customers.findOne({username: req.body.username});
 
             if (customer) { // already exists
-                throw {name: 'UserAlreadyExisted', value: 'User with same username already registed'};
+                throw {name: 'UserAlreadyExisted', message: 'User with same username already registed'};
             }
 
             // create customer account
@@ -130,9 +131,10 @@ module.exports = {
             return upload.single('profile')(req, res, () => {
                 if (!req.file) {
                     console.log('> upload failed')
-                    return res.status(400).send({name: "FileExtensionError", value: "image should be jpg or png"});
+                    return res.status(400).send({name: "FileExtensionError", message: "image should be jpg or png"});
                 }
                 else {
+                    console.log('filesize:', req.file.size)
                     console.log('> Upload Success')
                 }
 
@@ -149,12 +151,18 @@ module.exports = {
         // TODO: add profile pic to db
         console.log('> add profile');
         try {
-            req.customer.profilePic = req.file.buffer;
+            // resize profile pic to 100x100px before storing to db
+            let resizedBuf = await sharp(req.file.buffer).resize({
+                width: 100, 
+                height: 100
+            }).toBuffer();
+            req.customer.profilePic = resizedBuf;
             await req.customer.save();
 
-            res.send(req.file);
+            res.send({name: 'uploadSuccess', message: 'successfully uploaded/changed profile pic'});
         }
         catch (err) {
+            console.log(err)
             res.send(err);
         }
     },
@@ -162,8 +170,8 @@ module.exports = {
     getProfilePic: async(req, res) => {
         // TODO: view profile image
         try {
-            // res.set('Content-Type', 'image/png');  // or jpg
-            // console.log(req.customer.profilePic);
+            // res.set('Content-Type', 'image/png');  // disable for testing in postman
+            // res.set('Content-Type', 'image/jpeg');  // disable for testing in postman
             console.log('> sent profile');
             res.send(req.customer.profilePic);
         }
@@ -177,18 +185,18 @@ module.exports = {
         try {
             let otpContainer = await Otp.findOne({username: req.body.username});
             if (otpContainer == null) {
-                throw {name: 'OtpNotFound', value: 'User did not sent account verification request/account activated'};
+                throw {name: 'OtpNotFound', message: 'User did not sent account verification request/account activated'};
             }
 
             // check otp expired
             if (otpContainer.expiresAt < new Date()) {
                 console.log('> otp expired', otpContainer.expiresAt, new Date());
-                throw {name: 'OtpExpired', value: 'OTP expired, please send request to generate OTP again'};
+                throw {name: 'OtpExpired', message: 'OTP expired, please send request to generate OTP again'};
             }
 
             // check if the same user having too much wrong trials (3 times)
             if (otpContainer.wrongTrial >= MAX_TRIAL) {
-                throw {name: 'TooMuchTrials', value: 'User entered too much wrong trials, please send request to generate OTP again'};
+                throw {name: 'TooMuchTrials', message: 'User entered too much wrong trials, please send request to generate OTP again'};
             }
 
             // check if otp match
@@ -198,7 +206,7 @@ module.exports = {
                 // add one trial
                 otpContainer.wrongTrial += 1;
                 otpContainer.save();
-                throw {name: 'InvalidOtp', value: 'Invalid OTP'};
+                throw {name: 'InvalidOtp', message: 'Invalid OTP'};
             }
             
             // delete OTP when success
@@ -259,14 +267,14 @@ module.exports = {
             let customer = await Customers.findOne({_id : data._id})
             if (customer == null) {
                 console.log('verify error');
-                throw {name: 'VerifyError', value: 'unable to find user'};
+                throw {name: 'VerifyError', message: 'unable to find user'};
             }
             console.log('customer doc', customer.username);
 
             // check customer currently logging in
             if (!customer.online) {
                 console.log('customer request token verification but his is not logging in');
-                throw {name: 'InactiveUserRequest', value: 'customer request token verification but his is not logging in'};
+                throw {name: 'InactiveUserRequest', message: 'customer request token verification but his is not logging in'};
             }
 
             // pass to next middleware/function
@@ -277,7 +285,6 @@ module.exports = {
             next();
         }
         catch (err) {
-            console.log(err);
             res.status(401).send(err); // 401: unauthorized
         }
     }, 
@@ -296,7 +303,7 @@ module.exports = {
             // check account if activated
             if (customer.activated == false) { // user created account but not activated
                 console.log('user not activate');
-                throw {name: 'AccountNotActivated', value: 'account not activated'};
+                throw {name: 'AccountNotActivated', message: 'account not activated'};
             }
 
             // generate token for enter home page
@@ -324,7 +331,7 @@ module.exports = {
             req.customer.online = false;
             await req.customer.save();
 
-            res.status(200).send({name: 'SuccessfullyLogout', value: 'Successfully logout'});
+            res.status(200).send({name: 'SuccessfullyLogout', message: 'Successfully logout'});
         }
         catch (err) {
             res.send(err);

@@ -1,5 +1,16 @@
 # Backend
----
+To start server **with** auto update
+```
+npm start
+```
+To start server without auto update
+```
+node ./index.js
+```
+
+server port: `5000`
+
+# Documentation
 ## Sign up 
 #### URL: 
 ```
@@ -12,7 +23,7 @@ POST /customer/signup
 - `password`: String
 - `email`: String
 - `phoneNum`: String (optional)
-- `profile`: File(jpg/png) (optional)
+- `profile`: File (jpg/jpeg/jfif/png) (optional)
 #### Return(json)
 - `UserAlreadyExisted`
 - `OtpNotFound`
@@ -78,9 +89,9 @@ POST /customer/update
 #### Header
 - `Content-type: application/json`
 #### Body
-<!-- - `username`: String (unique)
-- `password`: String -->
+- **not decided yet**
 #### Return(json)
+- **not decided yet**
 
 ## Logout
 #### URL
@@ -99,12 +110,12 @@ POST /customer/logout
 ## Set Profile Picture
 #### URL
 ```
-POST /customer/setProfilePic
+POST /customer/profilePic
 ```
 #### Header
 - `Authorization: Bearer <token>`
 #### Body
-- `profile`: File (jpg/png)
+- `profile`: File (jpg/jpeg/jfif/png)
 #### Return(json)
 - File info
 - `VerifyError`
@@ -114,7 +125,7 @@ POST /customer/setProfilePic
 ## Get Profile Picture
 #### URL
 ```
-POST /customer/getProfilePic
+GET /customer/profilePic
 ```
 #### Header
 - `Authorization: Bearer <token>`

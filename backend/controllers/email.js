@@ -85,7 +85,7 @@ module.exports = {
  
                 // check whether there are OTP in db
                 if (otpContainer == null) { // someone pretend to gain access via reverify but didn't signed up
-                    throw {name: 'OtpNotFound', value: 'User try to reverify without signing up/account already activated'}
+                    throw {name: 'OtpNotFound', message: 'User try to reverify without signing up/account already activated'}
                 }
 
                 // check OTP state
@@ -107,7 +107,7 @@ module.exports = {
                 }
                 else {
                     console.log('> pending OTP');
-                    throw {name: 'PendingOtp', value: 'There is a pending otp, no need to reverify'};
+                    throw {name: 'PendingOtp', message: 'There is a pending otp, no need to reverify'};
                 } 
             }
 
@@ -117,7 +117,7 @@ module.exports = {
             }
             sendEmail(receiver, OTP);
 
-            res.send({name: "VerificationEmailSent", value: "Verification email sent"});
+            res.send({name: "VerificationEmailSent", message: "Verification email sent"});
         }
         catch (err) {
             res.send(err);
