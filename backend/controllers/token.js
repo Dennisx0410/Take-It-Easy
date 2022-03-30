@@ -29,11 +29,12 @@ module.exports = {
                 }
                 else if (userType == 'restaurant') { // restaurant
                     // check with db and pull out customer doc
-                    user = rest.getCustomerById(data._id);
+                    user = rest.getRestaurantById(data._id);
                 }
                 else if (userType == 'admin') { // admin
-                    // check with db and pull out customer doc
-                    user = admin.getCustomerById(data._id);
+                    req.token = token;
+                    console.log('> verify success')
+                    return next();
                 }
                 else { // other user type
                     throw {name: 'UserTypeError', value: 'wrong user type'};
@@ -55,7 +56,7 @@ module.exports = {
 
             // pass to next middleware/function
             req.token = token;
-            req[`${userType}`]= user;
+            req[`${userType}`] = user;
         
             console.log('> verify success')
             next();

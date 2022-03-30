@@ -10,7 +10,7 @@ node ./index.js
 
 server port: `5000`
 
-# Documentation
+# Documentation (Customer)
 ## Sign up 
 #### URL: 
 ```
@@ -105,6 +105,7 @@ POST /customer/logout
 #### Return(json)
 - `VerifyError`
 - `JsonWebTokenError`
+- `TokenExpiredError`
 - `InactiveUserRequest`
 - `SuccessfullyLogout`
 
@@ -121,6 +122,7 @@ POST /customer/profilePic
 - File info
 - `VerifyError`
 - `JsonWebTokenError`
+- `TokenExpiredError`
 - `InactiveUserRequest`
 - `FileExtensionError`
 
@@ -137,4 +139,35 @@ GET /customer/profilePic
 - File buffer
 - `VerifyError`
 - `JsonWebTokenError`
+- `TokenExpiredError`
 - `InactiveUserRequest`
+
+## Other requests
+#### Return(json) 
+- `Forbidden`
+
+# Documentation (Admin) 
+## Signin
+#### URL
+```
+POST /admin/signin
+```
+#### Header
+- `Content-type: application/json`
+#### Body
+- `username`: String (unique)
+- `password`: String
+#### Return(json)
+- `token`
+- `UserNotFound`
+
+## Get customer data 
+```
+GET /admin/customers
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return(json)
+- array of customer data 

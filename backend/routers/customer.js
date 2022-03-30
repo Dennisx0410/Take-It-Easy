@@ -19,7 +19,7 @@ app.post('/logout', verifyToken, logout);
 app.post('/profilePic', verifyToken, uploadProfilePic, setProfilePic); // set profile pic
 app.get('/profilePic', verifyToken, getProfilePic); // get profile pic
 app.all('/*', (req, res) => {
-    res.status(403).send({});
+    res.status(403).send({name: 'Forbidden', value: 'Request in /admin not found'});
 })
 
 module.exports = app;
