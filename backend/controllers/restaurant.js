@@ -1,4 +1,4 @@
-const restaurantCollection = require("../models/restaurant.js")
+const Restuarant = require("../models/restaurant.js")
 
 module.exports = {
     getRestaurant : async (req,res) => {

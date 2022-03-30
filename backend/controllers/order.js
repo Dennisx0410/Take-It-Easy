@@ -1,4 +1,4 @@
-const customerCollection = require("../models/customer")
+const Customer = require("../models/customer")
 
 module.exports = {
     getOrder : async (req,res) => {
