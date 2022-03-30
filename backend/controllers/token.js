@@ -2,7 +2,6 @@
 const jwt = require('jsonwebtoken');
 const cust = require('./customer');
 const rest = require('./restaurant');
-const admin = require('./admin');
 
 module.exports = {
     // middleware for token verification
@@ -25,11 +24,11 @@ module.exports = {
             try {
                 if (userType == 'customer') { // customer
                     // check with db and pull out customer doc
-                    user = cust.getCustomerById(data._id);
+                    user = await cust.getCustomerById(data._id);
                 }
                 else if (userType == 'restaurant') { // restaurant
                     // check with db and pull out customer doc
-                    user = rest.getRestaurantById(data._id);
+                    user = await rest.getRestaurantById(data._id);
                 }
                 else if (userType == 'admin') { // admin
                     req.token = token;

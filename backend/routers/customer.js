@@ -2,7 +2,7 @@ const express = require('express');
 const { 
     uploadProfilePic, addCustomer, login, logout, 
     setProfilePic, getProfilePic, activateAccount, 
-    updateCustomer, verifyOTP 
+    updateCustomer, verifyOTP, getCustomerData 
 } = require('../controllers/customer');
 const { verifyToken } = require('../controllers/token');
 const { verifyEmail } = require('../controllers/email');
@@ -10,16 +10,16 @@ const { verifyEmail } = require('../controllers/email');
 const app = express.Router();
 
 app.post('/signup', addCustomer, verifyEmail); 
-app.post('/reverify', verifyEmail); 
 app.post('/activate', verifyOTP, activateAccount); 
+app.post('/reverify', verifyEmail); 
 app.post('/signin', login);
 // app.post('/update', verifyToken, updateCustomer); // not implemented yet
-// app.post('/getinfo', verifyToken, getCustomerData); // not completed
+app.get('/data', verifyToken, getCustomerData); 
 app.post('/logout', verifyToken, logout);
 app.post('/profilePic', verifyToken, uploadProfilePic, setProfilePic); // set profile pic
 app.get('/profilePic', verifyToken, getProfilePic); // get profile pic
 app.all('/*', (req, res) => {
-    res.status(403).send({name: 'Forbidden', value: 'Request in /admin not found'});
+    res.status(403).send({name: 'Forbidden', value: 'Request in /customer not found'});
 })
 
 module.exports = app;

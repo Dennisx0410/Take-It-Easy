@@ -75,12 +75,23 @@ const getCustomers = async () => {
     // TODO: get all customers
     console.log('> get all customers');
     let customers = await Customers.find();
-    console.log('number of customers1:', customers.length)
-    return customers[5];
+    console.log('number of customers:', customers.length)
+    return customers;
 }
 
 module.exports = {
-    getCustomerById: getCustomerById, 
+    getCustomerData: async (req, res) => {
+        // return customer data
+        res.send({
+            username: req.customer.username, 
+            phoneNum: req.customer.phoneNum, 
+            email: req.customer.email,
+            point: req.customer.point, 
+            profilePic: req.customer.profilePic
+        })
+    },
+
+    getCustomerById: getCustomerById,
 
     getCustomers: async (req, res) => {
         // TODO: get all customers
@@ -94,26 +105,11 @@ module.exports = {
         }
     },
 
-    // getCustomerData: async (req, res) => {
-    //     // TODO: Get customer by username
-    //     console.log('> get customer data');
-    //     console.log('req.body:', req.body); // username, array of request keys (eg 'email phoneNum')
-    //     try {
-    //         // fetch user by username
-    //         let data = await Customers.findOne({username: req.body.username}, 'username ');
-
-    //         res.status(200).send(data);
-    //     }
-    //     catch (err) {
-    //         res.status(404).send(err);
-    //     }
-    // },
-
     // middleware for new user login
     addCustomer: async (req, res, next) => {
         // TODO : Add Customer to database (Register) by credentials
         console.log('> register new accout');
-        console.log('req.body:', req.body); // username, pw.. etc
+        // console.log('req.body:', req.body); // username, pw.. etc
         try {
             // check user with same username already exists
             let customer = await Customers.findOne({username: req.body.username});
@@ -184,7 +180,7 @@ module.exports = {
             res.send({name: 'uploadSuccess', message: 'successfully uploaded/changed profile pic'});
         }
         catch (err) {
-            console.log(err)
+            // console.log(err)
             res.send(err);
         }
     },

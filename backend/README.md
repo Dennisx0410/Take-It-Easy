@@ -30,21 +30,6 @@ POST /customer/signup
 - `PendingOtp`
 - `VerificationEmailSent`
 
-## Reverify
-#### URL
-```
-POST /customer/reverify
-```
-#### Header
-- `Content-type: application/json`
-#### Body
-- `username`: String (unique)
-- `email`: String
-#### Return(json)
-- `OtpNotFound`
-- `PendingOtp`
-- `VerificationEmailSent`
-
 ## Verify/Activate
 #### URL
 ```
@@ -61,6 +46,21 @@ POST /customer/activate
 - `OtpExpired`
 - `TooMuchTrials`
 - `InvalidOtp`
+- `PendingOtp`
+- `VerificationEmailSent`
+
+## Reverify
+#### URL
+```
+POST /customer/reverify
+```
+#### Header
+- `Content-type: application/json`
+#### Body
+- `username`: String (unique)
+- `email`: String
+#### Return(json)
+- `OtpNotFound`
 - `PendingOtp`
 - `VerificationEmailSent`
 
@@ -92,6 +92,18 @@ POST /customer/update
 - **not decided yet**
 #### Return(json)
 - **not decided yet**
+
+## Get customer data
+#### URL
+```
+GET /customer/data
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return(json)
+- json of username, phoneNum, email, points, profilePic
 
 ## Logout
 #### URL
