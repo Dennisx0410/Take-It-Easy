@@ -1,12 +1,26 @@
 .header {
     height: 50px;
-    background-image: linear-gradient(to right, #567ace , #7562c4);
+    background-image: linear-gradient(to right, #567ace , #b9281d);
 }
-  
-.header-title {
+
+a.header-title {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 30px;
-    color: #fff0f0;
-    padding: 10px 5px;
+    color: #ffffff;
+    padding: 15px 5px;
+    text-decoration:none;
+    
 }
-  
+
+a.header-title:link{
+    display: inline;
+    color:#ffffff;
+    text-decoration:none;
+    text-align: center;
+}
+a.header-title:hover{
+    display: inline;
+    color:#ffffff;
+    text-decoration:none;
+    text-align: center;
+}

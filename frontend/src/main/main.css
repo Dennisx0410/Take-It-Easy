@@ -1,3 +1,13 @@
 .Main{
-    background-color: aliceblue;
+    background-color: rgb(184, 217, 247);
+}
+.custom-container-width {
+    justify-content: center;
+    text-align: justify;
+}
+
+.custom-card{
+    
+    text-align: justify;
+    padding: 0;
 }

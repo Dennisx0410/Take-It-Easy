@@ -62,10 +62,10 @@ export default function Login( {setToken} ) {
     // check the variable really contains a token, else do handling
     if (token.token != null) {
       console.log('successfully login');
-      setToken(token);
+      setToken(token.token);
     }
     else {
-      console.log(token);
+      console.log(token.token);
     }
   }
 
@@ -92,34 +92,45 @@ export default function Login( {setToken} ) {
   }
 
   return(
-    <div className="loginstyling">
-      <h1>Please Log In</h1>
-      <p>Please start the backend server as well</p>
-      <form onSubmit={handleSubmit2}>
-        <label for="profile">Profile pic:</label>
-        <input type="file" id="profile" name="profile" />
-        <button type="submit">Upload</button>
-      </form>
-      <form onSubmit={handleSubmit3}>
-        <label for="myProfile">My profile pic:</label>
-        <img src={imgUrl}/>
-        <button type="submit">Show</button>
-      </form>
-      <form onSubmit={handleSubmit}>
-        <label>
-          <p>Username</p>
-          <input type="text" name="username" />
-        </label>
-        <br></br>
-        <label>
-          <p>Password</p>
-          <input type="password" name="password" />
-        </label>
-        <div>
-          <button type="submit">Submit</button>
+    <>
+    <div className="row">
+      <div className="col-8 background">
+        <img src={process.env.PUBLIC_URL+"food.jpeg"} className="w-100" />
+      </div>
+      <div className="col-4">
+        <div className="loginstyling">
+          <h1>Please Log In</h1>
+          <p>Please start the backend server as well</p>
+          <form onSubmit={handleSubmit2}>
+            <label for="profile">Profile pic:</label>
+            <input type="file" id="profile" name="profile" />
+            <button type="submit">Upload</button>
+          </form>
+          <form onSubmit={handleSubmit3}>
+            <label for="myProfile">My profile pic:</label>
+            <img src={imgUrl}/>
+            <button type="submit">Show</button>
+          </form>
+          <form onSubmit={handleSubmit}>
+            <label>
+              <p>Username</p>
+              <input type="text" name="username" />
+            </label>
+            <br></br>
+            <label>
+              <p>Password</p>
+              <input type="password" name="password" />
+            </label>
+            <div>
+              <button type="submit">Submit</button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
+      
+    </>
+      
   )
 }
 
