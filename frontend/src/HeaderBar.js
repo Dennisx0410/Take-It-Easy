@@ -7,9 +7,13 @@ function HeaderBar(){
     return (
         <>
             <div className='header'>
-                <Link to="/" className = {'header-title'}>
-                    Main
-                </Link>
+                
+                    <span href="/" class="material-icons-outlined">
+                        shopping_bag
+                    </span>
+                    <span >TAKE IT EASY</span>
+                
+
             </div>
         </>
     );
