@@ -1,17 +1,22 @@
 // packages
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+const SALTLEN = 10;
+const EXPIRE = 60 * 30; // 30 min
 
 // schema
 const restaurantSchema = new Schema({
-    restaurantID : Number,
     username : String,
     restaurantName : String,
     password : String,
     phoneNum : String,
-    profilePicture : String,
+    profilePic : Buffer,
     address : String,
     licenseNum : String,
+    activated : {type : Boolean, default : false},
     menu : [Object]
 });
 

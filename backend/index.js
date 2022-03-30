@@ -10,12 +10,14 @@ app.use(express.json())
 
 // routers
 const customerRouter = require('./routers/customer')
+const restaurantRouter = require('./routers/restaurant')
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // routers
-app.use('/customer', customerRouter);
+app.use('/customer', customerRouter)
+app.use('/restaurant', restaurantRouter)
 
 const CONNECTION_URL = "mongodb+srv://User:1234@cluster0.yjmpv.mongodb.net/TakeItEasy?retryWrites=true&w=majority";
 const PORT = process.env.PORT || 5000;

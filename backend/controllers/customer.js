@@ -285,6 +285,7 @@ module.exports = {
             next();
         }
         catch (err) {
+            console.log(err)
             res.status(401).send(err); // 401: unauthorized
         }
     }, 
