@@ -3,13 +3,13 @@ const Customers = require('../models/customer');
 const Otp = require('../models/otp').Otp;
 
 // package
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const sharp = require('sharp');
 
 // const
 const { MAX_TRIAL } = require('../models/otp');
+const res = require('express/lib/response');
 
 // handle for image upload
 const upload = multer({
@@ -28,8 +28,8 @@ const upload = multer({
 
 const authCustomer = async (username, password) => {
     // TODO: authenticate customer by username, password and return the customer doc if matched
-
     // fetch user by username
+    console.log('> auth customer');
     let customer = await Customers.findOne({username});
     if (customer == null) {
         throw {name: 'UserNotFound', message: 'User does not exist'};
@@ -42,13 +42,14 @@ const authCustomer = async (username, password) => {
     if (!matched) {
         throw {name: 'InvalidPassword', message: 'Invalid password'};
     }
+    console.log('> auth done');
 
     return customer;
 }
 
 const getCustomerByUsername = async (username) => {
     // TODO: get customer by username
-    console.log('searching customer with username:', username);
+    console.log('> searching customer with username:', username);
     let customer = await Customers.findOne({username});
     if (customer == null) {
         throw {name : 'UserNotExist', message: 'User does not exist'};
@@ -60,7 +61,7 @@ const getCustomerByUsername = async (username) => {
 
 const getCustomerById = async (id) => {
     // TODO: get customer by id
-    console.log('searching customer with id:', id);
+    console.log('> searching customer with id:', id);
     let customer = await Customers.findOne({_id: id});
     if (customer == null) {
         throw {name : 'UserNotExist', message: 'User does not exist'};
@@ -70,22 +71,43 @@ const getCustomerById = async (id) => {
     return customer;
 }
 
+const getCustomers = async () => {
+    // TODO: get all customers
+    console.log('> get all customers');
+    let customers = await Customers.find();
+    console.log('number of customers1:', customers.length)
+    return customers[5];
+}
 
 module.exports = {
-    getCustomerData: async (req, res) => {
-        // TODO: Get customer by username
-        console.log('> get customer data');
-        console.log('req.body:', req.body); // username, array of request keys (eg 'email phoneNum')
-        try {
-            // fetch user by username
-            let data = await Customers.findOne({username: req.body.username}, req.body.reqKeys);
+    getCustomerById: getCustomerById, 
 
-            res.status(200).send(data);
+    getCustomers: async (req, res) => {
+        // TODO: get all customers
+        try {
+            let customers = await getCustomers();
+            console.log('number of customers:', customers.length)
+            res.send(customers);
         }
         catch (err) {
-            res.status(404).send(err);
+            res.send(err);
         }
     },
+
+    // getCustomerData: async (req, res) => {
+    //     // TODO: Get customer by username
+    //     console.log('> get customer data');
+    //     console.log('req.body:', req.body); // username, array of request keys (eg 'email phoneNum')
+    //     try {
+    //         // fetch user by username
+    //         let data = await Customers.findOne({username: req.body.username}, 'username ');
+
+    //         res.status(200).send(data);
+    //     }
+    //     catch (err) {
+    //         res.status(404).send(err);
+    //     }
+    // },
 
     // middleware for new user login
     addCustomer: async (req, res, next) => {
@@ -248,46 +270,6 @@ module.exports = {
             res.status(403).send(err);
         }
     },
-
-    // middleware for token verification
-    verifyToken: async (req, res, next) => {
-        // TODO: verify token by matching docs in db
-        console.log('> verify token');
-        try {
-            // extract token
-            let token = req.header('Authorization').replace('Bearer ', '');
-            console.log('token:', token);
-
-            // decode playload
-            console.log('ready to decode');
-            let data = jwt.verify(token, process.env.SECRET);
-            console.log('decoded with data:', data);
-
-            // check with db and pull out customer doc
-            let customer = await Customers.findOne({_id : data._id})
-            if (customer == null) {
-                console.log('verify error');
-                throw {name: 'VerifyError', message: 'unable to find user'};
-            }
-            console.log('customer doc', customer.username);
-
-            // check customer currently logging in
-            if (!customer.online) {
-                console.log('customer request token verification but his is not logging in');
-                throw {name: 'InactiveUserRequest', message: 'customer request token verification but his is not logging in'};
-            }
-
-            // pass to next middleware/function
-            req.token = token;
-            req.customer = customer;
-        
-            console.log('> verify success')
-            next();
-        }
-        catch (err) {
-            res.status(401).send(err); // 401: unauthorized
-        }
-    }, 
 
     login: async (req, res) => {
         // TODO: login user by username, password
