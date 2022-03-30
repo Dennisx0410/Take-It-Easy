@@ -1,10 +1,10 @@
 const express = require('express');
 const { 
-    uploadProfilePic, addCustomer, login, 
-    verifyToken, getCustomerData, logout, 
+    uploadProfilePic, addCustomer, login, logout, 
     setProfilePic, getProfilePic, activateAccount, 
     updateCustomer, verifyOTP 
 } = require('../controllers/customer');
+const { verifyToken } = require('../controllers/token');
 const { verifyEmail } = require('../controllers/email');
 
 const app = express.Router();

@@ -44,7 +44,7 @@ customerSchema.methods.genAuthToken = async function () {
   let customer = this;
   // assume never expire
   // let token = jwt.sign({_id: customer._id.toString()}, process.env.SECRET);
-  let token = jwt.sign({_id: customer._id.toString()}, process.env.SECRET, {expiresIn: EXPIRE});
+  let token = jwt.sign({_id: customer._id.toString(), userType: 'customer'}, process.env.SECRET, {expiresIn: EXPIRE});
   console.log('> generated token');
   return token;
 }

@@ -104,6 +104,7 @@ POST /customer/logout
 - N/A
 #### Return(json)
 - `VerifyError`
+- `JsonWebTokenError`
 - `InactiveUserRequest`
 - `SuccessfullyLogout`
 
@@ -119,6 +120,7 @@ POST /customer/profilePic
 #### Return(json)
 - File info
 - `VerifyError`
+- `JsonWebTokenError`
 - `InactiveUserRequest`
 - `FileExtensionError`
 
@@ -134,4 +136,5 @@ GET /customer/profilePic
 #### Return(json)
 - File buffer
 - `VerifyError`
+- `JsonWebTokenError`
 - `InactiveUserRequest`
