@@ -200,8 +200,8 @@ module.exports = {
     getProfilePic: async(req, res) => {
         // TODO: view profile image
         try {
-            res.set('Content-Type', 'image/png');  // disable for testing in postman
-            //res.set('Content-Type', 'image/jpeg');  // disable for testing in postman
+            // res.set('Content-Type', 'image/png');  // disable for testing in postman
+            // res.set('Content-Type', 'image/jpeg');  // disable for testing in postman
             console.log('> sent profile');
             res.send(req.restaurant.profilePic);
         }
