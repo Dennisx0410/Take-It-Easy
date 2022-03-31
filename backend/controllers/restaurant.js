@@ -71,6 +71,9 @@ const getRestaurantById = async (id) => {
 
 
 module.exports = {
+
+    getRestaurantById: getRestaurantById,
+
     getRestaurantData: async (req, res) => {
         // TODO: Get restaurant by username
         console.log('> get restaurant data');
@@ -82,6 +85,7 @@ module.exports = {
             res.status(200).send(data);
         }
         catch (err) {
+            console.log(err)
             res.status(404).send(err);
         }
     },
@@ -206,46 +210,6 @@ module.exports = {
         }
     },
 
-    // middleware for token verification
-    verifyToken: async (req, res, next) => {
-        // TODO: verify token by matching docs in db
-        console.log('> verify token');
-        try {
-            // extract token
-            let token = req.header('Authorization').replace('Bearer ', '');
-            console.log('token:', token);
-
-            // decode playload
-            console.log('ready to decode');
-            let data = jwt.verify(token, process.env.SECRET);
-            console.log('decoded with data:', data);
-
-            // check with db and pull out restaurant doc
-            let restaurant = await Restaurant.findOne({_id : data._id})
-            if (restaurant == null) {
-                console.log('verify error');
-                throw {name: 'VerifyError', message: 'unable to find user'};
-            }
-            console.log('restaurant doc', restaurant.username);
-
-            // check restaurant currently logging in
-            if (!restaurant.online) {
-                console.log('restaurant request token verification but his is not logging in');
-                throw {name: 'InactiveUserRequest', message: 'restaurant request token verification but his is not logging in'};
-            }
-
-            // pass to next middleware/function
-            req.token = token;
-            req.restaurant = restaurant;
-        
-            console.log('> verify success')
-            next();
-        }
-        catch (err) {
-            res.status(401).send(err); // 401: unauthorized
-        }
-    }, 
-
     login: async (req, res) => {
         // TODO: login user by username, password
         console.log('> login to server');
@@ -266,6 +230,9 @@ module.exports = {
             // generate token for enter home page
             let token = await restaurant.genAuthToken();
 
+            restaurant.online = true
+            restaurant.save()
+
             console.log("you get token:", token)
 
             res.status(200).send({token}); // 200: OK
@@ -280,6 +247,8 @@ module.exports = {
         // TODO: logout restaurant after token verification
         console.log('> logout');
         try {
+            req.restaurant.online = false
+            req.restaurant.save()
             res.status(200).send({name: 'SuccessfullyLogout', message: 'Successfully logout'});
         }
         catch (err) {
