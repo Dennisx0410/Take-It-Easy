@@ -67,13 +67,13 @@ export default function Login( {setToken} ) {
           <form onSubmit={handleSubmit}>
             
             <input className="form-check-input" onChange={()=>{ choiceUsertype = "customer"}}
-            type="radio" name="usertype" id="customer" value="customer" />
+            type="radio" name="usertype" id="customer" value="customer" required/>
             <label className="form-check-label" htmlFor="customer">
               customer
             </label>
               <span>&nbsp;&nbsp;&nbsp;</span>
             <input className="form-check-input" onChange={()=>{ choiceUsertype = "restaurant"}}
-            type="radio" name="usertype" id="restaurant" value="restaurant"/>
+            type="radio" name="usertype" id="restaurant" value="restaurant"required/>
             <label className="form-check-label" htmlFor="restaurant">
               restaurant
             </label>
