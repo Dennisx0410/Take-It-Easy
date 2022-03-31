@@ -10,7 +10,15 @@ node ./index.js
 
 server port: `5000`
 
+# Documentation List
+[-Customer](#documentation-customer)
+
+[-Admin](#documentation-admin)
+
+[-Restaurant](#documentation-restaurant)
+
 # Documentation (Customer)
+[Return to top](#backend)
 ## Sign up 
 #### URL: 
 ```
@@ -159,6 +167,7 @@ GET /customer/profilePic
 - `Forbidden`
 
 # Documentation (Admin) 
+[Return to top](#backend)
 ## Signin
 #### URL
 ```
@@ -183,3 +192,131 @@ GET /admin/customers
 - N/A
 #### Return(json)
 - array of customer data 
+
+# Documentation (Restaurant)
+[Return to top](#backend)
+## Sign Up A Restaurant Account
+#### URL
+```
+POST /restaurant/signup
+```
+#### Header
+- `Content-type: application/json`
+#### Body
+- `username` : String (Unique),
+- `restaurantName` : String,
+- `password` : String,
+- `address` : String,
+- `licenseNum` : String
+#### Return
+- `Done creating new restaurant`
+- `User with same username already registed`
+
+## Activate Restaurant Account
+#### URL
+```
+POST /restaurant/activate
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return
+- `Account already activated`
+- `Account activated`
+
+## Sign in Restaurant Account
+#### URL
+```
+POST /restaurant/signin
+```
+#### Header
+- `Content-type: application/json`
+#### Body
+- `username` : String,
+- `password` : String
+#### Return
+- `Account not activated`
+- `token`
+
+## Get A Restaurant Info
+#### URL
+```
+POST /restaurant/getinfo
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return
+- Restaurant Json document
+
+## Get All Activated Restaurant Info
+#### URL
+```
+GET /restaurant/getAll
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return
+- `Array of activated restaurant Json documents`
+
+## Get All Not Activated Restaurant Info
+#### URL
+```
+GET /restaurant/getNotActive
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return
+- `Array of not activated restaurant Json documents`
+
+## Logout
+#### URL
+```
+POST /restaurant/logout
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return
+- `Successfully logout`
+
+## Set Profile Picture
+#### URL
+```
+POST /restaurant/profilePic
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- `profile` : File (jpg/jpeg/jfif/png)
+#### Return
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `InactiveUserRequest`
+- `FileExtensionError`
+
+## Get Profile Picture
+#### URL
+```
+GET /restaurant/profilePic
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return
+- File buffer
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `InactiveUserRequest`
+
+
