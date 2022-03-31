@@ -10,7 +10,7 @@ node ./index.js
 
 server port: `5000`
 
-# Documentation
+# Documentation (Customer)
 ## Sign up 
 #### URL: 
 ```
@@ -26,21 +26,6 @@ POST /customer/signup
 - `profile`: File (jpg/jpeg/jfif/png) (optional)
 #### Return(json)
 - `UserAlreadyExisted`
-- `OtpNotFound`
-- `PendingOtp`
-- `VerificationEmailSent`
-
-## Reverify
-#### URL
-```
-POST /customer/reverify
-```
-#### Header
-- `Content-type: application/json`
-#### Body
-- `username`: String (unique)
-- `email`: String
-#### Return(json)
 - `OtpNotFound`
 - `PendingOtp`
 - `VerificationEmailSent`
@@ -61,6 +46,21 @@ POST /customer/activate
 - `OtpExpired`
 - `TooMuchTrials`
 - `InvalidOtp`
+- `PendingOtp`
+- `VerificationEmailSent`
+
+## Reverify
+#### URL
+```
+POST /customer/reverify
+```
+#### Header
+- `Content-type: application/json`
+#### Body
+- `username`: String (unique)
+- `email`: String
+#### Return(json)
+- `OtpNotFound`
 - `PendingOtp`
 - `VerificationEmailSent`
 
@@ -93,6 +93,18 @@ POST /customer/update
 #### Return(json)
 - **not decided yet**
 
+## Get customer data
+#### URL
+```
+GET /customer/data
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return(json)
+- json of username, phoneNum, email, points, profilePic
+
 ## Logout
 #### URL
 ```
@@ -104,6 +116,8 @@ POST /customer/logout
 - N/A
 #### Return(json)
 - `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
 - `InactiveUserRequest`
 - `SuccessfullyLogout`
 
@@ -119,6 +133,8 @@ POST /customer/profilePic
 #### Return(json)
 - File info
 - `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
 - `InactiveUserRequest`
 - `FileExtensionError`
 
@@ -134,4 +150,36 @@ GET /customer/profilePic
 #### Return(json)
 - File buffer
 - `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
 - `InactiveUserRequest`
+
+## Other requests
+#### Return(json) 
+- `Forbidden`
+
+# Documentation (Admin) 
+## Signin
+#### URL
+```
+POST /admin/signin
+```
+#### Header
+- `Content-type: application/json`
+#### Body
+- `username`: String (unique)
+- `password`: String
+#### Return(json)
+- `token`
+- `UserNotFound`
+
+## Get customer data 
+```
+GET /admin/customers
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return(json)
+- array of customer data 

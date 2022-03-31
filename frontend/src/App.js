@@ -8,6 +8,7 @@ import Login from './login/login';
 import Main from './main/main';
 import Restaurant from './main/restaurant';
 import HeaderBar from './HeaderBar';
+import Customer from './main/customer';
 
 function NoMatch() {
     let location = useLocation();
@@ -34,6 +35,7 @@ function App(){
                     <Routes>
                         <Route path="/" element={<Main name="Take It Easy!"/>} />  
                         <Route path="/restaurant/:rid" element={<Restaurant />} />
+                        <Route path="/customer/:action" element={<Customer />} />
                         <Route path="*" element={<NoMatch/>} />
                     </Routes>
                 </BrowserRouter>
