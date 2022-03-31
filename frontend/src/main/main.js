@@ -7,6 +7,12 @@ import {Link} from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 // let navigate = useNavigate();
 
+var suggested = [
+    {filename: "/cuhk-2013.jpg", location:    "Location 1", remarks: "Restaurant Info1"},
+    {filename: "/cuhk-2017.jpg", location:    "Location 2", remarks: "Restaurant Info2"},
+    {filename: "/sci-2013.jpg", location:    "Location 3", remarks: "Restaurant Info3"}
+];
+
 const data = [
   {filename: "/cuhk-2013.jpg", location:    "Location 1", remarks: "Restaurant Info1"},
   {filename: "/cuhk-2017.jpg", location:    "Location 2", remarks: "Restaurant Info2"},
@@ -23,12 +29,10 @@ var restaurantList = [
     "Restaurant 5"
 ];
 
-class Title extends React.Component {
+class Suggestion extends React.Component {
   render() {
       return (
-          <header className="bg-warning">
-              <h1 className="display-4 text-center">{this.props.name}</h1>
-          </header>
+              <h1 className="display-4 text-center">HI</h1>
       );
   }
 }
@@ -37,8 +41,15 @@ class Title extends React.Component {
 class Gallery extends React.Component {
   render() {
       return (
-          <main className="container">
-              {data.map((file,index) => <FileCard i={index} key={index}/>)}
+        
+          <main className="container-fluid custom-container-width">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10 align-self-start">
+                    {data.map((file,index) => <FileCard i={index} key={index}/>)}
+                </div>
+                <div class="col-1"></div>
+            </div>
           </main>
       );
   }
@@ -80,7 +91,7 @@ class FileCard extends React.Component{
         let index = this.props.i;
         return (
             <Link to={"/restaurant/"+index}>
-                <div className="card d-inline-block m-2" style={{width: this.state.selected==index ? 220 : 200}} 
+                <div className="card d-inline-block m-1 custom-card " style={{width: this.state.selected==index ? '33%' : '31%'}}  
                     onMouseOver={(e) => this.handleMOver(index,e)} onMouseOut={(e) => this.handleMOut(index,e)} 
                     onClick={(e) => this.handleCLick(index,e)}>
                     <img src={process.env.PUBLIC_URL+data[index].filename} className="w-100" />
@@ -101,8 +112,11 @@ class Main extends React.Component{
   render() {
       return (
           <>
-              <Title name={this.props.name}/>
-              <Gallery />
+            <div className='Main'>
+                <Suggestion />
+                <Gallery />
+            </div>
+              
           </>
       );
   }
