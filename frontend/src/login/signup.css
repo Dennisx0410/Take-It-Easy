@@ -1,0 +1,33 @@
+.signin-container {
+    width: 50%;
+    border: 3px solid darkblue;
+    margin: 10px auto;
+    padding: 20px; 
+    font-weight: bold;
+    background-color: lightgrey;
+}
+
+.preview {
+    border: 3px dashed grey;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: whitesmoke;
+    text-align: center;
+}
+
+#profile-preview {
+    height: 120px;
+}
+
+#customer, #restaurant, #profile {
+    vertical-align: middle;
+}
+
+i {
+    margin: auto 3px;
+    vertical-align: middle;
+}
+
+label {
+    vertical-align: middle;
+}

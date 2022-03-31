@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import {useMatch, useParams, useLocation} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import Login from './login/login';
+import Signup from './login/signup';
 import Main from './main/main';
 import Restaurant from './main/restaurant';
 import HeaderBar from './HeaderBar';
@@ -24,7 +25,11 @@ function NoMatch() {
 function App(){
     const [token, setToken] = useState();
     if(!token) {
-        return <Login setToken={setToken} />
+        return (
+        <>
+            <Login setToken={setToken} />
+            <Signup/>
+        </>)
     }
     return (
         <>

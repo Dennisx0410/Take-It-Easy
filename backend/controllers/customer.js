@@ -81,7 +81,7 @@ const getCustomers = async () => {
 
 module.exports = {
     getCustomerData: async (req, res) => {
-        // return customer data
+        // TODO: return customer data
         res.send({
             username: req.customer.username, 
             phoneNum: req.customer.phoneNum, 
@@ -109,12 +109,14 @@ module.exports = {
     addCustomer: async (req, res, next) => {
         // TODO : Add Customer to database (Register) by credentials
         console.log('> register new accout');
-        // console.log('req.body:', req.body); // username, pw.. etc
+        console.log('req.body:', req.body); // username, pw.. etc
+        console.log('req.body.username:', req.body.username); // username, pw.. etc
         try {
             // check user with same username already exists
             let customer = await Customers.findOne({username: req.body.username});
 
             if (customer) { // already exists
+                console.log('> user already existed');
                 throw {name: 'UserAlreadyExisted', message: 'User with same username already registed'};
             }
 
@@ -147,6 +149,8 @@ module.exports = {
         console.log('> upload profile');
         try {
             return upload.single('profile')(req, res, () => {
+                // console.log('req.body:', req.body);
+                // console.log('req.file:', req.file);
                 if (!req.file) {
                     console.log('> upload failed')
                     return res.status(400).send({name: "FileExtensionError", message: "image should be jpg or png"});
@@ -165,7 +169,7 @@ module.exports = {
         }
     },
 
-    setProfilePic: async(req, res) => {
+    setProfilePic: async (req, res, next) => {
         // TODO: add profile pic to db
         console.log('> add profile');
         try {
@@ -177,15 +181,15 @@ module.exports = {
             req.customer.profilePic = resizedBuf;
             await req.customer.save();
 
-            res.send({name: 'uploadSuccess', message: 'successfully uploaded/changed profile pic'});
+            next();
         }
         catch (err) {
-            // console.log(err)
+            console.log(err)
             res.send(err);
         }
     },
 
-    getProfilePic: async(req, res) => {
+    getProfilePic: async (req, res) => {
         // TODO: view profile image
         try {
             // res.set('Content-Type', 'image/png');  // disable for testing in postman
