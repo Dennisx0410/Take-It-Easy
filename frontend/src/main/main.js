@@ -43,12 +43,12 @@ class Gallery extends React.Component {
       return (
         
           <main className="container-fluid custom-container-width">
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-10 align-self-start">
+            <div className="row">
+                <div className="col-1"></div>
+                <div className="col-10 align-self-start">
                     {data.map((file,index) => <FileCard i={index} key={index}/>)}
                 </div>
-                <div class="col-1"></div>
+                <div className="col-1"></div>
             </div>
           </main>
       );

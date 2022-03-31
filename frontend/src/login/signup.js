@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './signup.css';
+import {Link} from 'react-router-dom';
 
 async function signup(form, userType) {
     return fetch(`http://localhost:5000/${userType}/signup`, {
@@ -49,7 +50,8 @@ function Signup() {
                             <div className="row">
                                 <section className="col-6">
                                     <div className="mb-3 form-radio" style={{textAlign: 'center'}}>
-                                        <input className="form-check-input" type="radio" name="user-type" id="customer" value="customer" checked="checked" required/>
+                                        <input className="form-check-input" 
+                                        type="radio" name="user-type" id="customer" value="customer" checked required/>
                                         <label className="form-check-label" htmlFor="customer">
                                             <i className="material-icons">person</i>
                                             Customer

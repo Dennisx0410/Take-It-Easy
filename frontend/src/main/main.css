@@ -4,6 +4,8 @@
 .custom-container-width {
     justify-content: center;
     text-align: justify;
+    display: flex;
+    align-items: center;
 }
 
 .custom-card{

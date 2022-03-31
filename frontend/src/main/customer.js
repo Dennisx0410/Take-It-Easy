@@ -6,8 +6,13 @@ import {useMatch, useParams, useLocation} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import HeaderBar from '../HeaderBar';
 
+class AccountInfo extends React.Component{
 
+}
 
+class OrderHistory extends React.Component{
+
+}
 
 class Customer extends React.Component{
     render() {

@@ -4,6 +4,8 @@ import './login.css';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Signup from './signup';
 
+
+
 // send login request to get token 
 async function loginAttempt(input) {
  return fetch('http://localhost:5000/customer/signin', {
@@ -17,14 +19,24 @@ async function loginAttempt(input) {
 } 
 
 export default function Login( {setToken} ) {
+  var invalid_message = false;
   const handleSubmit = async e => {
     e.preventDefault();
-
     // extract fields from form 
     let form = new FormData(e.target);
     let username = form.get('username');
     let password = form.get('password');
-
+    console.log(username);
+    if (username == ""){
+      console.log("Blank Username");
+      invalid_message = true;
+      return;
+    }
+    if (password == ""){
+      console.log("Blank Password");
+      invalid_message = true;
+      return;
+    }
     let token = await loginAttempt({
       username: username,
       password: password
@@ -37,33 +49,57 @@ export default function Login( {setToken} ) {
     }
     else {
       console.log(token.token);
+      invalid_message = true;
     }
   }
 
+  let choiceUsertype = "customer";
   return(
     <>
     <div className="row">
-      <div className="col-8 background">
+      <div className="col-9 background">
         <img src={process.env.PUBLIC_URL+"food.jpeg"} className="w-100" />
       </div>
-      <div className="col-4">
-        <div className="loginstyling">
+      <div className="col-3">
+        <div className="container">
           <h1>Please Log In</h1>
           <p>Please start the backend server as well</p>
           <form onSubmit={handleSubmit}>
+            
+            <input className="form-check-input" onChange={()=>{ choiceUsertype = "customer"}}
+            type="radio" name="usertype" id="customer" value="customer" />
+            <label className="form-check-label" htmlFor="customer">
+              customer
+            </label>
+              <span>&nbsp;&nbsp;&nbsp;</span>
+            <input className="form-check-input" onChange={()=>{ choiceUsertype = "restaurant"}}
+            type="radio" name="usertype" id="restaurant" value="restaurant"/>
+            <label className="form-check-label" htmlFor="restaurant">
+              restaurant
+            </label>
+              <br></br>
             <label>
               <p>Username</p>
-              <input type="text" name="username" />
+              <input id='login-username' type="text" name="username" />
             </label>
             <br></br>
             <label>
               <p>Password</p>
-              <input type="password" name="password" />
+              <input id='login-password' type="password" name="password" />
             </label>
             <div>
               <button type="submit">Submit</button>
             </div>
           </form>
+          <div className='signup'>
+            {invalid_message}
+            <span style={{color: "red"}}>{invalid_message == true? "Invalid Username/Password":""}</span>
+            <hr></hr>
+            OR<br></br>
+            <Link to="/signup" className='formattedLink' style={{textAlign: "center"}}>
+              Click Here To Sign Up
+            </Link>
+          </div>
         </div>
       </div>
     </div>

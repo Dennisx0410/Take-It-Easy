@@ -26,10 +26,16 @@ function App(){
     const [token, setToken] = useState();
     if(!token) {
         return (
-        <>
-            <Login setToken={setToken} />
-            <Signup/>
-        </>)
+            <>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Login setToken={setToken} />} />  
+                        <Route path="/signup" element={<Signup/>} />
+                        <Route path="*" element={<NoMatch/>} />
+                    </Routes>
+                </BrowserRouter>
+            </>
+        );
     }
     return (
         <>

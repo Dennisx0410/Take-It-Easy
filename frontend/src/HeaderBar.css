@@ -7,11 +7,13 @@ a.header-title {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 30px;
     color: #ffffff;
-    padding: 15px 5px;
+    padding: 5px 5px;
     text-decoration:none;
     
 }
-
+.headerpadding{
+    padding: 5px 5px;
+}
 a.header-title:link{
     display: inline;
     color:#ffffff;

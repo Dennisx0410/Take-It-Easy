@@ -19,9 +19,10 @@ function HeaderBar(){
                                 <MaterialIcon icon="takeout_dining" color='#FFFFFF' />
                             </Link>
                         </div>
-                        <div className='col-1'></div>
-                        <div className='col-1'>Points</div>
-                        <div className='col-1'>
+                        <div className='col-2'></div>
+                        
+                        <div className='col-1 headerpadding'>Points</div>
+                        <div className='col-1 headerpadding'>
                             <Dropdown className="d-inline mx-2" autoClose="outside">
                                 <Dropdown.Toggle id="dropdown-autoclose-outside">
                                     <MaterialIcon icon="account_circle" color='#FFFFFF' />
@@ -31,11 +32,11 @@ function HeaderBar(){
                                 <Dropdown.Item href="/customer/profile">Profile</Dropdown.Item>
                                 <Dropdown.Item href="/customer/history">Order History</Dropdown.Item>
                                     <Dropdown.Divider />
-                                <Dropdown.Item eventKey="4">Logout</Dropdown.Item>
+                                <Dropdown.Item >Logout</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </div>
-                        <div className='col-1'></div>
+                        
                     </div>
                     
                 </div>
