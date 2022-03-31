@@ -17,20 +17,19 @@ server port: `5000`
 POST /customer/signup
 ```
 #### Header
-- `Content-type: application/json`
+- N/A
 #### Body
 - `username`: String (unique)
 - `password`: String
 - `email`: String
-- `phoneNum`: String (optional)
-- `profile`: File (jpg/jpeg/jfif/png) (optional)
+- `phoneNum`: String
+- `profile`: File (jpg/jpeg/jfif/png)
 #### Return(json)
 - `UserAlreadyExisted`
-- `OtpNotFound`
-- `PendingOtp`
+- `FileExtensionError`
 - `VerificationEmailSent`
 
-## Verify/Activate
+## Activate
 #### URL
 ```
 POST /customer/activate
@@ -131,7 +130,7 @@ POST /customer/profilePic
 #### Body
 - `profile`: File (jpg/jpeg/jfif/png)
 #### Return(json)
-- File info
+- `ChangedProfilePic`
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
