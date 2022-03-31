@@ -41,6 +41,7 @@ const sendEmail = async (receiver, OTP) => {
             Hi ${receiver.username}, welcome to Take It Easy. <br>
             To activate your account, please enter the following verification code to the take it easy website: <br>
             <h2><b>${OTP}</b></h2> <br>
+            This code will be expired in 2 minutes!
             Enjoy placing order! <br>
             <br>
             Take It Easy <br>

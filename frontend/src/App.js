@@ -30,7 +30,7 @@ function App(){
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Login setToken={setToken} />} />  
-                        <Route path="/signup" element={<Signup/>} />
+                        <Route path="/signup" element={<Signup setToken={setToken}/>} />
                         <Route path="*" element={<NoMatch/>} />
                     </Routes>
                 </BrowserRouter>
@@ -45,6 +45,7 @@ function App(){
                     <HeaderBar/>
                     <Routes>
                         <Route path="/" element={<Main name="Take It Easy!"/>} />  
+                        <Route path="/signup" element={<Main name="Take It Easy!"/>} />  
                         <Route path="/restaurant/:rid" element={<Restaurant />} />
                         <Route path="/customer/:action" element={<Customer />} />
                         <Route path="*" element={<NoMatch/>} />
