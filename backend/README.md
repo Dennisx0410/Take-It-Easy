@@ -91,7 +91,7 @@ POST /customer/signin
 **Not implement yet**
 #### URL
 ```
-POST /customer/update
+update /customer/data
 ```
 #### Header
 - `Content-type: application/json`
@@ -235,8 +235,11 @@ POST /restaurant/signin
 - `username` : String,
 - `password` : String
 #### Return
-- `Account not activated`
 - `token`
+- `AccountNotActivated`
+- `UserNotFound`
+- `InvalidPassword`
+- `Account not activated`
 
 ## Get A Restaurant Info
 #### URL
@@ -260,7 +263,7 @@ GET /restaurant/getAll
 #### Body
 - N/A
 #### Return
-- `Array of activated restaurant Json documents`
+- Array of activated restaurant JSON documents
 
 ## Get All Not Activated Restaurant Info
 #### URL
@@ -272,7 +275,7 @@ GET /restaurant/getNotActive
 #### Body
 - N/A
 #### Return
-- `Array of not activated restaurant Json documents`
+- Array of not activated restaurant Json documents
 
 ## Logout
 #### URL
@@ -284,7 +287,7 @@ POST /restaurant/logout
 #### Body
 - N/A
 #### Return
-- `Successfully logout`
+- `SuccessfullyLogout`
 
 ## Set Profile Picture
 #### URL

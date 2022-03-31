@@ -4,8 +4,6 @@ import './login.css';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Signup from './signup';
 
-const token_tmp_str = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNiMzk5YzI5YWQyM2IyYWFkYjY0OWMiLCJpYXQiOjE2NDgwNDg2Njd9.MB6lDdXwVau8kbDV1AncSGdXAadl54--2uoHp1s5El8';
-
 // send login request to get token 
 async function loginAttempt(input) {
  return fetch('http://localhost:5000/customer/signin', {
@@ -19,7 +17,6 @@ async function loginAttempt(input) {
 } 
 
 export default function Login( {setToken} ) {
-  const [imgUrl, setImgUrl] = useState();
   const handleSubmit = async e => {
     e.preventDefault();
 

@@ -92,7 +92,7 @@ function Signup() {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="phoneNum" className="form-label">
-                            <i className="material-icons">add_photo_alternate</i>Phone number
+                            <i className="material-icons">phone</i>Phone number
                         </label>
                         <input type="tel" className="form-control" id="phoneNum" name="phoneNum" pattern='[0-9]{8}' required/>
                     </div>

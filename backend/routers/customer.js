@@ -13,7 +13,7 @@ app.post("/signup", uploadProfilePic, addCustomer, setProfilePic, verifyEmail);
 app.post('/activate', verifyOTP, activateAccount); 
 app.post('/reverify', verifyEmail); 
 app.post('/signin', login);
-// app.post('/update', verifyToken, updateCustomer); // not implemented yet
+// app.update('/update', verifyToken, updateCustomer); // not implemented yet
 app.get('/data', verifyToken, getCustomerData); 
 app.post('/logout', verifyToken, logout);
 app.post('/profilePic', verifyToken, uploadProfilePic, setProfilePic, (req, res) => {
