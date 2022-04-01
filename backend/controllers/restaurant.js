@@ -1,5 +1,6 @@
 // model
 const Restaurant = require("../models/restaurant.js")
+const foodItem = require("../models/food_item.js")
 
 // package
 const jwt = require('jsonwebtoken');
@@ -9,6 +10,7 @@ const sharp = require('sharp');
 
 // const
 const { MAX_TRIAL } = require('../models/otp');
+const { default: mongoose } = require("mongoose");
 
 // handle for image upload
 const upload = multer({
@@ -315,6 +317,72 @@ module.exports = {
         catch (err) {
             console.log(err)
             res.status(401).send(err); // 401: unauthorized
+        }
+    },
+    //Food Related Function
+    uploadFoodItemPic: async (req, res, next) => {
+        // TODO: upload profile image with key = 'foodPic' to server
+        console.log('> upload Food Item Pic');
+        try {
+            return upload.single('foodPic')(req, res, () => {
+                if (!req.file) {
+                    console.log('> upload failed')
+                    return res.status(400).send({name: "FileExtensionError", message: "image should be jpg or png"});
+                }
+                else {
+                    console.log('filesize:', req.file.size)
+                    console.log('> Upload Success')
+                }
+
+                // continue to set store Food Item pic
+                next();
+            })
+        }
+        catch (err) {
+            res.send(err);
+        }
+    },
+
+    addFoodItem: async(req, res) =>{
+        console.log('> add Food Item');
+        try {
+            // resize Food Item pic to 100x100px before storing to db
+            let resizedBuf = await sharp(req.file.buffer).resize({
+                width: 100, 
+                height: 100
+            }).toBuffer();
+            let doc = new foodItem()
+            doc.picture = resizedBuf;
+            doc.name = req.body.name;
+            doc.price = req.body.price;
+
+            doc = await foodItem.create(doc)
+
+            req.restaurant.menu.push(doc._id)
+            await req.restaurant.save();
+            console.log("Added Food item to db with _id", doc._id)
+            res.send({message: 'Successfully added new food item'});
+        }
+        catch (err) {
+            console.log(err)
+            res.send(err);
+        }
+    },
+
+    removeFoodItem: async(req, res) =>{
+        console.log("Remove Food Item with ID", req.body.foodId)
+        try {
+            
+            req.restaurant.menu.remove(req.body.foodId)
+            req.restaurant.save()
+
+            await foodItem.remove({_id:req.body.foodId})
+            console.log("Removed Food Item Successfully")
+            res.send("Removed Food Item Successfully");
+        }
+        catch (err) {
+            console.log(err)
+            res.send(err);
         }
     }
 }
