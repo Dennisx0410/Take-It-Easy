@@ -18,15 +18,21 @@ async function loginAttempt(input) {
   .then(data => data.json())
 } 
 
-export default function Login( {setToken} ) {
+export default function Login( props) {
   var invalid_message = false;
+  // let choiceUsertype = "customer";
   const handleSubmit = async e => {
     e.preventDefault();
     // extract fields from form 
     let form = new FormData(e.target);
     let username = form.get('username');
     let password = form.get('password');
+    let usertype = form.get('usertype');
     console.log(username);
+    console.log(usertype);
+    console.log(props.setToken);
+    props.setUsertype(usertype)
+    // console.log(setUsertype);
     if (username == ""){
       console.log("Blank Username");
       invalid_message = true;
@@ -45,7 +51,9 @@ export default function Login( {setToken} ) {
     // check the variable really contains a token, else do handling
     if (token.token != null) {
       console.log('successfully login');
-      setToken(token.token);
+      props.setToken(token.token);
+      // setUsertype(usertype);
+      console.log(usertype);
     }
     else {
       console.log(token.token);
@@ -53,7 +61,7 @@ export default function Login( {setToken} ) {
     }
   }
 
-  let choiceUsertype = "customer";
+  
   return(
     <>
     <div className="row">
@@ -66,14 +74,16 @@ export default function Login( {setToken} ) {
           <p>Please start the backend server as well</p>
           <form onSubmit={handleSubmit}>
             
-            <input className="form-check-input" onChange={()=>{ choiceUsertype = "customer"}}
+            <input className="form-check-input" 
+            // onChange={()=>{ choiceUsertype = "customer"}}
             type="radio" name="usertype" id="customer" value="customer" required/>
             <label className="form-check-label" htmlFor="customer">
               customer
             </label>
               <span>&nbsp;&nbsp;&nbsp;</span>
-            <input className="form-check-input" onChange={()=>{ choiceUsertype = "restaurant"}}
-            type="radio" name="usertype" id="restaurant" value="restaurant"required/>
+            <input className="form-check-input" 
+            // onChange={()=>{ choiceUsertype = "restaurant"}}
+            type="radio" name="usertype" id="restaurant" value="restaurant" required/>
             <label className="form-check-label" htmlFor="restaurant">
               restaurant
             </label>

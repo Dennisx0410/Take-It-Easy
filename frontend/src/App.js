@@ -10,6 +10,7 @@ import Main from './main/main';
 import Restaurant from './main/restaurant';
 import HeaderBar from './HeaderBar';
 import Customer from './main/customer';
+import UserRestaurant from './main/user_restaurant';
 
 function NoMatch() {
     let location = useLocation();
@@ -24,12 +25,14 @@ function NoMatch() {
 
 function App(){
     const [token, setToken] = useState();
-    if(!token) {
+    const [usertype, setUsertype]= useState();
+    if(token === undefined) {
+        console.log(token);
         return (
             <>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<Login setToken={setToken} />} />  
+                        <Route path="/" element={<Login setToken={setToken} setUsertype={setUsertype}/>} />  
                         <Route path="/signup" element={<Signup/>} />
                         <Route path="*" element={<NoMatch/>} />
                     </Routes>
@@ -37,22 +40,47 @@ function App(){
             </>
         );
     }
-    return (
-        <>
-            <div>
-                <BrowserRouter>
-                    {/* Header Bar */}
-                    <HeaderBar/>
-                    <Routes>
-                        <Route path="/" element={<Main name="Take It Easy!"/>} />  
-                        <Route path="/restaurant/:rid" element={<Restaurant />} />
-                        <Route path="/customer/:action" element={<Customer />} />
-                        <Route path="*" element={<NoMatch/>} />
-                    </Routes>
-                </BrowserRouter>
-            </div>
-        </>
-    );
+    else{ 
+        console.log("::::::"+usertype);
+        if (usertype == "restaurant"){
+            return (
+                <>
+                    <div>
+                        <BrowserRouter>
+                            {/* Header Bar */}
+                            <HeaderBar usertype={usertype}/>
+                            <Routes> 
+
+                                <Route path="/" element={<UserRestaurant page="menu" />} />
+                                <Route path="/profile" element={<UserRestaurant page="profile" />} />
+                                <Route path="/history" element={<UserRestaurant page="history" />} />
+                                <Route path="*" element={<NoMatch/>} />
+                            </Routes>
+                        </BrowserRouter>
+                    </div>
+                </>
+            );
+        }
+        else if (usertype == "customer"){
+            return (
+                <>
+                    <div>
+                        <BrowserRouter>
+                            {/* Header Bar */}
+                            <HeaderBar usertype={usertype}/>
+                            <Routes>
+                                <Route path="/" element={<Main name="Take It Easy!"/>} />  
+                                <Route path="/restaurant/:rid" element={<Restaurant />} />
+                                <Route path="/customer/:action" element={<Customer token={token} />} />
+                                <Route path="*" element={<NoMatch/>} />
+                            </Routes>
+                        </BrowserRouter>
+                    </div>
+                </>
+            );
+        }
+    }
+    
 }
 
 
