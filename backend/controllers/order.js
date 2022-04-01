@@ -31,6 +31,31 @@ module.exports = {
 
     },
 
+    getOrderByCustomer: async (req,res) =>{
+        try {
+            console.log("Fetch orders from", req.customer.username)
+            const orders = await Order.aggregate([     //Joining two db to get order detail
+                {
+                  $match: {
+                    customerID: req.customer.username
+                  }
+                },
+                {
+                  $lookup: {
+                    from: 'fooditems', // secondary Db Name
+                    localField: 'items',
+                    foreignField: '_id',
+                    as: 'items' // output key to be store
+                  }
+                }
+              ]);
+              res.send(orders)
+        } catch (err) {
+            console.log(err)
+            res.send(err)
+        }
+    },
+
     addOrder : async (req,res) => {
         console.log('New Order Recieved')
         try{
