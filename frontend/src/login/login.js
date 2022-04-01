@@ -4,8 +4,6 @@ import './login.css';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Signup from './signup';
 
-
-
 // send login request to get token 
 async function loginAttempt(input) {
  return fetch('http://localhost:5000/customer/signin', {
@@ -18,7 +16,7 @@ async function loginAttempt(input) {
   .then(data => data.json())
 } 
 
-export default function Login( props) {
+export default function Login(props) {
   var invalid_message = false;
   // let choiceUsertype = "customer";
   const handleSubmit = async e => {
