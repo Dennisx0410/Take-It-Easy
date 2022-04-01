@@ -48,12 +48,12 @@ function App(){
                     <div>
                         <BrowserRouter>
                             {/* Header Bar */}
-                            <HeaderBar usertype={usertype}/>
+                            <HeaderBar usertype={usertype} setToken={setToken} />
                             <Routes> 
 
                                 <Route path="/" element={<UserRestaurant page="menu" />} />
-                                <Route path="/profile" element={<UserRestaurant page="profile" />} />
-                                <Route path="/history" element={<UserRestaurant page="history" />} />
+                                <Route path="/customer/profile" element={<UserRestaurant page="profile" />} />
+                                <Route path="/customer/history" element={<UserRestaurant page="history" />} />
                                 <Route path="*" element={<NoMatch/>} />
                             </Routes>
                         </BrowserRouter>
@@ -67,7 +67,7 @@ function App(){
                     <div>
                         <BrowserRouter>
                             {/* Header Bar */}
-                            <HeaderBar usertype={usertype}/>
+                            <HeaderBar usertype={usertype} setToken={setToken} />
                             <Routes>
                                 <Route path="/" element={<Main name="Take It Easy!"/>} />  
                                 <Route path="/restaurant/:rid" element={<Restaurant />} />
