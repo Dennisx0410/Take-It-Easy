@@ -32,6 +32,7 @@ function Signup({setToken}) {
     const [signupStatus, setSignupStatus] = useState('');
     const [userInfo, setUserInfo] = useState({});
     const [verifyStatus, setVerifyStatus] = useState('');
+    const [pwVisibility, setPwVisibility] = useState(false);
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -136,7 +137,10 @@ function Signup({setToken}) {
                         <label htmlFor="password" className="form-label">
                             <i className="material-icons">password</i>Password
                         </label>
-                        <input type="password" className="form-control" id="password" name="password" required/>
+                        <div className="input-group">
+                            <input type={pwVisibility ? "text" : "password"} className="form-control" id="password" name="password" required/>
+                            <button type="button" className="material-icons input-group-text" onClick={() => setPwVisibility(!pwVisibility)}>{pwVisibility ? "visibility_off" : "visibility"}</button>
+                        </div>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">
