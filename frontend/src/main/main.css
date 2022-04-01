@@ -1,5 +1,6 @@
 .Main{
-    background-color: rgb(184, 217, 247);
+    background-color: rgb(250, 240, 229);
+    color: rgb(138, 5, 94);
 }
 .custom-container-width {
     justify-content: center;
@@ -12,4 +13,8 @@
     
     text-align: justify;
     padding: 0;
+}
+
+.suggestionMargin{
+    margin: 10px;
 }

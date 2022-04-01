@@ -4,8 +4,14 @@ import MaterialIcon, {colorPalette} from 'material-icons-react';
 import Dropdown from 'react-bootstrap/Dropdown'
 
 
-function HeaderBar({usertype}){
-    if (usertype=="restaurant"){
+function HeaderBar(props){
+    // {usertype, setToken}
+    // const handleLogout = (logout) => {
+    //     console.log("In handle logout");
+    //     // logout(undefined);
+    // }
+    console.log(props.setToken);
+    if (props.usertype=="restaurant"){
         return (
             <>
                 <div className='header'>
@@ -31,7 +37,7 @@ function HeaderBar({usertype}){
                                     <Dropdown.Item href="/r/profile">Menu</Dropdown.Item>
                                     <Dropdown.Item href="/r/history">Order History</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);}} >Logout</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>
@@ -42,7 +48,7 @@ function HeaderBar({usertype}){
             </>
         );
     }
-    else if (usertype=="customer"){
+    else if (props.usertype=="customer"){
         return (
             <>
                 <div className='header'>
@@ -69,7 +75,8 @@ function HeaderBar({usertype}){
                                     <Dropdown.Item href="/customer/profile">Profile</Dropdown.Item>
                                     <Dropdown.Item href="/customer/history">Order History</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);}} >Logout</Dropdown.Item>
+                                    {/* onClick={handleLogout(props.setToken)} */}
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>

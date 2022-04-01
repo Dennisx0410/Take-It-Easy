@@ -65,10 +65,10 @@ export default function Login( props) {
   return(
     <>
     <div className="row">
-      <div className="col-9 background">
+      <div className="col-md-9 background">
         <img src={process.env.PUBLIC_URL+"food.jpeg"} className="w-100" />
       </div>
-      <div className="col-3">
+      <div className="col-md-3">
         <div className="container">
           <h1>Please Log In</h1>
           <p>Please start the backend server as well</p>
