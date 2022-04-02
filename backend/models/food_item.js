@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 // schema
 const foodItemsSchema = new Schema({
-    picture : String,
+    picture : Buffer,
     name : String,
     price : Number
 });

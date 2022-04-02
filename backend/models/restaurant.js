@@ -18,7 +18,7 @@ const restaurantSchema = new Schema({
     licenseNum : String,
     activated : {type : Boolean, default : false},
     online: {type : Boolean, default: false},
-    menu : [Object]
+    menu : [mongoose.Types.ObjectId]
 });
 
 restaurantSchema.pre('save', async function (next) {

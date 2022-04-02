@@ -1,15 +1,12 @@
 const express = require('express');
-const { modelName } = require('../models/customer');
+const { verifyToken } = require('../controllers/token');
+var orderController = require('../controllers/order')
 
 const app = express.Router();
 
-// app.get('/hello', (err, res) => {
-//     console.log("someone find /hello/hello");
-//     res.send('hello hello received')
-// })
-// app.get('/', (err, res) => {
-//     console.log("someone find /hello/");
-//     res.send('hello received')
-// })
+app.get('/fetchByRestaurant', verifyToken, orderController.getOrderByRestaurant)
+app.get('/fetchByCustomer', verifyToken, orderController.getOrderByCustomer)
+app.post('/add', verifyToken, orderController.addOrder)
+app.post('/done', verifyToken, orderController.finishOrder)
 
 module.exports = app;

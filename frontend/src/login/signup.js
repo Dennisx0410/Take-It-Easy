@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import './signup.css';
 
 async function signup(form, userType) {
@@ -55,9 +56,17 @@ function Signup({setToken}) {
     // preview after choosing profile picture
     const showPreview = async e => {
         e.preventDefault();
-    
-        let objURL = URL.createObjectURL(e.target.files[0]);
-        setImgUrl(objURL);
+
+        let files = e.target.files;
+        // console.log(files, files.length);
+
+        if (files.length === 0) { // no file 
+            setImgUrl('');
+        }
+        else { // have file
+            let objURL = URL.createObjectURL(e.target.files[0]);
+            setImgUrl(objURL);
+        }
     }
 
     const handleOtpSubmit = async e => {
@@ -66,8 +75,6 @@ function Signup({setToken}) {
         setVerifyStatus('');
         let otpForm = new FormData(e.target);
         let otp = otpForm.get('otp');
-        console.log(otp);
-        console.log(userInfo.username);
 
         let res = await verify(userInfo.username, otp.toString());
 
@@ -127,7 +134,7 @@ function Signup({setToken}) {
                         <label htmlFor="username" className="form-label">
                             <i className="material-icons">edit</i>Username
                         </label>
-                        <input type="text" className="form-control" id="username" name="username" required/>
+                        <input type="text" className="form-control" id="username" name="username" pattern="[a-zA-Z0-9_.]+" title="Combinations of alphanumeric characters, full stop('.') and underscore('_') only" required/>
                         <p style={{color: "red", display: (signupStatus === 'UserAlreadyExisted') ? "block" : "none"}}> 
                             <i className="material-icons">warning</i>
                             User name aleady in used, please choose another username!
