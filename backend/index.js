@@ -9,17 +9,11 @@ const app = express();
 app.use(express.json())
 
 // routers
-<<<<<<< HEAD
-const customerRouter = require('./routers/customer')
-const restaurantRouter = require('./routers/restaurant')
-const orderRouter = require('./routers/order');
-const res = require('express/lib/response');
-=======
 const customerRouter = require('./routers/customer');
 const restaurantRouter = require('./routers/restaurant');
 const adminRouter = require('./routers/admin');
 const orderRouter = require('./routers/order');
->>>>>>> 7cc31bfd0ac2b69b8c2c1d4221a13786f0dd560e
+
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
