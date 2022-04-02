@@ -40,7 +40,7 @@ restaurantSchema.pre('save', async function (next) {
     let restaurant = this;
     // assume never expire
     // let token = jwt.sign({_id: restaurant._id.toString()}, process.env.SECRET);
-    let token = jwt.sign({_id: restaurant._id.toString(), userType: 'restaurant'}, process.env.SECRET, {expiresIn: EXPIRE});
+    let token = jwt.sign({_id: restaurant._id.toString(), usertype: 'restaurant'}, process.env.SECRET, {expiresIn: EXPIRE});
     console.log('> generated token');
     return token;
   }
