@@ -92,28 +92,28 @@ module.exports = {
         }
     },
 
-    getNotActivatedRestaurant: async (req, res) =>{
-        console.log('Fetching Not Activated Restaurant')
-        try{
-            let list = await Restaurant.find({activated:false})
+    getNotApprovedRestaurant: async (req, res) => {
+        console.log("> fetching not approved restaurants");
+        try {
+            let list = await Restaurant.find({approved:false})
 
             res.status(200).send(list)
         }
-        catch (err){
+        catch (err) {
             console.log(err)
             res.status(404).send(err)
         }
     },
 
-    getAllRestaurantData: async (req, res)=>{
-        //Function only fetch all activated restaurant
-        console.log('Fetching All Activated Restaurant')
-        try{
+    getAllRestaurantData: async (req, res) => {
+        //Function only fetch all approved restaurant
+        console.log("> fetching all approved restaurants");
+        try {
             let list = await Restaurant.find()
 
             res.status(200).send(list)
         }
-        catch (err){
+        catch (err) {
             console.log(err)
             res.status(404).send(err)
         }
@@ -129,7 +129,7 @@ module.exports = {
             let restaurant = await Restaurant.findOne({username: req.body.username});
 
             if (restaurant) { // already exists
-                throw {name: 'restaurant Already Existed', message: 'User with same username already registed'};
+                throw {name: 'UserAlreadyExisted', message: 'User with same username already registed'};
             }
 
             // create restaurant account
@@ -138,15 +138,17 @@ module.exports = {
 
             req.restaurant = restaurant
 
-            res.status(201).send("Done creating new restaurant")
             console.log(`New Restaurant Register with username ${req.body.username}`)
+            
+            // continue to set profile pic
+            next()
         } 
         catch (err) {
             res.status(400).send(err); // 400: Bad request // code 11000 would be sent if username duplicated
         }
     },
 
-    updateRestaurant: async(req, res) => {
+    updateRestaurant: async (req, res) => {
         // TODO: edit and update restaurant info
         try {
             res.status(200).send({});
@@ -156,6 +158,7 @@ module.exports = {
         }
     },
 
+    // middleware
     uploadProfilePic: async (req, res, next) => {
         // TODO: upload profile image with key = 'profile' to server
         console.log('> upload profile');
@@ -179,7 +182,8 @@ module.exports = {
         }
     },
 
-    setProfilePic: async(req, res) => {
+    // middleware
+    setProfilePic: async (req, res, next) => {
         // TODO: add profile pic to db
         console.log('> add profile');
         try {
@@ -191,7 +195,7 @@ module.exports = {
             req.restaurant.profilePic = resizedBuf;
             await req.restaurant.save();
 
-            res.send({name: 'uploadSuccess', message: 'successfully uploaded/changed profile pic'});
+            next();
         }
         catch (err) {
             console.log(err)
@@ -199,7 +203,7 @@ module.exports = {
         }
     },
 
-    getProfilePic: async(req, res) => {
+    getProfilePic: async (req, res) => {
         // TODO: view profile image
         try {
             // res.set('Content-Type', 'image/png');  // disable for testing in postman
@@ -223,10 +227,10 @@ module.exports = {
             let restaurant = await authRestaurant(req.body.username, req.body.password);
             // console.log('authenticate successful, with user=', restaurant);
 
-            // check account if activated
-            if (restaurant.activated == false) { // user created account but not activated
-                console.log('user not activate');
-                throw {name: 'AccountNotActivated', message: 'account not activated'};
+            // check account if approved
+            if (restaurant.approved == false) { // user created account but not approved
+                console.log('restaurant not approved');
+                throw {name: 'AccountNotApproved', message: 'account not approved'};
             }
 
             // generate token for enter home page
@@ -258,7 +262,7 @@ module.exports = {
         }
     },
 
-    activeAccount: async (req, res) => {
+    approveAccount: async (req, res) => {
         // TODO: activate account by clicking the link in email
         console.log(`> Restaurant ${req.body.username} activate account`);
 
@@ -267,15 +271,15 @@ module.exports = {
             console.log('restaurant doc:', restaurant);
 
             // update last login
-            if (restaurant.activated){
-                throw {msg:"Account Already Activated"}
+            if (restaurant.approved){
+                throw {msg:"Account Already approved"}
             }
-            restaurant.activated = true;
+            restaurant.approved = true;
             await restaurant.save();
 
-            res.status(200).send({msg:"Account Activated"}); // 200: OK
+            res.status(200).send({msg:"Account approved"}); // 200: OK
         }
-        catch(err) {
+        catch (err) {
             console.log(err);
             res.status(403).send(err);
         }
@@ -343,7 +347,7 @@ module.exports = {
         }
     },
 
-    addFoodItem: async(req, res) =>{
+    addFoodItem: async (req, res) =>{
         console.log('> add Food Item');
         try {
             // resize Food Item pic to 100x100px before storing to db
@@ -369,7 +373,7 @@ module.exports = {
         }
     },
 
-    removeFoodItem: async(req, res) =>{
+    removeFoodItem: async (req, res) =>{
         console.log("Remove Food Item with ID", req.body.foodId)
         try {
             

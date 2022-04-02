@@ -57,7 +57,7 @@ export default function Login(props) {
       console.log(usertype);
     }
     else {
-      console.log(token.token);
+      console.log(token);
       invalid_message = true;
     }
   }

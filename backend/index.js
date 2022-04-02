@@ -32,10 +32,7 @@ mongoose.connect(CONNECTION_URL,{useNewUrlParser:true, useUnifiedTopology: true}
 .then(()=> app.listen(PORT, () => console.log('Server running on port ' + PORT)))
 .catch((err) => console.log(err));
 
-// all unrouted routes
-// app.all("/*", (req, res) => {
-//     res.status(403).send({});
-// })
+
 
 //Socket.IO Setup on port 8080
 const io = require("socket.io")(8080, {cors:{
@@ -51,4 +48,9 @@ app.get('/testnoti', (req, res) =>{
     console.log("emitted Message")
     io.emit('notification')
     res.send("Easy")
+})
+
+// unrouted requests
+app.all('/*', (req, res) => {
+    res.status(403).send({name: 'Forbidden', value: 'Request in / not found'});
 })

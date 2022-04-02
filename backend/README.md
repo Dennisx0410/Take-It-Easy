@@ -205,11 +205,14 @@ POST /restaurant/signup
 - `username` : String (Unique),
 - `restaurantName` : String,
 - `password` : String,
+- `email` : String, 
 - `address` : String,
-- `licenseNum` : String
+- `licenseNum` : String,
+- `profile`: File (jpg/jpeg/jfif/png)
 #### Return
-- `Done creating new restaurant`
-- `User with same username already registed`
+- `UserAlreadyExisted`
+- `FileExtensionError`
+- `RegisterationReceived`
 
 ## Activate Restaurant Account
 #### URL

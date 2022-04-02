@@ -110,7 +110,6 @@ module.exports = {
         // TODO : Add Customer to database (Register) by credentials
         console.log('> register new accout');
         console.log('req.body:', req.body); // username, pw.. etc
-        console.log('req.body.username:', req.body.username); // username, pw.. etc
         try {
             // check user with same username already exists
             let customer = await Customers.findOne({username: req.body.username});
@@ -126,7 +125,7 @@ module.exports = {
 
             req.customer = customer
 
-            // continue to login
+            // continue to set profile pic
             next()
         } 
         catch (err) {
@@ -134,7 +133,7 @@ module.exports = {
         }
     },
 
-    updateCustomer: async(req, res) => {
+    updateCustomer: async (req, res) => {
         // TODO: edit and update customer info
         try {
             res.status(200).send({});
@@ -144,6 +143,7 @@ module.exports = {
         }
     },
 
+    // middleware
     uploadProfilePic: async (req, res, next) => {
         // TODO: upload profile image with key = 'profile' to server
         console.log('> upload profile');
@@ -169,6 +169,7 @@ module.exports = {
         }
     },
 
+    // middleware
     setProfilePic: async (req, res, next) => {
         // TODO: add profile pic to db
         console.log('> add profile');
@@ -202,6 +203,7 @@ module.exports = {
         }
     },
 
+    // middleware
     verifyOTP: async (req, res, next) => {
         // TODO: verify the OTP with db before activating account
         try {
