@@ -29,8 +29,22 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
   
-const StyledInputBase = styled(InputBase)(({ theme }) => (
-      {
+// function StyledInputBase ( props ) {
+//     console.log(props);
+
+//     return(
+//         <input
+//             value={props.searchQ}
+//             onInput={(e) => props.setSearchQ(e.target.value)}
+//             type="text"
+//             id="header-search"
+//             placeholder="Search..."
+//             name="s"
+//         />
+//     );
+// }
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
       padding: theme.spacing(1, 1, 1, 0),
@@ -42,13 +56,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => (
         width: '20ch',
       },
     },
-    }
-));
+}));
   
 export default function SearchBar(props) {
     return(
         <div className='row'>
-            <div className='col-11'>
+            <div className='col-1'>
+                
+            </div>
+            <div className='col-10'>
                 <Search>
                     <SearchIconWrapper>
                     <SearchIcon />
@@ -56,8 +72,7 @@ export default function SearchBar(props) {
                     <StyledInputBase
                         placeholder="Search…" 
                         inputProps={{ 'aria-label': 'search' }} 
-                        // searchQuery={props.searchQ} 
-                        // setSearchQuery={props.setSearchQ}
+                        onChange={(e)=>{props.setSearchQ(e.target.value)}}
                     />
                 </Search>
             </div>

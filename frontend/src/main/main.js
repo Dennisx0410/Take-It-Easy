@@ -162,7 +162,7 @@ function Main(){
     
     // const { search } = window.location;
     // const query = new URLSearchParams(search).get('s');
-    const [searchQ, setSearchQ] = useState("2");
+    const [searchQ, setSearchQ] = useState();
     const filteredRestaurants = filterRestaurant(restaurantData, searchQ);
     function filterRestaurant(restaurant_list, query){
         console.log("in filterRestaurant");
@@ -182,7 +182,7 @@ function Main(){
             <div className='Main'>
                 <Suggestion />
                 <div style={{paddingTop: "10px"}}>
-                    {/* <SearchBar searchQuery={searchQ} setSearchQuery={setSearchQ}/> */}
+                    <SearchBar searchQ={searchQ} setSearchQ={setSearchQ}/>
                 </div>
                 
                 <Gallery filteredRestaurants={filteredRestaurants}/>
