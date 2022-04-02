@@ -92,28 +92,28 @@ module.exports = {
         }
     },
 
-    getNotActivatedRestaurant: async (req, res) => {
-        console.log('Fetching Not Activated Restaurant')
-        try{
-            let list = await Restaurant.find({activated:false})
+    getNotApprovedRestaurant: async (req, res) => {
+        console.log("> fetching not approved restaurants");
+        try {
+            let list = await Restaurant.find({approved:false})
 
             res.status(200).send(list)
         }
-        catch (err){
+        catch (err) {
             console.log(err)
             res.status(404).send(err)
         }
     },
 
     getAllRestaurantData: async (req, res) => {
-        //Function only fetch all activated restaurant
-        console.log('Fetching All Activated Restaurant')
-        try{
+        //Function only fetch all approved restaurant
+        console.log("> fetching all approved restaurants");
+        try {
             let list = await Restaurant.find()
 
             res.status(200).send(list)
         }
-        catch (err){
+        catch (err) {
             console.log(err)
             res.status(404).send(err)
         }
@@ -227,10 +227,10 @@ module.exports = {
             let restaurant = await authRestaurant(req.body.username, req.body.password);
             // console.log('authenticate successful, with user=', restaurant);
 
-            // check account if activated
-            if (restaurant.activated == false) { // user created account but not activated
-                console.log('user not activate');
-                throw {name: 'AccountNotActivated', message: 'account not activated'};
+            // check account if approved
+            if (restaurant.approved == false) { // user created account but not approved
+                console.log('restaurant not approved');
+                throw {name: 'AccountNotApproved', message: 'account not approved'};
             }
 
             // generate token for enter home page
@@ -262,7 +262,7 @@ module.exports = {
         }
     },
 
-    activeAccount: async (req, res) => {
+    approveAccount: async (req, res) => {
         // TODO: activate account by clicking the link in email
         console.log(`> Restaurant ${req.body.username} activate account`);
 
@@ -271,13 +271,13 @@ module.exports = {
             console.log('restaurant doc:', restaurant);
 
             // update last login
-            if (restaurant.activated){
-                throw {msg:"Account Already Activated"}
+            if (restaurant.approved){
+                throw {msg:"Account Already approved"}
             }
-            restaurant.activated = true;
+            restaurant.approved = true;
             await restaurant.save();
 
-            res.status(200).send({msg:"Account Activated"}); // 200: OK
+            res.status(200).send({msg:"Account approved"}); // 200: OK
         }
         catch (err) {
             console.log(err);

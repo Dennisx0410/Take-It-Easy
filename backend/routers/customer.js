@@ -1,25 +1,21 @@
 const express = require('express');
-const { 
-    uploadProfilePic, addCustomer, login, logout, 
-    setProfilePic, getProfilePic, activateAccount, 
-    updateCustomer, verifyOTP, getCustomerData 
-} = require('../controllers/customer');
+const custCtrler = require('../controllers/customer');
 const { verifyToken } = require('../controllers/token');
 const { verifyEmail } = require('../controllers/email');
 
 const app = express.Router();
 
-app.post("/signup", uploadProfilePic, addCustomer, setProfilePic, verifyEmail);
-app.post('/activate', verifyOTP, activateAccount); 
+app.post("/signup", custCtrler.uploadProfilePic, custCtrler.addCustomer, custCtrler.setProfilePic, verifyEmail);
+app.post('/activate', custCtrler.verifyOTP, custCtrler.activateAccount); 
 app.post('/reverify', verifyEmail); 
-app.post('/signin', login);
+app.post('/signin', custCtrler.login);
 // app.update('/update', verifyToken, updateCustomer); // not implemented yet
-app.get('/data', verifyToken, getCustomerData); 
-app.post('/logout', verifyToken, logout);
-app.post('/profilePic', verifyToken, uploadProfilePic, setProfilePic, (req, res) => {
+app.get('/data', verifyToken, custCtrler.getCustomerData); 
+app.post('/logout', verifyToken, custCtrler.logout);
+app.post('/profilePic', verifyToken, custCtrler.uploadProfilePic, custCtrler.setProfilePic, (req, res) => {
     res.send({name: 'ChangedProfilePic', message: 'successfully uploaded and changed profile pic'});
 }); // set profile pic
-app.get('/profilePic', verifyToken, getProfilePic); // get profile pic
+app.get('/profilePic', verifyToken, custCtrler.getProfilePic); // get profile pic
 
 // unrouted requests
 app.all('/*', (req, res) => {

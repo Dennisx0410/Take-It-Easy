@@ -1,24 +1,24 @@
 const express = require('express');
 const {verifyToken} = require("../controllers/token");
-const restaurantController = require("../controllers/restaurant");
+const restCtrler = require("../controllers/restaurant");
 
 const app = express.Router();
 
-app.post('/signup', restaurantController.uploadProfilePic, restaurantController.addRestaurant, restaurantController.setProfilePic, (req, res) => {
+app.post('/signup', restCtrler.uploadProfilePic, restCtrler.addRestaurant, restCtrler.setProfilePic, (req, res) => {
     // wait for admin approve register request
     res.send({name: "RegistrationReceived", value: "registration received, wait for admin approval"});
 });
-app.post('/activate', restaurantController.activeAccount); 
-app.post('/signin', restaurantController.login);
+app.post('/approve', restCtrler.approveAccount); 
+app.post('/signin', restCtrler.login);
 // app.post('/update', verifyToken, updateCustomer); // not implemented yet
-app.post('/getinfo', verifyToken, restaurantController.getRestaurantData);
-app.get('/getAll', verifyToken, restaurantController.getAllRestaurantData)
-app.get('/getNotActive', restaurantController.getNotActivatedRestaurant)
-app.post('/logout', verifyToken, restaurantController.logout);
-app.post('/profilePic', verifyToken, restaurantController.uploadProfilePic, restaurantController.setProfilePic); // set profile pic
-app.get('/profilePic', verifyToken, restaurantController.getProfilePic); // get profile pic
-app.post('/addFood', verifyToken, restaurantController.uploadFoodItemPic, restaurantController.addFoodItem)
-app.post('/removeFood', verifyToken, restaurantController.removeFoodItem)
+app.post('/getinfo', verifyToken, restCtrler.getRestaurantData);
+app.get('/getAll', verifyToken, restCtrler.getAllRestaurantData)
+app.get('/getNotActive', restCtrler.getNotApprovedRestaurant);
+app.post('/logout', verifyToken, restCtrler.logout);
+app.post('/profilePic', verifyToken, restCtrler.uploadProfilePic, restCtrler.setProfilePic); // set profile pic
+app.get('/profilePic', verifyToken, restCtrler.getProfilePic); // get profile pic
+app.post('/addFood', verifyToken, restCtrler.uploadFoodItemPic, restCtrler.addFoodItem)
+app.post('/removeFood', verifyToken, restCtrler.removeFoodItem)
 
 // unrouted requests
 app.all('/*', (req, res) => {

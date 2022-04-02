@@ -24,7 +24,7 @@ const restaurantSchema = new Schema({
     profilePic : Buffer,
     address : String,
     licenseNum : String,
-    activated : {type : Boolean, default : false},
+    approved : {type : Boolean, default: false},
     online: {type : Boolean, default: false},
     menu : [mongoose.Types.ObjectId]
 });
