@@ -30,7 +30,7 @@ export default function Login(props) {
     console.log(username);
     console.log(usertype);
     console.log(props.setToken);
-    props.setUsertype(usertype)
+    props.setUsertype(usertype);
     // console.log(setUsertype);
     if (username == ""){
       console.log("Blank Username");

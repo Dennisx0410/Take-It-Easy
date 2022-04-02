@@ -56,8 +56,8 @@ export default function SearchBar(props) {
                     <StyledInputBase
                         placeholder="Search…" 
                         inputProps={{ 'aria-label': 'search' }} 
-                        searchQuery={props.searchQ} 
-                        setSearchQuery={props.setSearchQ}
+                        // searchQuery={props.searchQ} 
+                        // setSearchQuery={props.setSearchQ}
                     />
                 </Search>
             </div>

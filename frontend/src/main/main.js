@@ -78,25 +78,28 @@ class SuggestionCard extends React.Component{
 
 }
 
+
 class Gallery extends React.Component {
     constructor(props) {
         super(props);
     }
-  render() {
-      return (
+    render() {
+        console.log(this.props.filteredRestaurants);
+        return (
 
-          <main className="container-fluid custom-container-width">
+          <main className="container-fluid">
             <div className="row">
                 <div className="col-1"></div>
                 <div className="col-10 align-self-start">
                     <h4 style={{padding: "5px 0 0 0"}}>Restaurants:</h4>
-                    {this.props.filteredRestaurants.map((restaurant,i) => <FileCard restaurant={restaurant} i={i} />)}
+                    {this.props.filteredRestaurants.map((restaurant,i) => <FileCard restaurant={restaurant} i={i} key={i} />)}
+                    
                 </div>
                 <div className="col-1"></div>
             </div>
           </main>
-      );
-  }
+        );
+    }
 }
 
 class FileCard extends React.Component{
@@ -134,16 +137,17 @@ class FileCard extends React.Component{
     render() {
         let index = this.props.i;
         let restaurant = this.props.restaurant;
+        console.log(restaurant);
         return (
             <Link to={"/restaurant/"+index}>
-                <div className="card d-inline-block m-1 custom-card " style={{width: this.state.selected==index ? '33%' : '31%'}}  
+                <div className="card d-inline-block m-1" style={{width: this.state.selected==index ? '33%' : '31%'}}  
                     onMouseOver={(e) => this.handleMOver(index,e)} onMouseOut={(e) => this.handleMOut(index,e)} 
                     onClick={(e) => this.handleCLick(index,e)}>
                     <img src={process.env.PUBLIC_URL+restaurant.filename} className="w-100" />
                     <div className="card-body">
-                        <h6 className="card-title"> {restaurant[index].name}</h6>
-                        <p className="card-text"> {restaurant[index].location}</p>
-                        { this.state.selected===index && <p className="card-text">{restaurant[index].remarks}</p> }
+                        <h6 className="card-title"> {restaurant.name}</h6>
+                        <p className="card-text"> {restaurant.location}</p>
+                        { this.state.selected===index && <p className="card-text">{restaurant.remarks}</p> }
                     </div>
                 </div>
             </Link>
@@ -153,8 +157,14 @@ class FileCard extends React.Component{
 
 }
 
+
 function Main(){
-    const filterRestaurant = (restaurant_list, query) => {
+    
+    // const { search } = window.location;
+    // const query = new URLSearchParams(search).get('s');
+    const [searchQ, setSearchQ] = useState("2");
+    const filteredRestaurants = filterRestaurant(restaurantData, searchQ);
+    function filterRestaurant(restaurant_list, query){
         console.log("in filterRestaurant");
         if (!query) {
             return restaurant_list;
@@ -165,18 +175,14 @@ function Main(){
             return restaurantame.includes(query);
         });
     };
-    // const { search } = window.location;
-    // const query = new URLSearchParams(search).get('s');
-    const [searchQ, setSearchQ] = useState();
-    const filteredRestaurants = filterRestaurant(restaurantData, searchQ);
-    
+    // const filteredRestaurants = restaurantData;
     return (
           <>
 
             <div className='Main'>
                 <Suggestion />
                 <div style={{paddingTop: "10px"}}>
-                    <SearchBar searchQuery={searchQ} setSearchQuery={setSearchQ}/>
+                    {/* <SearchBar searchQuery={searchQ} setSearchQuery={setSearchQ}/> */}
                 </div>
                 
                 <Gallery filteredRestaurants={filteredRestaurants}/>

@@ -1,6 +1,7 @@
 .Main{
     background-color: rgb(250, 240, 229);
     color: rgb(138, 5, 94);
+    min-height: 100vh;
 }
 .custom-container-width {
     justify-content: center;
