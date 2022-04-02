@@ -177,57 +177,59 @@ function Signup(props) {
                             </div> 
                         </div>
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="username" className="form-label">
-                            <i className="material-icons">edit</i>Username
-                        </label>
-                        <input type="text" className="form-control" id="username" name="username" pattern="^[a-zA-Z0-9_\\.]+$" title="Combinations of alphanumeric characters, full stop('.') and underscore('_') only" required/>
-                        <p style={{color: "red", display: (signupStatus === 'UserAlreadyExisted') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            User name aleady in used, please choose another username!
-                        </p>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="password" className="form-label">
-                            <i className="material-icons">password</i>Password
-                        </label>
-                        <div className="input-group">
-                            <input type={pwVisibility ? "text" : "password"} className="form-control" id="password" name="password" required/>
-                            <button type="button" className="material-icons input-group-text" onClick={() => setPwVisibility(!pwVisibility)}>{pwVisibility ? "visibility_off" : "visibility"}</button>
+                    <div className="row mb-3">
+                        <div className="col-12 col-md-6 d-inline-block">
+                            <label htmlFor="username" className="form-label">
+                                <i className="material-icons">edit</i>Username
+                            </label>
+                            <input type="text" className="form-control" id="username" name="username" pattern="^[a-zA-Z0-9_\\.]+$" title="Combinations of alphanumeric characters, full stop('.') and underscore('_') only" required/>
+                            <p style={{color: "red", display: (signupStatus === 'UserAlreadyExisted') ? "block" : "none"}}> 
+                                <i className="material-icons">warning</i>
+                                User name aleady in used, please choose another username!
+                            </p>
+                        </div>
+                        <div className="col-12 col-md-6 d-inline-block">
+                            <label htmlFor="password" className="form-label">
+                                <i className="material-icons">password</i>Password
+                            </label>
+                            <div className="input-group">
+                                <input type={pwVisibility ? "text" : "password"} className="form-control" id="password" name="password" required/>
+                                <button type="button" className="material-icons input-group-text" onClick={() => setPwVisibility(!pwVisibility)}>{pwVisibility ? "visibility_off" : "visibility"}</button>
+                            </div>
                         </div>
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="email" className="form-label">
-                            <i className="material-icons">email</i>Email
-                        </label>
-                        <input type="email" className="form-control" id="email" name="email" required/>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="phoneNum" className="form-label">
-                            <i className="material-icons">smartphone</i>Phone number
-                        </label>
-                        <input type="tel" className="form-control" id="phoneNum" name="phoneNum" pattern="[0-9]{8}" title="8-digit phone number" required/>
-                    </div>
-                    {formUsertype == 'restaurant' ? restaurantSignupContent : ''}
-                    <div className="mb-3">
-                        <div className='row mb-3'>
-                            <section className='col-8'>
-                                <label htmlFor="profile" className="form-label">
-                                    <i className="material-icons">add_photo_alternate</i>Profile
-                                </label>
-                                <input type="file" className="form-control" id="profile" name="profile" accept="image/jpeg, image/png" onChange={showPreview} placeholder="jpg/jepg/jfif/png" required/>
-                            </section>
-                            <section className='col-4'>
-                                <div className="preview" >
-                                    <img src={imgUrl} id="profile-preview" alt="profile"></img>
-                                </div>
-                            </section>
+                    <div className="row mb-3">
+                        <div className="col-12 col-md-6 d-inline-block">
+                            <label htmlFor="email" className="form-label">
+                                <i className="material-icons">email</i>Email
+                            </label>
+                            <input type="email" className="form-control" id="email" name="email" required/>
                         </div>
-                        <p style={{color: "red", display: (signupStatus === 'FileExtensionError') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            Please upload again with jpg/jepg/jfif/png format
-                        </p>
+                        <div className="col-12 col-md-6 d-inline-block">
+                            <label htmlFor="phoneNum" className="form-label">
+                                <i className="material-icons">smartphone</i>Phone number
+                            </label>
+                            <input type="tel" className="form-control" id="phoneNum" name="phoneNum" pattern="[0-9]{8}" title="8-digit phone number" required/>
+                        </div>
                     </div>
+                    {formUsertype == "restaurant" ? restaurantSignupContent : ''}
+                    <div className="row mb-3">
+                        <section className="col-12 col-md-8">
+                            <label htmlFor="profile" className="form-label">
+                                <i className="material-icons">add_photo_alternate</i>Profile
+                            </label>
+                            <input type="file" className="form-control" id="profile" name="profile" accept="image/jpeg, image/png" onChange={showPreview} placeholder="jpg/jepg/jfif/png" required/>
+                        </section>
+                        <section className="col-4 d-none d-md-inline">
+                            <div className="preview" >
+                                <img src={imgUrl} id="profile-preview" alt="profile"></img>
+                            </div>
+                        </section>
+                    </div>
+                    <p style={{color: "red", display: (signupStatus === 'FileExtensionError') ? "block" : "none"}}> 
+                        <i className="material-icons">warning</i>
+                        Please upload again with jpg/jepg/jfif/png format
+                    </p>
                     
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
