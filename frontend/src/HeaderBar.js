@@ -41,7 +41,6 @@ function HeaderBar(props){
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>
-                            
                         </div>
                     </div>
                 </div>

@@ -9,17 +9,19 @@ const app = express();
 app.use(express.json())
 
 // routers
-const customerRouter = require('./routers/customer')
-const restaurantRouter = require('./routers/restaurant')
-const orderRouter = require('./routers/order')
+const customerRouter = require('./routers/customer');
+const restaurantRouter = require('./routers/restaurant');
+const adminRouter = require('./routers/admin');
+const orderRouter = require('./routers/order');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // routers
-app.use('/customer', customerRouter)
-app.use('/restaurant', restaurantRouter)
-app.use('/order', orderRouter)
+app.use('/customer', customerRouter);
+app.use('/restaurant', restaurantRouter);
+app.use('/admin', adminRouter);
+app.use('/order', orderRouter);
 
 const CONNECTION_URL = "mongodb+srv://User:1234@cluster0.yjmpv.mongodb.net/TakeItEasy?retryWrites=true&w=majority";
 
