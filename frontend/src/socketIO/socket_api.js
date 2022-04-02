@@ -3,7 +3,7 @@ import { io} from 'socket.io-client'
 
 const api = {
     connect: () => {
-        const jwt = localStorage.getItem("token") // assume it returns undefined if user is not logged in
+        const jwt = sessionStorage.getItem("token") // assume it returns undefined if user is not logged in
         if (jwt) {
             const socket = io("http://localhost:8080", {
                 query: {

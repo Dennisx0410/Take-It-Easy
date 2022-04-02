@@ -13,7 +13,8 @@
     "nodemon": "^2.0.15",
     "otp-generator": "^4.0.0",
     "request": "^2.88.2",
-    "sharp": "^0.30.3"
+    "sharp": "^0.30.3",
+    "socket.io": "^4.4.1"
   },
   "scripts": {
     "start": "nodemon index.js"
