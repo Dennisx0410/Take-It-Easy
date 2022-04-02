@@ -11,7 +11,8 @@ app.use(express.json())
 // routers
 const customerRouter = require('./routers/customer')
 const restaurantRouter = require('./routers/restaurant')
-const orderRouter = require('./routers/order')
+const orderRouter = require('./routers/order');
+const res = require('express/lib/response');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -30,9 +31,9 @@ mongoose.connect(CONNECTION_URL,{useNewUrlParser:true, useUnifiedTopology: true}
 .catch((err) => console.log(err));
 
 // all unrouted routes
-app.all("/*", (req, res) => {
-    res.status(403).send({});
-})
+// app.all("/*", (req, res) => {
+//     res.status(403).send({});
+// })
 
 //Socket.IO Setup on port 8080
 const io = require("socket.io")(8080, {cors:{
@@ -42,4 +43,10 @@ const io = require("socket.io")(8080, {cors:{
 
 io.on("connection", socket =>{
     console.log("> Socket.IO: Recieved Connection from client with ID", socket.id, " With Token", socket.handshake.query.token)
+})
+
+app.get('/testnoti', (req, res) =>{
+    console.log("emitted Message")
+    io.emit('notification')
+    res.send("Easy")
 })

@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const foodItemsSchema = new Schema({
     picture : Buffer,
     name : String,
+    style : String,
     price : Number
 });
 

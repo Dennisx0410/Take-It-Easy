@@ -11,8 +11,12 @@ const api = {
                 }})
                 
             socket.on('connect', () =>{
-            console.log(`Client Connect to the Server with ID ${socket.id}`)
-          })
+                console.log(`Client Connect to the Server with ID ${socket.id}`)
+            })
+
+            socket.on('notification', () =>{
+                console.log("Test Noti recieved")
+            })
         };
       }
 }
