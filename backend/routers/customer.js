@@ -20,6 +20,8 @@ app.post('/profilePic', verifyToken, uploadProfilePic, setProfilePic, (req, res)
     res.send({name: 'ChangedProfilePic', message: 'successfully uploaded and changed profile pic'});
 }); // set profile pic
 app.get('/profilePic', verifyToken, getProfilePic); // get profile pic
+
+// unrouted requests
 app.all('/*', (req, res) => {
     res.status(403).send({name: 'Forbidden', value: 'Request in /customer not found'});
 })

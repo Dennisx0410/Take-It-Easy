@@ -9,9 +9,16 @@ const EXPIRE = 60 * 30; // 30 min
 
 // schema
 const restaurantSchema = new Schema({
-    username : String,
-    restaurantName : String,
-    password : String,
+    username : {
+      type: String, 
+      required: true,
+      unique: true
+    },
+    restaurantName : {
+      type: String, 
+      required: true,
+    },
+    password : {type: String, require: true},
     email : {type: String, required: true},
     phoneNum : String,
     profilePic : Buffer,

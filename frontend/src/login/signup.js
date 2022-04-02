@@ -129,10 +129,6 @@ function Signup(props) {
                 <i className="material-icons">store</i>Restaurant name
             </label>
             <input type="text" className="form-control" id="restaurantName" name="restaurantName" pattern="^[a-zA-Z0-9\u4e00-\u9fa5_ \\.]+$" title="Combinations of alphanumeric characters, 中文字, space, full stop('.') and underscore('_') only" required/>
-            <p style={{color: "red", display: (signupStatus === 'UserAlreadyExisted') ? "block" : "none"}}> 
-                <i className="material-icons">warning</i>
-                User name aleady in used, please choose another username!
-            </p>
         </div>
         <div className="mb-3">
             <label htmlFor="address" className="form-label">

@@ -210,8 +210,9 @@ POST /restaurant/signup
 - `licenseNum` : String,
 - `profile`: File (jpg/jpeg/jfif/png)
 #### Return
-- `Done creating new restaurant`
-- `User with same username already registed`
+- `UserAlreadyExisted`
+- `FileExtensionError`
+- `RegisterationReceived`
 
 ## Activate Restaurant Account
 #### URL

@@ -92,7 +92,7 @@ module.exports = {
         }
     },
 
-    getNotActivatedRestaurant: async (req, res) =>{
+    getNotActivatedRestaurant: async (req, res) => {
         console.log('Fetching Not Activated Restaurant')
         try{
             let list = await Restaurant.find({activated:false})
@@ -105,7 +105,7 @@ module.exports = {
         }
     },
 
-    getAllRestaurantData: async (req, res)=>{
+    getAllRestaurantData: async (req, res) => {
         //Function only fetch all activated restaurant
         console.log('Fetching All Activated Restaurant')
         try{
@@ -129,7 +129,7 @@ module.exports = {
             let restaurant = await Restaurant.findOne({username: req.body.username});
 
             if (restaurant) { // already exists
-                throw {name: 'restaurant Already Existed', message: 'User with same username already registed'};
+                throw {name: 'UserAlreadyExisted', message: 'User with same username already registed'};
             }
 
             // create restaurant account
@@ -138,15 +138,17 @@ module.exports = {
 
             req.restaurant = restaurant
 
-            res.status(201).send("Done creating new restaurant")
             console.log(`New Restaurant Register with username ${req.body.username}`)
+            
+            // continue to set profile pic
+            next()
         } 
         catch (err) {
             res.status(400).send(err); // 400: Bad request // code 11000 would be sent if username duplicated
         }
     },
 
-    updateRestaurant: async(req, res) => {
+    updateRestaurant: async (req, res) => {
         // TODO: edit and update restaurant info
         try {
             res.status(200).send({});
@@ -156,6 +158,7 @@ module.exports = {
         }
     },
 
+    // middleware
     uploadProfilePic: async (req, res, next) => {
         // TODO: upload profile image with key = 'profile' to server
         console.log('> upload profile');
@@ -179,7 +182,8 @@ module.exports = {
         }
     },
 
-    setProfilePic: async(req, res) => {
+    // middleware
+    setProfilePic: async (req, res, next) => {
         // TODO: add profile pic to db
         console.log('> add profile');
         try {
@@ -191,7 +195,7 @@ module.exports = {
             req.restaurant.profilePic = resizedBuf;
             await req.restaurant.save();
 
-            res.send({name: 'uploadSuccess', message: 'successfully uploaded/changed profile pic'});
+            next();
         }
         catch (err) {
             console.log(err)
@@ -199,7 +203,7 @@ module.exports = {
         }
     },
 
-    getProfilePic: async(req, res) => {
+    getProfilePic: async (req, res) => {
         // TODO: view profile image
         try {
             // res.set('Content-Type', 'image/png');  // disable for testing in postman
@@ -275,7 +279,7 @@ module.exports = {
 
             res.status(200).send({msg:"Account Activated"}); // 200: OK
         }
-        catch(err) {
+        catch (err) {
             console.log(err);
             res.status(403).send(err);
         }
@@ -343,7 +347,7 @@ module.exports = {
         }
     },
 
-    addFoodItem: async(req, res) =>{
+    addFoodItem: async (req, res) =>{
         console.log('> add Food Item');
         try {
             // resize Food Item pic to 100x100px before storing to db
@@ -369,7 +373,7 @@ module.exports = {
         }
     },
 
-    removeFoodItem: async(req, res) =>{
+    removeFoodItem: async (req, res) =>{
         console.log("Remove Food Item with ID", req.body.foodId)
         try {
             
