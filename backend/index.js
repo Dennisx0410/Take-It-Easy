@@ -33,3 +33,13 @@ mongoose.connect(CONNECTION_URL,{useNewUrlParser:true, useUnifiedTopology: true}
 app.all("/*", (req, res) => {
     res.status(403).send({});
 })
+
+//Socket.IO Setup on port 8080
+const io = require("socket.io")(8080, {cors:{
+    origin: ["http://localhost:3000"],
+    },
+})
+
+io.on("connection", socket =>{
+    console.log("> Socket.IO: Recieved Connection from client with ID", socket.id)
+})

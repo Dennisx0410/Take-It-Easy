@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import './login.css';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Signup from './signup';
-
-
+import Socketapi from '../socketIO/socket_api.js'
 
 // send login request to get token 
 async function loginAttempt(input) {
@@ -53,6 +52,7 @@ export default function Login( props) {
       console.log('successfully login');
       props.setToken(token.token);
       // setUsertype(usertype);
+      Socketapi.connect();
       console.log(usertype);
     }
     else {
