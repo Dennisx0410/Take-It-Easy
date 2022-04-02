@@ -3,6 +3,8 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
+import { Search } from 'react-router-dom';
+import SearchBar from './search_bar'
 // import { useNavigate } from 'react-router-dom';
 // let navigate = useNavigate();
 
@@ -20,6 +22,8 @@ const data = [
   {filename: "/shb-2013.jpg", name: "Restaurant 4", location:    "Location 4", remarks: "Restaurant Info4"},
   {filename: "/stream-2009.jpg", name: "Restaurant 5", location:    "Location 5", remarks: "Restaurant Info5"},
 ];
+
+
 
 class Suggestion extends React.Component {
   render() {
@@ -150,6 +154,9 @@ class Main extends React.Component{
       return (
           <>
             <div className='Main'>
+                <div style={{paddingTop: "10px"}}>
+                    <SearchBar/>
+                </div>
                 <Suggestion />
                 <Gallery />
             </div>
@@ -159,29 +166,6 @@ class Main extends React.Component{
   }
 }
 
-// function App() {
-//   return (
-//     // <>
-//     //   <Title name={this.props.name}/>
-//     //   <Gallery />
-//     // </>
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+
 
 export default Main;
