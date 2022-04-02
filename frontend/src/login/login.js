@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import './login.css';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Signup from './signup';
+<<<<<<< HEAD
 import Socketapi from '../socketIO/socket_api.js'
+=======
+>>>>>>> a1bd7c38688deaa4b8ee0692194326e54ee23b38
 
 // send login request to get token 
 async function loginAttempt(input) {
@@ -17,7 +20,7 @@ async function loginAttempt(input) {
   .then(data => data.json())
 } 
 
-export default function Login( props) {
+export default function Login(props) {
   var invalid_message = false;
   // let choiceUsertype = "customer";
   const handleSubmit = async e => {
