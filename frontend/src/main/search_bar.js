@@ -17,9 +17,9 @@ const Search = styled('div')(({ theme }) => ({
       marginLeft: theme.spacing(3),
       width: 'auto',
     },
-  }));
+}));
   
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
@@ -27,9 +27,10 @@ const Search = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  }));
+}));
   
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const StyledInputBase = styled(InputBase)(({ theme }) => (
+      {
     color: 'inherit',
     '& .MuiInputBase-input': {
       padding: theme.spacing(1, 1, 1, 0),
@@ -41,19 +42,30 @@ const Search = styled('div')(({ theme }) => ({
         width: '20ch',
       },
     },
-  }));
+    }
+));
   
-export default function SearchBar() {
+export default function SearchBar(props) {
     return(
-        <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-        </Search>
+        <div className='row'>
+            <div className='col-11'>
+                <Search>
+                    <SearchIconWrapper>
+                    <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                        placeholder="Search…" 
+                        inputProps={{ 'aria-label': 'search' }} 
+                        searchQuery={props.searchQ} 
+                        setSearchQuery={props.setSearchQ}
+                    />
+                </Search>
+            </div>
+            <div className='col-1'>
+                
+            </div>
+        </div>
+            
     );
 }
 
