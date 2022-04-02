@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './signup.css';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
-async function signup(form, userType) {
-    return fetch(`http://localhost:5000/${userType}/signup`, {
+async function signup(form, usertype) {
+    return fetch(`http://localhost:5000/${usertype}/signup`, {
         method: 'POST', 
         body: form
     })
@@ -28,12 +29,13 @@ async function reverify(username, email) {
     .then(data => data.json())
 }
 
-function Signup({setToken}) {
+function Signup(props) {
     const [imgUrl, setImgUrl] = useState('');
     const [signupStatus, setSignupStatus] = useState('');
     const [userInfo, setUserInfo] = useState({});
     const [verifyStatus, setVerifyStatus] = useState('');
     const [pwVisibility, setPwVisibility] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -41,13 +43,14 @@ function Signup({setToken}) {
         setSignupStatus('');
 
         let signupForm = new FormData(e.target);
-        let userType = signupForm.get('user-type');
+        let usertype = signupForm.get('usertype');
+        props.setUsertype(usertype);
         setUserInfo({
             username: signupForm.get('username'),
             email: signupForm.get('email'),
-            userType: signupForm.get('user-type')
+            usertype: signupForm.get('usertype')
         });
-        let res = await signup(signupForm, userType);
+        let res = await signup(signupForm, usertype);
         console.log(res);
 
         setSignupStatus(res.name);
@@ -81,7 +84,8 @@ function Signup({setToken}) {
         console.log(res);
 
         if (res.token != null) {
-            setToken(res.token);
+            navigate('/');
+            props.setToken(res.token);
         }
         else {
             setVerifyStatus(res.name); 
@@ -112,7 +116,7 @@ function Signup({setToken}) {
                             <div className="row">
                                 <section className="col-12 col-sm-6">
                                     <div className="mb-3 form-radio" style={{textAlign: 'center'}}>
-                                        <input className="form-check-input" type="radio" name="user-type" id="customer" value="customer" required/>
+                                        <input className="form-check-input" type="radio" name="usertype" id="customer" value="customer" required/>
                                         <label className="form-check-label" htmlFor="customer">
                                             <i className="material-icons d-none d-lg-inline">person</i>
                                             Customer
@@ -121,7 +125,7 @@ function Signup({setToken}) {
                                 </section>
                                 <section className="col-xs-12 col-sm-6">
                                     <div className="mb-3 form-radio" style={{textAlign: 'center'}}>
-                                        <input className="form-check-input" type="radio" name="user-type" id="restaurant" value="restaurant" required/>
+                                        <input className="form-check-input" type="radio" name="usertype" id="restaurant" value="restaurant" required/>
                                         <label className="form-check-label" htmlFor="restaurant">
                                             <i className="material-icons d-none d-lg-inline">store</i>Restaurant
                                         </label>
@@ -236,7 +240,7 @@ function Signup({setToken}) {
         </>
     );
 
-    if (signupStatus === 'VerificationEmailSent' && userInfo.userType === 'customer') {
+    if (signupStatus === 'VerificationEmailSent' && userInfo.usertype === 'customer') {
         return verificationBox;
     }
     else {

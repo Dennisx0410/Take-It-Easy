@@ -42,7 +42,7 @@ customerSchema.pre('save', async function (next) {
 customerSchema.methods.genAuthToken = async function () {
   console.log('> generating auth token');
   let customer = this;
-  let token = jwt.sign({_id: customer._id.toString(), userType: 'customer'}, process.env.SECRET, {expiresIn: EXPIRE});
+  let token = jwt.sign({_id: customer._id.toString(), usertype: 'customer'}, process.env.SECRET, {expiresIn: EXPIRE});
   console.log('> generated token');
   return token;
 }

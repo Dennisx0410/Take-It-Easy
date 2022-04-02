@@ -65,7 +65,7 @@ export default function Login(props) {
   
   return(
     <>
-    <div className="row">
+    <div className="row" style={{width: "100%"}}>
       <div className="col-md-9 background">
         <img src={process.env.PUBLIC_URL+"food.jpeg"} className="w-100" />
       </div>

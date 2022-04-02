@@ -16,7 +16,7 @@ const authAdmin = async (username, password) => {
 const genAuthToken = async() => {
     // TODO: generate jwt token
     console.log('> generating auth token');
-    let token = jwt.sign({_id: 3100, userType: 'admin'}, process.env.SECRET, {expiresIn: EXPIRE});
+    let token = jwt.sign({_id: 3100, usertype: 'admin'}, process.env.SECRET, {expiresIn: EXPIRE});
     console.log('> generated token');
     return token;
 }

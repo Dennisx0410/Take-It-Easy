@@ -17,26 +17,26 @@ module.exports = {
             console.log('ready to decode');
             let data = jwt.verify(token, process.env.SECRET);
             console.log('decoded with data:', data);
-            let userType = data.userType;
-            console.log('user identity:', userType);
+            let usertype = data.usertype;
+            console.log('user identity:', usertype);
 
             let user;
             try {
-                if (userType == 'customer') { // customer
+                if (usertype == 'customer') { // customer
                     // check with db and pull out customer doc
                     user = await cust.getCustomerById(data._id);
                 }
-                else if (userType == 'restaurant') { // restaurant
+                else if (usertype == 'restaurant') { // restaurant
                     // check with db and pull out customer doc
                     user = await rest.getRestaurantById(data._id);
                 }
-                else if (userType == 'admin') { // admin
+                else if (usertype == 'admin') { // admin
                     req.token = token;
                     console.log('> verify success')
                     return next();
                 }
                 else { // other user type
-                    throw {name: 'UserTypeError', value: 'wrong user type'};
+                    throw {name: 'UsertypeError', value: 'wrong user type'};
                 }
             }
             catch (err) {
@@ -44,17 +44,17 @@ module.exports = {
                     throw {name: 'VerifyError', message: 'unable to find user'};
                 }
             }
-            console.log(`${userType} doc`, user.username);
+            console.log(`${usertype} doc`, user.username);
 
             // check user currently logging in
             if (!user.online) {
-                console.log(`${userType} request token verification but his is not logging in`);
-                throw {name: 'InactiveUserRequest', message: `${userType} request token verification but his is not logging in`};
+                console.log(`${usertype} request token verification but his is not logging in`);
+                throw {name: 'InactiveUserRequest', message: `${usertype} request token verification but his is not logging in`};
             }
 
             // pass to next middleware/function
             req.token = token;
-            req[`${userType}`] = user;
+            req[`${usertype}`] = user;
         
             console.log('> verify success')
             next();
