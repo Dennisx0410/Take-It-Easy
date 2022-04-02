@@ -12,6 +12,7 @@ const restaurantSchema = new Schema({
     username : String,
     restaurantName : String,
     password : String,
+    email : {type: String, required: true},
     phoneNum : String,
     profilePic : Buffer,
     address : String,

@@ -4,7 +4,10 @@ const restaurantController = require("../controllers/restaurant");
 
 const app = express.Router();
 
-app.post('/signup', restaurantController.addRestaurant); 
+app.post('/signup', (req, res) => {
+    console.log(req.body);
+});
+// restaurantController.addRestaurant); 
 app.post('/activate', restaurantController.activeAccount); 
 app.post('/signin', restaurantController.login);
 // app.post('/update', verifyToken, updateCustomer); // not implemented yet
