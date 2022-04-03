@@ -1,0 +1,25 @@
+.verification-container {
+    width: 50%;
+    border: 3px solid darkblue;
+    margin: 10px auto;
+    padding: 20px; 
+    font-weight: bold;
+    background-color: lightgrey;
+}
+
+hr {
+    border: 2px solid darkslategrey;
+}
+
+.formattedLink:link{
+    display: inline;
+    color:#000000;
+    
+    text-align: center;
+}
+.formattedLink:hover{
+    display: inline;
+    color:#000000;
+    
+    text-align: center;
+}

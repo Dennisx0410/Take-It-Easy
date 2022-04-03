@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './login.css';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import Signup from './signup';
+import { Link, useNavigate } from 'react-router-dom';
 import Socketapi from '../socketIO/socket_api.js'
 
 // send login request to get token 
-async function loginAttempt(input) {
- return fetch('http://localhost:5000/customer/signin', {
+async function loginAttempt(input, usertype) {
+ return fetch(`http://localhost:5000/${usertype}/signin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -19,18 +18,23 @@ async function loginAttempt(input) {
 
 export default function Login(props) {
   var invalid_message = false;
+  const navigate = useNavigate();
+
   // let choiceUsertype = "customer";
   const handleSubmit = async e => {
     e.preventDefault();
+
     // extract fields from form 
-    let form = new FormData(e.target);
-    let username = form.get('username');
-    let password = form.get('password');
-    let usertype = form.get('usertype');
+    let loginForm = e.target;
+    let formData = new FormData(loginForm);
+    let username = formData.get('username');
+    let password = formData.get('password');
+    let usertype = formData.get('usertype');
+
     console.log(username);
     console.log(usertype);
     console.log(props.setToken);
-    props.setUsertype(usertype);
+    // props.setUsertype(usertype);
     // console.log(setUsertype);
     if (username == ""){
       console.log("Blank Username");
@@ -42,10 +46,15 @@ export default function Login(props) {
       invalid_message = true;
       return;
     }
+    props.setUserInfo({
+        username: formData.get('username'),
+        // email: formData.get('email'),
+        usertype: formData.get('usertype')
+    });
     let token = await loginAttempt({
       username: username,
       password: password
-    });
+    }, usertype);
 
     // check the variable really contains a token, else do handling
     if (token.token != null) {
@@ -55,6 +64,16 @@ export default function Login(props) {
       sessionStorage.setItem("token", token.token)       //Storing Token in Session Storage
       Socketapi.connect();                               //Connect to server after successfully login
       console.log(usertype);
+    }
+    else if (usertype === 'customer' && (token.name === 'AccountNotActivatedAndVerificationEmailSent' || token.name === 'AccountNotActivatedAndPendingOtp')) {
+      console.log(token);
+      console.log('account not activated!');
+      navigate('/verification');
+    }
+    else if (usertype === 'restaurant' && token.name === 'AccountNotApproved') {
+      console.log(token);
+      console.log('account not approved!');
+      navigate('/verification');
     }
     else {
       console.log(token);

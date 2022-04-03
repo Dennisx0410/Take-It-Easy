@@ -35,7 +35,7 @@ POST /customer/signup
 #### Return(json)
 - `UserAlreadyExisted`
 - `FileExtensionError`
-- `VerificationEmailSent`
+- `SignupSuccessAndVerificationEmailSent`
 
 ## Activate
 #### URL
@@ -49,6 +49,7 @@ POST /customer/activate
 - `otp`: Integer (6 digit)
 #### Return(json)
 - `token`
+- `AlreadyActivated`
 - `OtpNotFound`
 - `OtpExpired`
 - `TooMuchTrials`
@@ -83,7 +84,8 @@ POST /customer/signin
 - `password`: String
 #### Return(json)
 - `token`
-- `AccountNotActivated`
+- `AccountNotActivatedAndPendingOtp`
+- `AccountNotActivatedAndVerificationEmailSent`
 - `UserNotFound`
 - `InvalidPassword`
 
@@ -239,10 +241,9 @@ POST /restaurant/signin
 - `password` : String
 #### Return
 - `token`
-- `AccountNotActivated`
+- `AccountNotApproved`
 - `UserNotFound`
 - `InvalidPassword`
-- `Account not activated`
 
 ## Get A Restaurant Info
 #### URL

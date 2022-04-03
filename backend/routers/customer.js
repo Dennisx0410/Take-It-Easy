@@ -8,7 +8,7 @@ const app = express.Router();
 app.post("/signup", custCtrler.uploadProfilePic, custCtrler.addCustomer, custCtrler.setProfilePic, verifyEmail);
 app.post('/activate', custCtrler.verifyOTP, custCtrler.activateAccount); 
 app.post('/reverify', verifyEmail); 
-app.post('/signin', custCtrler.login);
+app.post('/signin', custCtrler.login, verifyEmail);
 // app.update('/update', verifyToken, updateCustomer); // not implemented yet
 app.get('/data', verifyToken, custCtrler.getCustomerData); 
 app.post('/logout', verifyToken, custCtrler.logout);

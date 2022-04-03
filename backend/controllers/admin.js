@@ -8,7 +8,7 @@ const authAdmin = async (username, password) => {
     // TODO: authenticate admin by username, password and return the admin doc if matched
     let isAdmin = (username = process.env.ADMIN_USER && password == process.env.ADMIN_PW);
     if (!isAdmin) {
-        throw {name: 'UserNotFound', value: 'admin credential not matched'};
+        throw {name: 'UserNotFound', message: 'admin credential not matched'};
     }
     else return isAdmin;
 }
