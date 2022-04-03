@@ -141,10 +141,15 @@ class FileCard extends React.Component{
             }
         );
     }
-    handleCLick(index, e) {
-        // console.log(index);
-        
-        // navigate('/restaurant/' + index);
+    loadImage(img) {
+        this.setState( ()=>
+            {   
+                // if (this.state.selected = index)
+                    return { ImgUrl: img }
+                // else
+                //     return { selected: index }
+            }
+        );
     }
     constructor(props) {
         super(props);
@@ -165,8 +170,7 @@ class FileCard extends React.Component{
             let profilePic = restaurant.profilePic;
             // console.log(profilePic);
             let img = Buffer.from(profilePic.data).toString('base64');
-            // console.log(img);
-        //     this.setState(()=>{ return {ImgUrl: imglink} });
+            // this.loadImage(img);
         }
         else{
         //     console.log("default");
@@ -175,15 +179,17 @@ class FileCard extends React.Component{
         //Render
         return (
             <Link to={"/restaurant/"+restaurant._id}>
-                <Card sx={{ width: "30%", display: "inline-block", ml:"2%"}}
+                <Card sx={{ width: "30%", display: "inline-block", ml:"2%",mt:"1%" , minHeight:"300px", 
+                    transition: "transform 0.15s ease-in-out", "&:hover": { transform: "scale3d(1.05, 1.05, 1)"} }}
                     onMouseOver={(e) => this.handleMOver(index,e)} 
                     onMouseOut={(e) => this.handleMOut(index,e)} 
                     onClick={(e) => this.handleCLick(index,e)}>
                     <CardActionArea>
                         <CardMedia
                         component="img"
-                        height="140"
-                        image={ restaurant.restaurantName == "adminDefault3AD"? process.env.PUBLIC_URL+restaurant.filename : `data:image/jpg; base64, ${this.state.ImgUrl}`}
+                        height="180px"
+                        image={ restaurant.restaurantName == "adminDefault3AD"? process.env.PUBLIC_URL+restaurant.filename : process.env.PUBLIC_URL+"/food.jpeg"}
+                        // `data:image/jpg; base64, ${this.state.ImgUrl}`}
                         alt={restaurant.restaurantName}
                         />
                         <CardContent>
@@ -193,10 +199,13 @@ class FileCard extends React.Component{
                         <Typography variant="body2" color="text.secondary">
                             <MaterialIcon icon="place" color='#000000'/>{restaurant.address}
                             { this.state.selected===index && 
-                                <p className="card-text">
+                                <> 
+                                <br></br>
+                                <span className="card-text">
                                     <MaterialIcon icon="phone" color='#000000'/>
                                     {restaurant.phoneNum}
-                                </p> 
+                                </span> 
+                                </>
                             }
                         </Typography>
                         </CardContent>
