@@ -29,33 +29,21 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
   
-// function StyledInputBase ( props ) {
-//     console.log(props);
 
-//     return(
-//         <input
-//             value={props.searchQ}
-//             onInput={(e) => props.setSearchQ(e.target.value)}
-//             type="text"
-//             id="header-search"
-//             placeholder="Search..."
-//             name="s"
-//         />
-//     );
-// }
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+      paddingLeft: `calc(1em + ${theme.spacing(5)})`,
       transition: theme.transitions.create('width'),
       width: '100%',
       [theme.breakpoints.up('md')]: {
         width: '20ch',
       },
     },
+    width:"100%",
 }));
   
 export default function SearchBar(props) {
