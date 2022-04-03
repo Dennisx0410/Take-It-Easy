@@ -7,6 +7,15 @@ import { Search } from 'react-router-dom';
 import SearchBar from './search_bar'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import {Buffer} from 'buffer';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
+import Box from '@mui/material/Box';
+import MaterialIcon, {colorPalette} from 'material-icons-react';
+import { display } from '@mui/system';
+
 
 // import { useNavigate } from 'react-router-dom';
 // let navigate = useNavigate();
@@ -37,7 +46,7 @@ class Suggestion extends React.Component {
                     <div className="col-1"></div>
                     <div className="col-10 align-self-start">
                         <h4 style={{padding: "5px 0 0 0"}}>Recommended For You</h4>
-                        {suggested.map((file,index) => <SuggestionCard i={index} key={index}/>)}
+                        <SuggestionCard/>
                     </div>
                     <div className="col-1"></div>
                 </div>
@@ -55,28 +64,28 @@ class SuggestionCard extends React.Component{
         super(props);
     }
     render() {
-        let index = this.props.i;
         return (
-            <Link to={"/restaurant/"+index}>
-                    {/* {index} */}
-                    <div className="" style={{ margin: '5px 3vw', display: 'inline-block', 
-                        justifyContent: 'center', textAlign: 'center', backgroundColor: "white"}}>
-                        <div className="e-card e-card-horizontal" style={{ width: '100%' }}>
-                            <img src={process.env.PUBLIC_URL+suggested[index].filename} className="w-100" style={{ height: '150px' }}/>
-                            <div className="e-card-stacked">
-                                <div className="e-card-header">
-                                    <div className="e-card-header-caption">
-                                        <div className="e-card-header-title">{suggested[index].restaurantName}</div>
-                                    </div>
-                                </div>
-                                <div className="e-card-content">
-                                    {suggest_type[index].remarks}
-                                </div>
-                            </div>
-                        </div>
-                    </div>   
-            </Link>
-                
+            <Box sx={{ display: 'flex', pt:1, pb:1 }}>
+                {suggested.map((suggestion,i)=>
+                    <Link to={"/restaurant/"+i}>
+                        <Card sx={{ display: 'flex' , ml: 2}}>
+                        <CardActionArea sx={{ display: 'flex' }}>
+                            <CardMedia
+                            component="img"
+                            height="100px"
+                            image = {process.env.PUBLIC_URL+suggestion.filename}
+                            alt={i}
+                            />
+                            <CardContent>
+                            <Typography gutterBottom variant="body" component="div">
+                                {suggestion.restaurantName+'\n'+suggest_type[i].remarks}
+                            </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                        </Card>
+                    </Link>
+                )}
+            </Box>
         );
     }
 
@@ -166,16 +175,34 @@ class FileCard extends React.Component{
         //Render
         return (
             <Link to={"/restaurant/"+restaurant._id}>
-                <div className="card d-inline-block m-1" style={{width: this.state.selected==index ? '33%' : '31%'}}  
-                    onMouseOver={(e) => this.handleMOver(index,e)} onMouseOut={(e) => this.handleMOut(index,e)} 
+                <Card sx={{ width: "30%", display: "inline-block", ml:"2%"}}
+                    onMouseOver={(e) => this.handleMOver(index,e)} 
+                    onMouseOut={(e) => this.handleMOut(index,e)} 
                     onClick={(e) => this.handleCLick(index,e)}>
-                    <img src={ restaurant.restaurantName == "adminDefault3AD"? process.env.PUBLIC_URL+restaurant.filename : `data:image/jpg; base64, ${this.state.ImgUrl}`} className="w-100" />
-                    <div className="card-body">
-                        <h6 className="card-title"> {restaurant.restaurantName}</h6>
-                        <p className="card-text"> {restaurant.address}</p>
-                        { this.state.selected===index && <p className="card-text">{restaurant.phoneNum}</p> }
-                    </div>
-                </div>
+                    <CardActionArea>
+                        <CardMedia
+                        component="img"
+                        height="140"
+                        image={ restaurant.restaurantName == "adminDefault3AD"? process.env.PUBLIC_URL+restaurant.filename : `data:image/jpg; base64, ${this.state.ImgUrl}`}
+                        alt={restaurant.restaurantName}
+                        />
+                        <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            {restaurant.restaurantName}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            <MaterialIcon icon="place" color='#000000'/>{restaurant.address}
+                            { this.state.selected===index && 
+                                <p className="card-text">
+                                    <MaterialIcon icon="phone" color='#000000'/>
+                                    {restaurant.phoneNum}
+                                </p> 
+                            }
+                        </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
+                
             </Link>
                 
         );

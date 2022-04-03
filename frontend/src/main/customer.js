@@ -56,7 +56,15 @@ class Customer extends React.Component{
             );
         }
         else{
-
+            return(
+                <>
+                    <div className="ProfileHeader">
+                        <h1>Welcome</h1>
+                    </div>
+                    <AccountInfo token={this.props.token}></AccountInfo>
+                </>
+                
+            );
         }
     }
 }
