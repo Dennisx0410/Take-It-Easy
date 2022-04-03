@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import './signup.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,30 +10,10 @@ async function signup(form, usertype) {
     .then(data => data.json())
 }
 
-async function verify(username, otp) {
-    return fetch(`http://localhost:5000/customer/activate`, {
-        method: 'POST', 
-        headers: {"Content-Type": 'application/json'},
-        body: JSON.stringify({username: username, otp: otp})
-    })
-    .then(data => data.json())
-}
-
-async function reverify(username, email) {
-    return fetch(`http://localhost:5000/customer/reverify`, {
-        method: 'POST', 
-        headers: {"Content-Type": 'application/json'},
-        body: JSON.stringify({username: username, email: email})
-    })
-    .then(data => data.json())
-}
-
 function Signup(props) {
     const [imgUrl, setImgUrl] = useState('');
     const [formUsertype, setFormUsertype] = useState('');
     const [signupStatus, setSignupStatus] = useState('');
-    const [userInfo, setUserInfo] = useState({});
-    const [verifyStatus, setVerifyStatus] = useState('');
     const [pwVisibility, setPwVisibility] = useState(false);
     const navigate = useNavigate();
 
@@ -43,19 +22,25 @@ function Signup(props) {
 
         setSignupStatus('');
 
+        // extract fields from form
         let signupForm = e.target;
         let formData = new FormData(signupForm);
         let usertype = formData.get('usertype');
-        props.setUsertype(usertype);
-        setUserInfo({
+        props.setUserInfo({
             username: formData.get('username'),
-            email: formData.get('email'),
             usertype: formData.get('usertype')
         });
         let res = await signup(formData, usertype);
         console.log(res);
 
         setSignupStatus(res.name);
+
+        if (usertype === 'customer' && res.name === 'SignupSuccessAndVerificationEmailSent') {
+            navigate('/verification');
+        }
+        else if (usertype === 'restaurant' && res.name === 'RegistrationReceived') {
+            navigate('/verification');
+        }
     }
 
     const handleUsertypeChange = async e => {
@@ -76,7 +61,6 @@ function Signup(props) {
         e.preventDefault();
 
         let files = e.target.files;
-        console.log(files[0].type);
 
         if (files.length === 0) { // no file 
             setImgUrl('');
@@ -90,36 +74,6 @@ function Signup(props) {
             setImgUrl(objURL);
             setSignupStatus('');
         }
-    }
-
-    const handleOtpSubmit = async e => {
-        e.preventDefault();
-
-        setVerifyStatus('');
-        let otpForm = new FormData(e.target);
-        let otp = otpForm.get('otp');
-
-        let res = await verify(userInfo.username, otp.toString());
-
-        console.log(res);
-
-        if (res.token != null) {
-            navigate('/');
-            props.setToken(res.token);
-        }
-        else {
-            setVerifyStatus(res.name); 
-        }
-    }
-
-    const handleReverify = async e => {
-        e.preventDefault();
-
-        setVerifyStatus('');
-        let res = await reverify(userInfo.username, userInfo.email);
-        console.log(res);
-
-        setVerifyStatus(res.name);
     }
 
     const restaurantSignupContent = (
@@ -149,9 +103,9 @@ function Signup(props) {
         <>
             <div className="signup-container">
                 <h1>Signup</h1>
-                <hr></hr>
+                <hr className="header"></hr>
                 <form id="signup" onSubmit={handleSubmit}>
-                    <div className="mb-3">
+                    <div>
                         <label>
                             <i className="material-icons">account_circle</i>User type
                         </label>
@@ -166,7 +120,7 @@ function Signup(props) {
                                         </label>
                                     </div>
                                 </section>
-                                <section className="col-xs-12 col-sm-6">
+                                <section className="col-12 col-sm-6">
                                     <div className="mb-3 form-radio" style={{textAlign: 'center'}}>
                                         <input className="form-check-input" type="radio" name="usertype" id="restaurant" value="restaurant" required/>
                                         <label className="form-check-label" htmlFor="restaurant">
@@ -236,64 +190,8 @@ function Signup(props) {
             </div>
         </>
     );
-
-    const verificationBox = (
-        <>
-            <div className="signup-container">
-                <h1>Verification</h1>
-                <hr></hr>
-                <p>The 6-digit verification code has been sent to your registered email, please enter the verification code to activate your account within 2 minutes.</p>
-                <form onSubmit={handleOtpSubmit}>
-                    <div className="container">
-                        <div className="row mb-3">
-                            <div className="col-12 col-md-8 d-block">
-                                <input type="text" className="form-control" id="otp" name="otp" pattern="[0-9]{6}" title="6-digit code" required/>
-                            </div>
-
-                            <div className="col-12 col-md-4 d-block">
-                                <button type="submit" className="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                        <p style={{color: "red", display: (verifyStatus === 'InvalidOtp') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            Wrong verification code!
-                        </p>
-                        <p style={{color: "red", display: (verifyStatus === 'OtpNotFound') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            User not found!
-                        </p>
-                        <p style={{color: "red", display: (verifyStatus === 'OtpExpired') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            The verification code has been expired, please request for another verification code.
-                        </p>
-                        <p style={{color: "red", display: (verifyStatus === 'TooMuchTrials') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            You have made too much wrong trials, please request for another verification code.
-                        </p>
-                        <p style={{color: "blue", display: (verifyStatus === 'TooMuchTrials') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            New verification code sent, please check your mailbox.
-                        </p>
-                        <p style={{color: "red", display: (verifyStatus === 'PendingOtp') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            There is an unexpired verification code in your mailbox, please enter that code.
-                        </p>
-                        <a className="formattedLink" onClick={handleReverify}>I dont receive a verification code/please re-issue another code for me</a>
-                    </div>
-                </form>
-            </div>
-        </>
-    );
-
-    if (formUsertype === 'customer' && signupStatus === 'VerificationEmailSent') { // customer successfully signup
-        return verificationBox;
-    }
-    else if (formUsertype === 'restaurant' && false) {
-        return <div>DONE</div>
-    }
-    else {
-        return signupBox;
-    }
+    
+    return signupBox;
 }
 
 export default Signup;

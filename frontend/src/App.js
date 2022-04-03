@@ -6,6 +6,7 @@ import {useMatch, useParams, useLocation} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import Login from './login/login';
 import Signup from './login/signup';
+import Verification from './login/verification';
 import Main from './main/main';
 import Restaurant from './main/restaurant';
 import HeaderBar from './HeaderBar';
@@ -25,20 +26,36 @@ function NoMatch() {
 
 function App(){
     const [token, setToken] = useState();
-    const [usertype, setUsertype]= useState();
-    if(token === undefined) {
-        console.log(token);
-        return (
-            <>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<Login setToken={setToken} setUsertype={setUsertype}/>} />  
-                        <Route path="/signup" element={<Signup setToken={setToken} setUsertype={setUsertype} />} />
-                        <Route path="*" element={<NoMatch/>} />
-                    </Routes>
-                </BrowserRouter>
-            </>
-        );
+    const [userInfo, setUserInfo]= useState();
+    if (token === undefined) {
+        if (userInfo === undefined) {
+            return (
+                <>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
+                            <Route path="/signup" element={<Signup setToken={setToken} setUserInfo={setUserInfo} />} />
+                            <Route path="*" element={<NoMatch/>} />
+                        </Routes>
+                    </BrowserRouter>
+                </>
+            );
+        }
+        else {
+            return (
+                <>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
+                            <Route path="/signup" element={<Signup setToken={setToken} setUserInfo={setUserInfo} />} />
+                            <Route path="/verification" element={<Verification setToken={setToken} userInfo={userInfo} />} />  
+                            <Route path="*" element={<NoMatch/>} />
+                        </Routes>
+                    </BrowserRouter>
+                </>
+            );
+        }
+        
     }
     else{ 
         

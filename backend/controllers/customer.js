@@ -124,6 +124,7 @@ module.exports = {
             // console.log(customer)
 
             req.customer = customer
+            req.accStatus = 'SignupSuccess';
 
             // continue to set profile pic
             next()
@@ -207,9 +208,18 @@ module.exports = {
     verifyOTP: async (req, res, next) => {
         // TODO: verify the OTP with db before activating account
         try {
+            console.log(req.body);
+
+            // already activated
+            let customer = await Customers.findOne({username: req.body.username});
+            if (customer.activated) {
+                throw {name: 'AlreadyActivated', message: 'account already activated'}
+            }
+
+            // OTP not exists in db
             let otpContainer = await Otp.findOne({username: req.body.username});
             if (otpContainer == null) {
-                throw {name: 'OtpNotFound', message: 'User did not sent account verification request/account activated'};
+                throw {name: 'OtpNotFound', message: 'User did not sent account verification request'};
             }
 
             // check otp expired
@@ -273,7 +283,7 @@ module.exports = {
         }
     },
 
-    login: async (req, res) => {
+    login: async (req, res, next) => {
         // TODO: login user by username, password
         console.log('> login to server');
         console.log('req.body:', req.body); // username, pw
@@ -286,8 +296,12 @@ module.exports = {
 
             // check account if activated
             if (customer.activated == false) { // user created account but not activated
-                console.log('user not activate');
-                throw {name: 'AccountNotActivated', message: 'account not activated'};
+                console.log('> user not activated');
+                req.accStatus = 'AccountNotActivated';
+
+                // go to send verify email
+                return next();
+                // throw {name: 'AccountNotActivated', message: 'account not activated'};
             }
 
             // generate token for enter home page

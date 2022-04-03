@@ -36,7 +36,7 @@ module.exports = {
                     return next();
                 }
                 else { // other user type
-                    throw {name: 'UsertypeError', value: 'wrong user type'};
+                    throw {name: 'UsertypeError', message: 'wrong user type'};
                 }
             }
             catch (err) {

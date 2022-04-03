@@ -1,5 +1,6 @@
 // model 
 const Otp = require('../models/otp').Otp;
+const Customers = require('../models/customer');
 
 // package
 const nodemailer = require("nodemailer");
@@ -60,6 +61,7 @@ module.exports = {
 
             let username;
             let otpContainer;
+            let customer;
 
             let OTP = generateOTP();
             let currentTime = new Date();
@@ -67,7 +69,8 @@ module.exports = {
             
             if (req.customer) { // 1st time verify
                 console.log('> 1st verify');
-                username = req.customer.username
+                customer = req.customer;
+                username = customer.username
 
                 console.log('OTP:', OTP);
 
@@ -81,10 +84,17 @@ module.exports = {
                 console.log('> created new otp to db');
             }
             else { // reverify
+                console.log('reverify');
                 username = req.body.username
-                otpContainer = await Otp.findOne({username});
- 
+
+                // already activated
+                customer = await Customers.findOne({username});
+                if (customer.activated) {
+                    throw {name: 'AlreadyActivated', message: 'account already activated'}
+                }
+
                 // check whether there are OTP in db
+                otpContainer = await Otp.findOne({username});
                 if (otpContainer == null) { // someone pretend to gain access via reverify but didn't signed up
                     throw {name: 'OtpNotFound', message: 'User try to reverify without signing up/account already activated'}
                 }
@@ -108,17 +118,29 @@ module.exports = {
                 }
                 else {
                     console.log('> pending OTP');
-                    throw {name: 'PendingOtp', message: 'There is a pending otp, no need to reverify'};
+                    if (req.accStatus) { // only login and signup would have extra status
+                        throw {name: `${req.accStatus}AndPendingOtp`, message: 'There is a pending otp, no need to reverify'};
+                    }
+                    else {
+                        throw {name: 'PendingOtp', message: 'There is a pending otp, no need to reverify'};
+                    }
+                    
                 } 
             }
 
             let receiver = {
-                username: req.body.username,
-                email: req.body.email
+                username: customer.username,
+                email: customer.email
             }
+            console.log(receiver);
             sendEmail(receiver, OTP);
 
-            res.send({name: "VerificationEmailSent", message: "Verification email sent"});
+            if (req.accStatus) { // only login and signup would have extra status
+                res.send({name: `${req.accStatus}AndVerificationEmailSent`, message: "Verification email sent"});
+            }
+            else {
+                res.send({name: 'VerificationEmailSent', message: 'Verification email sent'});
+            }
         }
         catch (err) {
             res.send(err);
