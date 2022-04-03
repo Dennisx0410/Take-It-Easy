@@ -111,9 +111,9 @@ function Verification(props) {
     const waitApprovalBox = (
         <>
             <div className="verification-container">
-                <h1>Opps</h1>
+                <h1>Thank you</h1>
                 <hr></hr>
-                <p>Your restaurant signup request is sent, please wait for admin approval. You will receive an email about your signup progress after admin has review your request.</p>
+                <p>Your restaurant signup request is sent, please wait for admin approval. You will receive an email about your signup progress after admin has reviewed your request.</p>
             </div>
         </>
     );
