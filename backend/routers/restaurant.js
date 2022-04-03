@@ -11,14 +11,15 @@ app.post('/signup', restCtrler.uploadProfilePic, restCtrler.addRestaurant, restC
 app.post('/approve', restCtrler.approveAccount); 
 app.post('/signin', restCtrler.login);
 // app.post('/update', verifyToken, updateCustomer); // not implemented yet
-app.post('/getinfo', verifyToken, restCtrler.getRestaurantData);
-app.get('/getAll', verifyToken, restCtrler.getAllRestaurantData)
-app.get('/getNotActive', restCtrler.getNotApprovedRestaurant);
+app.get('/data', verifyToken, restCtrler.getRestaurantData);
+app.get('/all', verifyToken, restCtrler.getAllRestaurantData)
+app.get('/notApproved', restCtrler.getNotApprovedRestaurant);
+app.get('/approved', restCtrler.getApprovedRestaurant);
 app.post('/logout', verifyToken, restCtrler.logout);
 app.post('/profilePic', verifyToken, restCtrler.uploadProfilePic, restCtrler.setProfilePic); // set profile pic
 app.get('/profilePic', verifyToken, restCtrler.getProfilePic); // get profile pic
-app.post('/addFood', verifyToken, restCtrler.uploadFoodItemPic, restCtrler.addFoodItem)
-app.post('/removeFood', verifyToken, restCtrler.removeFoodItem)
+app.post('/food', verifyToken, restCtrler.uploadFoodItemPic, restCtrler.addFoodItem)
+app.delete('/food', verifyToken, restCtrler.removeFoodItem)
 
 // unrouted requests
 app.all('/*', (req, res) => {

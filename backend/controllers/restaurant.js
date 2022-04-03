@@ -95,13 +95,26 @@ module.exports = {
     getNotApprovedRestaurant: async (req, res) => {
         console.log("> fetching not approved restaurants");
         try {
-            let list = await Restaurant.find({approved:false})
+            let list = await Restaurant.find({approved: false});
 
-            res.status(200).send(list)
+            res.status(200).send(list);
         }
         catch (err) {
-            console.log(err)
-            res.status(404).send(err)
+            console.log(err);
+            res.status(404).send(err);
+        }
+    },
+
+    getApprovedRestaurant: async (req, res) => {
+        console.log("> fetching not approved restaurants");
+        try {
+            let list = await Restaurant.find({approved: true});
+
+            res.status(200).send(list);
+        }
+        catch (err) {
+            console.log(err);
+            res.status(404).send(err);
         }
     },
 
@@ -109,13 +122,13 @@ module.exports = {
         //Function only fetch all approved restaurant
         console.log("> fetching all approved restaurants");
         try {
-            let list = await Restaurant.find()
+            let list = await Restaurant.find();
 
-            res.status(200).send(list)
+            res.status(200).send(list);
         }
         catch (err) {
-            console.log(err)
-            res.status(404).send(err)
+            console.log(err);
+            res.status(404).send(err);
         }
     },
 

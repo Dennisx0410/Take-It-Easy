@@ -248,7 +248,7 @@ POST /restaurant/signin
 ## Get A Restaurant Info
 #### URL
 ```
-POST /restaurant/getinfo
+GET /restaurant/data
 ```
 #### Header
 - `Authorization: Bearer <token>`
@@ -257,10 +257,10 @@ POST /restaurant/getinfo
 #### Return
 - Restaurant Json document
 
-## Get All Activated Restaurant Info
+## Get All Approved Restaurant Info
 #### URL
 ```
-GET /restaurant/getAll
+GET /restaurant/all
 ```
 #### Header
 - `Authorization: Bearer <token>`
@@ -269,10 +269,10 @@ GET /restaurant/getAll
 #### Return
 - Array of activated restaurant JSON documents
 
-## Get All Not Activated Restaurant Info
+## Get All Not Approved Restaurant Info
 #### URL
 ```
-GET /restaurant/getNotActive
+GET /restaurant/notApproved
 ```
 #### Header
 - `Authorization: Bearer <token>`

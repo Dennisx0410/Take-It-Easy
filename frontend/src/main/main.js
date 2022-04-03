@@ -226,7 +226,8 @@ function Main(){
 
     const [REALrestaurantData, setREALRD] = useState(restaurantData);
     useEffect(() => {
-            const url = PREFIX+'/restaurant/getAll';
+            // const url = PREFIX+'/restaurant/all';
+            const url = PREFIX+'/restaurant/approved';
             console.log("A");
             async function fetchData () {
                 try {

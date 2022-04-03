@@ -18,7 +18,7 @@ function Restaurant() {
     const PREFIX='http://localhost:5000';
     
     useEffect(() => {
-        const url = PREFIX+'/restaurant/getAll';
+        const url = PREFIX+'/restaurant/all';
 
         const fetchData = async () => {
           try {
