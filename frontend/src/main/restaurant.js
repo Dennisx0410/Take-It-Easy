@@ -39,7 +39,17 @@ function Restaurant() {
 
         fetchData();
     }, []);
-    
+    console.log(restaurants);
+    // function findRestaurant(restaurant_list,rid){
+    //   restaurant_list.forEach((item,index)=>{
+    //     if (item._id == rid){
+    //       return item;
+    //     }
+    //   });
+    //   return null;
+    // };
+    // let target_restaurant = findRestaurant(restaurants, rid);
+    // console.log(target_restaurant);
     return (
         <>
             <Box sx={{ mt:"1%", ml:"1%" }}>
@@ -64,10 +74,12 @@ function Restaurant() {
                 </Box>
                 <div>{"rid: "+rid}</div>
                 <div>{"foodFilter: "+foodFilter}</div>
-                <div>{"/restaurant/getAll: "+( restaurants? restaurants : "restaurant "+rid+" not found" )}</div>
+                <div>{"/restaurant/getAll: "+( restaurants ? restaurants : "restaurant "+rid+" not found" )}</div>
             </Box>
         </>
     );
-  }  
+}  
   
+
+
 export default Restaurant;

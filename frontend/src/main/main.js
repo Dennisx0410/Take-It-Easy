@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import { Search } from 'react-router-dom';
 import SearchBar from './search_bar'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import {Buffer} from 'buffer';
 
 // import { useNavigate } from 'react-router-dom';
 // let navigate = useNavigate();
@@ -18,11 +19,8 @@ const suggested = [
 ];
 
 const restaurantData = [
-  {filename: "/cuhk-2013.jpg", restaurantName: "Restaurant 1", address:    "address 1", phoneNum: "Restaurant Info1"},
-  {filename: "/cuhk-2017.jpg", restaurantName: "Restaurant 2", address:    "address 2", phoneNum: "Restaurant Info2"},
-  {filename: "/sci-2013.jpg", restaurantName: "Restaurant 3", address:    "address 3", phoneNum: "Restaurant Info3"},
-  {filename: "/shb-2013.jpg", restaurantName: "Restaurant 4", address:    "address 4", phoneNum: "Restaurant Info4"},
-  {filename: "/stream-2009.jpg", restaurantName: "Restaurant 5", address:    "address 5", phoneNum: "Restaurant Info5"},
+  {filename: "/cuhk-2013.jpg", restaurantName: "adminDefault3AD", address:    "default", phoneNum: "00000000"}
+  
 ];
 
 class Debug extends React.Component{
@@ -90,6 +88,7 @@ class Gallery extends React.Component {
         super(props);
     }
     render() {
+        
         console.log(this.props.filteredRestaurants);
         return (
 
@@ -99,7 +98,7 @@ class Gallery extends React.Component {
                 <div className="col-10 align-self-start">
                     <h4 style={{padding: "5px 0 0 0"}}>Restaurants:</h4>
                     {this.props.filteredRestaurants.map(
-                        (restaurant,i) => <FileCard restaurant={restaurant} i={i} key={i} skipCount={this.props.skipCount}/>
+                        (restaurant,i) => <FileCard restaurant={restaurant} i={i} key={i} />
                     )}
                     
                 </div>
@@ -138,8 +137,6 @@ class FileCard extends React.Component{
         
         // navigate('/restaurant/' + index);
     }
-        
-    
     constructor(props) {
         super(props);
         this.state = { 
@@ -152,22 +149,27 @@ class FileCard extends React.Component{
         let index = this.props.i;
         let restaurant = this.props.restaurant;
         console.log(restaurant);
-        if (this.props.skipCount){
-            console.log(this.props.skipCount);
+        
+        // console.log(this.state.ImgUrl);
+        if (restaurant.restaurantName != "adminDefault3AD"){
+        
+            let profilePic = restaurant.profilePic;
+            // console.log(profilePic);
+            let img = Buffer.from(profilePic.data).toString('base64');
+            // console.log(img);
+        //     this.setState(()=>{ return {ImgUrl: imglink} });
         }
         else{
-            console.log(this.props.skipCount);
+        //     console.log("default");
+        //     // this.setState(()=>{ return {ImgUrl: process.env.PUBLIC_URL+restaurant.filename }})
         }
-        
-        console.log(this.state.ImgUrl);
-        
         //Render
         return (
-            <Link to={"/restaurant/"+index}>
+            <Link to={"/restaurant/"+restaurant._id}>
                 <div className="card d-inline-block m-1" style={{width: this.state.selected==index ? '33%' : '31%'}}  
                     onMouseOver={(e) => this.handleMOver(index,e)} onMouseOut={(e) => this.handleMOut(index,e)} 
                     onClick={(e) => this.handleCLick(index,e)}>
-                    <img src={process.env.PUBLIC_URL+restaurant.filename} className="w-100" />
+                    <img src={ restaurant.restaurantName == "adminDefault3AD"? process.env.PUBLIC_URL+restaurant.filename : `data:image/jpg; base64, ${this.state.ImgUrl}`} className="w-100" />
                     <div className="card-body">
                         <h6 className="card-title"> {restaurant.restaurantName}</h6>
                         <p className="card-text"> {restaurant.address}</p>
@@ -184,13 +186,13 @@ class FileCard extends React.Component{
 
 function Main(){
     const PREFIX='http://localhost:5000';
-    const [skipCount, setSkipCount] = useState(true);
+    
 
     const [REALrestaurantData, setREALRD] = useState(restaurantData);
     useEffect(() => {
             const url = PREFIX+'/restaurant/getAll';
             console.log("A");
-            const fetchData = async () => {
+            async function fetchData () {
                 try {
                     const response = await fetch(
                         url, {
@@ -208,7 +210,7 @@ function Main(){
                         // const available = restaurants.approved && restaurants.online;
                         return available;
                     });
-                    setSkipCount(false);
+                    
                     setREALRD(availableR);
                     
                 } catch (error) {
@@ -219,36 +221,6 @@ function Main(){
             console.log("B");
     },[]);
     
-    // let REALrestaurantData ;
-    // const url = PREFIX+'/restaurant/getAll';
-    // console.log("A");
-    // const getData = () => {
-        
-    //         fetch(
-    //             url, {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Authorization': 'Bearer '+sessionStorage.getItem("token")
-    //             }}
-    //         ).then((response) => {
-    //             var restaurantDetails =  response.json();
-    //             console.log("Restaurants:")
-    //             console.log(restaurantDetails);
-    //             restaurantDetails.then((availableR)=>{
-    //                 console.log(availableR);
-    //                 availableR.filter((restaurants) => {
-    //                     const available = true;
-    //                     // const available = restaurants.approved && restaurants.online;
-    //                     return available;
-    //                 });
-    
-    //                 REALrestaurantData = availableR;
-                    
-    //             })
-    //         })
-    // };
-    // console.log("B");
-    // getData();
     
     const [searchQ, setSearchQ] = useState();
     const filteredRestaurants = filterRestaurant(REALrestaurantData, searchQ);
@@ -277,7 +249,7 @@ function Main(){
                 <div style={{paddingTop: "10px"}}>
                     <SearchBar searchQ={searchQ} setSearchQ={setSearchQ}/>
                 </div>
-                <Gallery filteredRestaurants={filteredRestaurants} skipCount={skipCount}/>
+                <Gallery filteredRestaurants={filteredRestaurants}/>
             </div>
               
           </>
