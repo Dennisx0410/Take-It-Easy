@@ -7,8 +7,8 @@
     background-color: lightgrey;
 }
 
-hr {
-    border: 2px solid darkslategrey;
+hr.header {
+    border: 1px solid darkslategrey;
 }
 
 .formattedLink:link{

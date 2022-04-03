@@ -10,17 +10,22 @@
     bottom: 0;
     text-align: right;
 }
-.loginstyling{
+
+.loginstyling {
     background-color: rgba(255,255,255);
     z-index: 2; 
     text-align: center;
 }
 
-.container{
+/* .container{
     padding-top: 3vh;
     justify-content: center;
+} */
 
+hr.header {
+    border: 1px solid darkslategrey;
 }
+
 .formattedLink:link{
     display: inline;
     color:#000000;

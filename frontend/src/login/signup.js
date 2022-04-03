@@ -103,9 +103,9 @@ function Signup(props) {
         <>
             <div className="signup-container">
                 <h1>Signup</h1>
-                <hr></hr>
+                <hr className="header"></hr>
                 <form id="signup" onSubmit={handleSubmit}>
-                    <div className="mb-3">
+                    <div>
                         <label>
                             <i className="material-icons">account_circle</i>User type
                         </label>
@@ -120,7 +120,7 @@ function Signup(props) {
                                         </label>
                                     </div>
                                 </section>
-                                <section className="col-xs-12 col-sm-6">
+                                <section className="col-12 col-sm-6">
                                     <div className="mb-3 form-radio" style={{textAlign: 'center'}}>
                                         <input className="form-check-input" type="radio" name="usertype" id="restaurant" value="restaurant" required/>
                                         <label className="form-check-label" htmlFor="restaurant">

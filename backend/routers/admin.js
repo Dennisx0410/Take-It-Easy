@@ -23,7 +23,7 @@ app.delete('/restaurants', async (req, res) => {
     res.send('cleared');
 })
 // to clear all otp account for easy development, should be removed at final version
-app.delete('/restaurants', async (req, res) => {
+app.delete('/otps', async (req, res) => {
     await Otp.deleteMany();
     res.send('cleared');
 })

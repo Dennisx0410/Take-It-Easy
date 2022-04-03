@@ -60,7 +60,7 @@ function Verification(props) {
         <>
             <div className="verification-container">
                 <h1>Verification</h1>
-                <hr></hr>
+                <hr classname="header"></hr>
                 <p>The 6-digit verification code has been sent to your registered email, please enter the verification code to activate your account within 2 minutes.</p>
                 <form onSubmit={handleOtpSubmit}>
                     <div className="container">
@@ -112,7 +112,7 @@ function Verification(props) {
         <>
             <div className="verification-container">
                 <h1>Thank you</h1>
-                <hr></hr>
+                <hr className="header"></hr>
                 <p>Your restaurant signup request is sent, please wait for admin approval. You will receive an email about your signup progress after admin has reviewed your request.</p>
             </div>
         </>
