@@ -36,6 +36,7 @@ function HeaderBar(props){
                                     <MaterialIcon icon="takeout_dining" color='#FFFFFF' />
                                 </Link>
                             </div>
+                            
                             <div className='col-1'></div>
                             <div className='col-1 headerpadding bg-transparent btn-transparent'>
                                 <Dropdown className="d-inline mx-2 bg-transparent btn-transparent" autoClose="outside" >
@@ -66,15 +67,17 @@ function HeaderBar(props){
                 <div className='header stickyBar'>
                     <div className='container-fluid text-center'>
                         <div className='row'>
-                            <div className='col-2'></div>
-                            <div className='col-8'>
+                            <div className='col-3'></div>
+                            <div className='col-6'>
                                 <Link to="/" className="header-title " style={{textAlign: "center"}}>
                                     <MaterialIcon icon="takeout_dining" color='#FFFFFF' />
                                     <span ><b>TAKE IT EASY</b></span>
                                     <MaterialIcon icon="takeout_dining" color='#FFFFFF' />
                                 </Link>
                             </div>
-                            
+                            <div className='col-1 '>
+                               {/* Notification Button here */}
+                            </div>
                             <div className='col-1 points'>
                                 <MaterialIcon icon="savings" color='#FFFFFF' />: {getPoint()}
                             </div>
