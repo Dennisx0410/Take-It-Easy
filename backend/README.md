@@ -17,6 +17,8 @@ server port: `5000`
 
 [-Restaurant](#documentation-restaurant)
 
+[-Order](#documentation-restaurant)
+
 # Documentation (Customer)
 [Return to top](#backend)
 ## Sign up 
@@ -325,4 +327,54 @@ GET /restaurant/profilePic
 - `TokenExpiredError`
 - `InactiveUserRequest`
 
+# Documentation (Order)
+[Return to top](#backend)
 
+## Fetch Order from the respective restaurant
+#### URL
+```
+/order/fetchByRestaurant
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return
+-`List of orders, for which items is aggregate with food item to provide more detail`
+
+## Fetch order from the respective customer
+#### URL
+```
+/order/fetchByCustomer
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return
+-`List of orders, for which items is aggregate with food item to provide more detail`
+
+## Create new order
+#### URL
+```
+/order/add
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- restaurantID : String
+- items : Array of String
+#### Return
+-`The order document`
+
+## Finished an Order
+#### URL
+```
+/order/done
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- orderId : String
+#### Return
+`Order Status Updated`
