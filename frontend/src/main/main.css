@@ -19,3 +19,11 @@
 .suggestionMargin{
     margin: 10px;
 }
+
+.lowestZ{
+    z-index: 0;
+    text-decoration:none;
+}
+a {
+    text-decoration:none;
+}

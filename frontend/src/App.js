@@ -32,7 +32,7 @@ function NoMatch() {
 
 
 function App(){
-    const [token, setToken] = useState();
+    const [token, setToken] = useState(null);
     const [userInfo, setUserInfo]= useState({});
     const [socket, setSocket] = useState(null)
 

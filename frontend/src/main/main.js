@@ -30,61 +30,91 @@ const suggested = [
 
 const restaurantData = [
   {filename: "/cuhk-2013.jpg", restaurantName: "adminDefault3AD", address:    "default", phoneNum: "00000000"}
-  
 ];
 
-class Debug extends React.Component{
-    render(){
-        return(<></>);
-    }
-}
+// class Debug extends React.Component{
+//     render(){
+//         return(<></>);
+//     }
+// }
 
 class Suggestion extends React.Component {
-  render() {
-      return (
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        console.log("In suggestion");
+        console.log(this.props.suggestion);
+        return (
             <main>
                 <div className="row" >
                     <div className="col-1"></div>
                     <div className="col-10 align-self-start">
                         <h4 style={{padding: "5px 0 0 0"}}>Recommended For You</h4>
-                        <Box sx={{ display: 'flex', pt:1, pb:1}}>
-                            {suggested.map((suggestion,i)=>
-                                <SuggestionCard suggestion={suggestion} i={i} key={i}  />
-                            )}
-                        </Box>
-                        
+                        <div className='lowestZ'>
+                            <Box sx={{ display: 'flex', pt:1, pb:1}}>
+                                {this.props.suggestion.map((suggestion,i)=>
+                                    <SuggestionCard suggestion={suggestion} i={i} key={i}  />
+                                )}
+                            </Box>
+                        </div>
                     </div>
                     <div className="col-1"></div>
                 </div>
             </main>
-      );
-  }
+        );
+    }
 }
 
 
 class SuggestionCard extends React.Component{
-    handleCLick(index, e) {
-        console.log(index);
-    }
+    
     constructor(props) {
         super(props);
+        this.state = { 
+            selected: -1,
+            ImgUrl: '',
+            skip: false
+        };
     }
+
     render() {
         let i = this.props.i;
         let suggestion = this.props.suggestion;
+        if (suggestion.profilePic != undefined){
+            if (!this.state.skip){
+                let profilePic = suggestion.profilePic;
+                console.log(profilePic);
+                let img = Buffer.from(profilePic.data).toString('base64');
+                this.setState( ()=>
+                    {   
+                        return { 
+                            ImgUrl: img,
+                            skip: true
+                        }
+                    }
+                );
+            }
+                
+        }
         return (
-            <Link to={"/restaurant/"+i}>
+            <Link to={"/restaurant/"+suggestion._id}>
                 <Card sx={{ display: 'flex' , ml: 2}}>
                 <CardActionArea sx={{ display: 'flex' }}>
                     <CardMedia
                     component="img"
-                    height="100px"
-                    image = {process.env.PUBLIC_URL+suggestion.filename}
-                    alt={i}
+                    height="150px"
+                    image = {`data:image/jpg; base64, ${this.state.ImgUrl}`}
+                    alt={suggestion.restaurantName}
                     />
                     <CardContent >
                     <Typography gutterBottom variant="body" component="div">
-                        {suggestion.restaurantName}{suggest_type[i].remarks}
+                        <span style={{color: "#567ace"}}>
+                            {i=0?<MaterialIcon icon="thumb_up"/>:i=1?<MaterialIcon icon="star"/>:<MaterialIcon icon="local_fire_department"/>}
+                            {/* {suggest_type[i].remarks} */}
+                        </span>
+                        <br/>
+                        {suggestion.restaurantName}
                     </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -101,7 +131,8 @@ class Gallery extends React.Component {
         super(props);
     }
     render() {
-        
+        let bufferFR = [];
+        bufferFR = this.props.filteredRestaurants
         console.log(this.props.filteredRestaurants);
         return (
 
@@ -110,9 +141,12 @@ class Gallery extends React.Component {
                 <div className="col-1"></div>
                 <div className="col-10 align-self-start">
                     <h4 style={{padding: "5px 0 0 0"}}>Restaurants:</h4>
-                    {this.props.filteredRestaurants.map(
-                        (restaurant,i) => <FileCard restaurant={restaurant} i={i} key={i} />
-                    )}
+                    
+                    {    bufferFR.map(
+                        (restaurant,i) => <FileCard restaurant={restaurant} i={i} key={i} 
+                                            RErender={this.props.RErender} setRErender={this.props.setRErender}/>
+                        )
+                    }
                     
                 </div>
                 <div className="col-1"></div>
@@ -145,16 +179,7 @@ class FileCard extends React.Component{
             }
         );
     }
-    loadImage(img) {
-        this.setState( ()=>
-            {   
-                // if (this.state.selected = index)
-                    return { ImgUrl: img }
-                // else
-                //     return { selected: index }
-            }
-        );
-    }
+
     constructor(props) {
         super(props);
         this.state = { 
@@ -171,19 +196,23 @@ class FileCard extends React.Component{
         console.log(restaurant.profilePic);
 
         if (restaurant.profilePic != undefined){
-            if (!this.state.skip){
-                let profilePic = restaurant.profilePic;
-                console.log(profilePic);
-                let img = Buffer.from(profilePic.data).toString('base64');
-                this.setState( ()=>
-                    {   
-                        return { 
-                            ImgUrl: img,
-                            skip: true
+            // if (!this.state.skip){
+                if (this.props.RErender == true){
+                    let profilePic = restaurant.profilePic;
+                    console.log(profilePic);
+                    let img = Buffer.from(profilePic.data).toString('base64');
+                    this.props.setRErender(false);
+                    this.setState( ()=>
+                        {   
+                            return { 
+                                ImgUrl: img
+                                ,skip: true
+                            }
                         }
-                    }
-                );
-            }
+                    );
+                }
+                
+            // }
                 
         }
 
@@ -235,7 +264,7 @@ function Main(){
     const PREFIX='http://localhost:5000';
     
 
-    const [REALrestaurantData, setREALRD] = useState(restaurantData);
+    const [REALrestaurantData, setREALRD] = useState([]);
     useEffect(() => {
             // const url = PREFIX+'/restaurant/all';
             const url = PREFIX+'/restaurant/approved';
@@ -269,9 +298,9 @@ function Main(){
             console.log("B");
     },[]);
     
-    
     const [searchQ, setSearchQ] = useState();
-    const filteredRestaurants = filterRestaurant(REALrestaurantData, searchQ);
+    const [RErender, setRErender] = useState(true);
+    var filteredRestaurants = filterRestaurant(REALrestaurantData, searchQ);
     function filterRestaurant(restaurant_list, query){
         console.log("in filterRestaurant");
         if (!query) {
@@ -284,6 +313,15 @@ function Main(){
         });
     };
 
+    var REALsuggested = makeSuggestion(REALrestaurantData);
+    function makeSuggestion(restaurant_list){
+        if(restaurant_list.length < 3){
+            return restaurant_list;
+        }
+        else{
+            return restaurant_list.slice(-3,restaurant_list.length);
+        }
+    }
     
     console.log("Realthingy:");
     console.log(REALrestaurantData);
@@ -293,11 +331,11 @@ function Main(){
 
             <div className='Main'>
                 {/* <Debug filteredRestaurants={filteredRestaurants}/> */}
-                <Suggestion />
+                <Suggestion suggestion={REALsuggested}/>
                 <div style={{paddingTop: "10px"}}>
-                    <SearchBar searchQ={searchQ} setSearchQ={setSearchQ}/>
+                    <SearchBar searchQ={searchQ} setSearchQ={setSearchQ} setRErender={setRErender}/>
                 </div>
-                <Gallery filteredRestaurants={filteredRestaurants}/>
+                <Gallery filteredRestaurants={filteredRestaurants} RErender={RErender} setRErender={setRErender}/>
             </div>
               
           </>
