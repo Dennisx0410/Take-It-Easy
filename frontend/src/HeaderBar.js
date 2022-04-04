@@ -67,9 +67,32 @@ function HeaderBar(props){
 
     // }
     // console.log(props.setToken);
-    function getPoint(){
-        return -1;
-    }
+    const [customerInfo, setCustomerInfo] = useState({});
+    
+    const PREFIX='http://localhost:5000';
+    
+    useEffect(() => {
+        const url_d = PREFIX+'/customer/data';
+        const fetchData = async () => {
+          try {
+            const response = await fetch(
+                url_d, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                }}
+            );
+            const customer_info = await response.json();
+            setCustomerInfo(customer_info);
+            console.log(customer_info);
+
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+        fetchData();
+    }, []);
+
     if (props.usertype=="restaurant"){
         return (
             <>
@@ -99,7 +122,7 @@ function HeaderBar(props){
                                     <Dropdown.Item href="/r/profile">Profile</Dropdown.Item>
                                     <Dropdown.Item href="/r/history">Order History</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);}} >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);sessionStorage.clear();}} >Logout</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>
@@ -124,7 +147,7 @@ function HeaderBar(props){
                                 </Link>
                             </div>
                             <div className='col-1 headerpadding'>
-                               <Dropdown autoClose="outside">
+                               <Dropdown className="d-inline" autoClose="outside">
                                 <DropdownToggle id="noti" className="bg-transparent btn-transparent">
                                     <MaterialIcon icon="notifications" color='#FFFFFF' />
                                     </DropdownToggle>
@@ -132,13 +155,13 @@ function HeaderBar(props){
                                     {notificationList}
                                     </Dropdown.Menu>
                                 </Dropdown>
-
+                                
                             </div>
                             <div className='col-1 points'>
-                                <MaterialIcon icon="savings" color='#FFFFFF' />: {getPoint()}
+                                <MaterialIcon icon="savings" color='#FFFFFF' />{customerInfo.point}
                             </div>
                             <div className='col-1 headerpadding bg-transparent btn-transparent'>
-                                <Dropdown className="d-inline mx-2 bg-transparent btn-transparent" autoClose="outside" >
+                                <Dropdown className="d-inline bg-transparent btn-transparent" autoClose="outside" >
                                     <Dropdown.Toggle id="dropdown-autoclose-outside"  className="bg-transparent btn-transparent"  size="sm">
                                         <MaterialIcon icon="account_circle" color='#FFFFFF' />
                                     </Dropdown.Toggle>
@@ -146,6 +169,7 @@ function HeaderBar(props){
                                     <Dropdown.Menu>
                                     {/* <Link to="/customer/profile">
                                         Profile */}
+                                    <Dropdown.Item onClick={() => navigate('/', { replace: true })}>Restaurant</Dropdown.Item>
                                     <Dropdown.Item onClick={() => navigate('/customer/profile', { replace: true })}>Profile</Dropdown.Item>
                                     {/* </Link> */}
                                     <Dropdown.Item onClick={() => navigate('/customer/history', { replace: true })}>Order History</Dropdown.Item>

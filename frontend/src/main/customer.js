@@ -112,7 +112,8 @@ function AccountInfo(){
 
 const useStyles = makeStyles({
     root: {
-      maxWidth: 345
+      width: "100%",
+      margin: "15px 0"
     }
   });
 
@@ -120,27 +121,26 @@ function Order(props){
     console.log("In order");
     console.log(props);
     const classes = useStyles();
-    
+    var createDate = props.order.createdAt;
+    var updateDate = props.order.createdAt;
+    var restaurantName = props.order.restaurantID;
+    var orderNo = props.order.orderNo;
     return(
         <>
-            <Card className={classes.root}>
+            <Card className={classes.root} >
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                    CardActions Example
+                        <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="h3">
+                        {restaurantName}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                    CardActions are just a flexbox component that wraps the children in
-                    8px of padding and 8px horizontal padding between children.
+                        Order created at: {createDate} <br/>
+                        Order finished at: {createDate == updateDate? "Not finished" : updateDate}<br/>
+                        Status: {props.order.status? "TAKE": "TOOK"}<br/>
                     </Typography>
                 </CardContent>
-                <CardActions disableSpacing>
-                    <Button size="small" color="primary">
-                    Primary
-                    </Button>
-                    <Button size="small" color="secondary">
-                    Secondary
-                    </Button>
-                </CardActions>
             </Card>
             {/* {props.i} */}
             {/* {props.order} */}
@@ -195,14 +195,15 @@ function OrderHistory(){
         return(
             <>
                 <div className="ProfileHeader">
-                    <h2 style={{ padding: "1vh 3vw 0 3vw", color: "#ba1851" }}>Your Order History: </h2>
+                    
                 </div>
                 <div className='row'>
-                    <div className='col-1'>Hi</div>
+                    <div className='col-1'></div>
                     <div className='col-10'>
+                        <h2 style={{ padding: "1vh 0 0 0", color: "#ba1851" }}>Your Order History: </h2>
                         {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
                     </div>
-                    <div className='col-1'>I love you</div>
+                    <div className='col-1'></div>
                     
                 </div>
             </>

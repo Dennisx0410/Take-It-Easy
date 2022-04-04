@@ -6,7 +6,7 @@
 .stickyBar{
     position: sticky;
     top: 0;
-    z-index:"10";
+    z-index:10;
 }
 
 a.header-title {
@@ -20,15 +20,14 @@ a.header-title {
 
 .points {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
+    font-size: 15px;
     color: #ffffff;
-    padding: 10px 0 0 0;
-    text-decoration:none;
-    
+    padding: 3px 5% 0 1vw;
+
 }
 
 .headerpadding{
-    padding: 10px 2px;
+    padding: 8px 2px;
 }
 a.header-title:link{
     display: inline;

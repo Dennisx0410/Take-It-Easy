@@ -44,7 +44,7 @@ class Suggestion extends React.Component {
     }
     render() {
         console.log("In suggestion");
-        console.log(this.props.suggestion);
+        // console.log(this.props.suggestion);
         return (
             <main>
                 <div className="row" >
@@ -84,7 +84,7 @@ class SuggestionCard extends React.Component{
         if (suggestion.profilePic != undefined){
             if (!this.state.skip){
                 let profilePic = suggestion.profilePic;
-                console.log(profilePic);
+                // console.log(profilePic);
                 let img = Buffer.from(profilePic.data).toString('base64');
                 this.setState( ()=>
                     {   
@@ -133,7 +133,7 @@ class Gallery extends React.Component {
     render() {
         let bufferFR = [];
         bufferFR = this.props.filteredRestaurants
-        console.log(this.props.filteredRestaurants);
+        // console.log(this.props.filteredRestaurants);
         return (
 
           <main className="container-fluid">
@@ -192,8 +192,8 @@ class FileCard extends React.Component{
 
         let index = this.props.i;
         let restaurant = this.props.restaurant;
-        console.log(restaurant);
-        console.log(restaurant.profilePic);
+        // console.log(restaurant);
+        // console.log(restaurant.profilePic);
 
         if (restaurant.profilePic != undefined){
             // if (!this.state.skip){
@@ -279,8 +279,8 @@ function Main(){
                         }}
                     );
                     const restaurantDetails = await response.json();
-                    console.log("Restaurants:")
-                    console.log(restaurantDetails);
+                    // console.log("Restaurants:")
+                    // console.log(restaurantDetails);
 
                     const availableR = restaurantDetails.filter((restaurants) => {
                         // const available = true;
@@ -323,8 +323,8 @@ function Main(){
         }
     }
     
-    console.log("Realthingy:");
-    console.log(REALrestaurantData);
+    // console.log("Realthingy:");
+    // console.log(REALrestaurantData);
 
     return (
           <>
