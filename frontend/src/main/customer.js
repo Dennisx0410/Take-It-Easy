@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 
 import {Buffer} from 'buffer';
+import { Avatar, Stack } from '@mui/material';
 
 function ChangePassword(){
     return(
@@ -94,7 +95,7 @@ function AccountInfo(){
                     <h3>Glad to meet you, {customerInfo.username}!</h3>
                     <h4>Your Information:</h4>
                     {/* profilePic */}
-                    <img src={`data:image/jpg; base64, ${ImgUrl}`}/><br/>
+                    <Avatar alt="picture" src={`data:image/jpeg; base64, ${ImgUrl}`} sx={{ width: 85, height: 85 }} />
                     Phone Number: <span style={{color: "black"}}>{customerInfo.phoneNum}</span><br/>
                     E-mail: <span style={{color: "black"}}>{customerInfo.email}</span><br/>
                     Points: <span style={{color: "black"}}>{customerInfo.points? customerInfo.points:0}</span><br/>

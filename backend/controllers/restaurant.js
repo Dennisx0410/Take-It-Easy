@@ -14,7 +14,7 @@ const { default: mongoose } = require("mongoose");
 
 // handle for image upload
 const upload = multer({
-    limits: {fileSize: 3 * 1024 * 1024}, // 3MB
+    limits: {fileSize: 5 * 1024 * 1024}, // 5MB
     fileFilter(req, file, cb) {
         console.log('file info:', file)
         if (file.mimetype == 'image/png' || file.mimetype == 'image/jpeg') { // jpg, jpeg, jfif are udner image/jpeg
@@ -202,8 +202,8 @@ module.exports = {
         try {
             // resize profile pic to 100x100px before storing to db
             let resizedBuf = await sharp(req.file.buffer).resize({
-                width: 100, 
-                height: 100
+                width: 500,
+                height: 500
             }).toBuffer();
             req.restaurant.profilePic = resizedBuf;
             await req.restaurant.save();

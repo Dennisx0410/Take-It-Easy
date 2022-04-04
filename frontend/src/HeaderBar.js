@@ -1,5 +1,5 @@
 import './HeaderBar.css';
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import {useMatch, useParams, useLocation} from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -7,9 +7,57 @@ import MaterialIcon, {colorPalette} from 'material-icons-react';
 import Dropdown from 'react-bootstrap/Dropdown'
 import { handleBreakpoints } from '@mui/system';
 import { useNavigate } from "react-router-dom";
+import { IconButton } from '@mui/material';
+import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
+
 
 function HeaderBar(props){
     const navigate = useNavigate();
+    const [notiVisibility, setnotiVisibility] = useState(false)
+    const [notifications, setNotifications] = useState([])
+    const [notificationList, setList] = useState()
+
+    useEffect(()=>{
+        fetchNotification()
+    }, []);
+
+
+    const fetchNotification = async () => {
+        const data = await fetch(`http://localhost:5000/notification/all`);
+        const notis = await data.json(); //Converting data to jason
+        setNotifications(notis) //Set State with fetched result
+    }
+
+
+    function handleOnClick(){
+        console.log("clicked")
+    }
+
+    useEffect(()=>{
+        //Listen to notificaition update
+        props.socket?.on('notification', doc =>{
+            setNotifications(prev=>[doc, ...prev])
+        })
+
+        return() =>{
+            //Off listener when dismount component
+            props.socket?.off('notification')
+        }
+    },[props.socket])
+
+    useEffect(()=>{
+        if (notifications.length > 0){
+            let notificationList = notifications.map(notification=>(
+                //Add React Element Here
+                <Dropdown.Item id={notification._id}>{notification.message}</Dropdown.Item>
+            ))
+            setList(notificationList)
+        }
+
+    },[notifications])
+
+    console.log(notifications)
+    console.log(notificationList)
     // {usertype, setToken}
     // const handleLogout = (logout) => {
     //     console.log("In handle logout");
@@ -75,8 +123,16 @@ function HeaderBar(props){
                                     <MaterialIcon icon="takeout_dining" color='#FFFFFF' />
                                 </Link>
                             </div>
-                            <div className='col-1 '>
-                               {/* Notification Button here */}
+                            <div className='col-1 headerpadding'>
+                               <Dropdown autoClose="outside">
+                                <DropdownToggle id="noti" className="bg-transparent btn-transparent">
+                                    <MaterialIcon icon="notifications" color='#FFFFFF' />
+                                    </DropdownToggle>
+                                    <Dropdown.Menu id="NotiContainer">
+                                    {notificationList}
+                                    </Dropdown.Menu>
+                                </Dropdown>
+
                             </div>
                             <div className='col-1 points'>
                                 <MaterialIcon icon="savings" color='#FFFFFF' />: {getPoint()}
@@ -94,7 +150,7 @@ function HeaderBar(props){
                                     {/* </Link> */}
                                     <Dropdown.Item onClick={() => navigate('/customer/history', { replace: true })}>Order History</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);}} >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=> {navigate('/'); props.setToken(undefined);}} >Logout</Dropdown.Item>
                                     {/* onClick={handleLogout(props.setToken)} */}
                                     </Dropdown.Menu>
                                 </Dropdown>

@@ -14,6 +14,7 @@ import Customer from './main/customer';
 import UserRestaurant from './main/user_restaurant';
 import Admin from './main/admin';
 import { useNavigate } from "react-router-dom";
+import { io} from "socket.io-client"
 
 function NoMatch() {
     const navigate = useNavigate();
@@ -33,6 +34,8 @@ function NoMatch() {
 function App(){
     const [token, setToken] = useState(null);
     const [userInfo, setUserInfo]= useState({});
+    const [socket, setSocket] = useState(null)
+
     //Try Fetch from sessionStorage
     useEffect(()=>{
         setToken(sessionStorage.getItem("token"))
@@ -40,32 +43,62 @@ function App(){
         let usertype = sessionStorage.getItem("usertype")
         setUserInfo({username, usertype})
     },[])
+
+    useEffect(()=>{
+        if (token != null){
+            setSocket(io("http://localhost:8080", {
+                query:{token}
+              }))
+        }
+      },[token])
+
+    useEffect(() =>{
+      socket?.on('connect', () =>{
+        console.log(`Client Connect to the Server with ID ${socket.id}`)})
+    },[socket])
+
+
     console.log(userInfo)
     if (token == null) {
-        if (userInfo == null) {
+        if (!['customer', 'restaurant', 'admin'].includes(userInfo.usertype)) {
             return (
                 <>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
-                            <Route path="/signup" element={<Signup setToken={setToken} setUserInfo={setUserInfo} />} />
-                            <Route path="*" element={<NoMatch/>} />
-                        </Routes>
-                    </BrowserRouter>
+                    <div className="row main">
+                        <div className="d-none d-md-block col-md-8 background">
+                            <img id="bgd" src={process.env.PUBLIC_URL+"food.jpeg"} />
+                        </div>
+                        <div className="col-md-4">
+                            <BrowserRouter>
+                                <Routes>
+                                    <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
+                                    <Route path="/signup" element={<Signup setToken={setToken} setUserInfo={setUserInfo} />} />
+                                    <Route path="*" element={<NoMatch/>} />
+                                </Routes>
+                            </BrowserRouter>
+                        </div>
+                    </div>
                 </>
             );
         }
         else {
             return (
                 <>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
-                            <Route path="/signup" element={<Signup setToken={setToken} setUserInfo={setUserInfo} />} />
-                            <Route path="/verification" element={<Verification setToken={setToken} userInfo={userInfo} />} />  
-                            <Route path="*" element={<NoMatch/>} />
-                        </Routes>
-                    </BrowserRouter>
+                    <div className="row main">
+                        <div className="d-none d-md-block col-md-8 background">
+                            <img id="bgd" src={process.env.PUBLIC_URL+"food.jpeg"} />
+                        </div>
+                        <div className="col-md-4">
+                            <BrowserRouter>
+                                <Routes>
+                                    <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
+                                    <Route path="/signup" element={<Signup setToken={setToken} setUserInfo={setUserInfo} />} />
+                                    <Route path="/verification" element={<Verification setToken={setToken} userInfo={userInfo} />} />  
+                                    <Route path="*" element={<NoMatch/>} />
+                                </Routes>
+                            </BrowserRouter>
+                        </div>
+                    </div>
+                
                 </>
             );
         }
@@ -100,7 +133,7 @@ function App(){
                     <div>
                         <BrowserRouter>
                             {/* Header Bar */}
-                            <HeaderBar usertype={usertype} setToken={setToken} />
+                            <HeaderBar usertype={usertype} setToken={setToken} socket={socket}/>
                             <Routes>
                                 <Route path="/" element={<Main />} />  
                                 {/* <Route path="/signup" element={<Main name="Take It Easy!"/>} />   */}
