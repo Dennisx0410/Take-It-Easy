@@ -12,9 +12,14 @@ import Restaurant from './main/restaurant';
 import HeaderBar from './HeaderBar';
 import Customer from './main/customer';
 import UserRestaurant from './main/user_restaurant';
+import Admin from './main/admin';
+import { useNavigate } from "react-router-dom";
 
 function NoMatch() {
+    const navigate = useNavigate();
     let location = useLocation();
+    console.log(location.pathname);
+    // navigate('/', { replace: true })
     return (
       <div>
         <h3>
@@ -79,8 +84,8 @@ function App(){
                             <HeaderBar usertype={usertype} setToken={setToken} />
                             <Routes> 
                                 <Route path="/" element={<UserRestaurant page="menu" />} />
-                                <Route path="/customer/profile" element={<UserRestaurant page="profile" />} />
-                                <Route path="/customer/history" element={<UserRestaurant page="history" />} />
+                                <Route path="/r/profile" element={<UserRestaurant page="profile" />} />
+                                <Route path="/r/history" element={<UserRestaurant page="history" />} />
                                 <Route path="*" element={<NoMatch/>} />
                             </Routes>
                         </BrowserRouter>
@@ -100,7 +105,27 @@ function App(){
                                 <Route path="/" element={<Main />} />  
                                 {/* <Route path="/signup" element={<Main name="Take It Easy!"/>} />   */}
                                 <Route path="/restaurant/:rid" element={<Restaurant />} />
-                                <Route path="/customer/:action" element={<Customer token={token} />} />
+                                <Route path="/customer/profile" element={<Customer action={"profile"} />} />
+                                <Route path="/customer/history" element={<Customer action={"history"} />} />
+                                <Route path="*" element={<NoMatch/>} />
+                            </Routes>
+                        </BrowserRouter>
+                    </div>
+                </>
+            );
+        }
+        else if (usertype == "admin"){
+            console.log("::::::"+usertype);
+            return (
+                <>
+                    <div>
+                        <BrowserRouter>
+                            {/* Header Bar */}
+                            <HeaderBar usertype={usertype} setToken={setToken} />
+                            <Routes>
+                                <Route path="/" element={<Admin page="orders"/>} />  
+                                <Route path="/userlist/customers" element={<Admin page="ULCustomer"/>} />  
+                                <Route path="/userlist/restaurants" element={<Admin page="ULRestaurant"/>} />  
                                 <Route path="*" element={<NoMatch/>} />
                             </Routes>
                         </BrowserRouter>

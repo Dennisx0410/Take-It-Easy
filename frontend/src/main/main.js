@@ -15,6 +15,7 @@ import { CardActionArea } from '@mui/material';
 import Box from '@mui/material/Box';
 import MaterialIcon, {colorPalette} from 'material-icons-react';
 import { display } from '@mui/system';
+import zIndex from '@mui/material/styles/zIndex';
 
 
 // import { useNavigate } from 'react-router-dom';
@@ -42,11 +43,16 @@ class Suggestion extends React.Component {
   render() {
       return (
             <main>
-                <div className="row">
+                <div className="row" >
                     <div className="col-1"></div>
                     <div className="col-10 align-self-start">
                         <h4 style={{padding: "5px 0 0 0"}}>Recommended For You</h4>
-                        <SuggestionCard/>
+                        <Box sx={{ display: 'flex', pt:1, pb:1}}>
+                            {suggested.map((suggestion,i)=>
+                                <SuggestionCard suggestion={suggestion} i={i} key={i}  />
+                            )}
+                        </Box>
+                        
                     </div>
                     <div className="col-1"></div>
                 </div>
@@ -64,28 +70,26 @@ class SuggestionCard extends React.Component{
         super(props);
     }
     render() {
+        let i = this.props.i;
+        let suggestion = this.props.suggestion;
         return (
-            <Box sx={{ display: 'flex', pt:1, pb:1 }}>
-                {suggested.map((suggestion,i)=>
-                    <Link to={"/restaurant/"+i}>
-                        <Card sx={{ display: 'flex' , ml: 2}}>
-                        <CardActionArea sx={{ display: 'flex' }}>
-                            <CardMedia
-                            component="img"
-                            height="100px"
-                            image = {process.env.PUBLIC_URL+suggestion.filename}
-                            alt={i}
-                            />
-                            <CardContent>
-                            <Typography gutterBottom variant="body" component="div">
-                                {suggestion.restaurantName+'\n'+suggest_type[i].remarks}
-                            </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        </Card>
-                    </Link>
-                )}
-            </Box>
+            <Link to={"/restaurant/"+i}>
+                <Card sx={{ display: 'flex' , ml: 2}}>
+                <CardActionArea sx={{ display: 'flex' }}>
+                    <CardMedia
+                    component="img"
+                    height="100px"
+                    image = {process.env.PUBLIC_URL+suggestion.filename}
+                    alt={i}
+                    />
+                    <CardContent >
+                    <Typography gutterBottom variant="body" component="div">
+                        {suggestion.restaurantName}{suggest_type[i].remarks}
+                    </Typography>
+                    </CardContent>
+                </CardActionArea>
+                </Card>
+            </Link>
         );
     }
 
@@ -179,13 +183,14 @@ class FileCard extends React.Component{
         //Render
         return (
             <Link to={"/restaurant/"+restaurant._id}>
-                <Card sx={{ width: "30%", display: "inline-block", ml:"2%",mt:"1%" , minHeight:"300px", 
+                <Card sx={{ width: "30%", display: "inline-block", ml:"2%",mt:"1%" , minHeight:"400px", 
                     transition: "transform 0.15s ease-in-out", "&:hover": { transform: "scale3d(1.05, 1.05, 1)"} }}
                     onMouseOver={(e) => this.handleMOver(index,e)} 
                     onMouseOut={(e) => this.handleMOut(index,e)} 
                     onClick={(e) => this.handleCLick(index,e)}>
                     <CardActionArea>
                         <CardMedia
+
                         component="img"
                         height="180px"
                         image={ restaurant.restaurantName == "adminDefault3AD"? process.env.PUBLIC_URL+restaurant.filename : process.env.PUBLIC_URL+"/food.jpeg"}
@@ -200,6 +205,7 @@ class FileCard extends React.Component{
                             <MaterialIcon icon="place" color='#000000'/>{restaurant.address}
                             { this.state.selected===index && 
                                 <> 
+                                <br></br>
                                 <br></br>
                                 <span className="card-text">
                                     <MaterialIcon icon="phone" color='#000000'/>
@@ -243,8 +249,8 @@ function Main(){
                     console.log(restaurantDetails);
 
                     const availableR = restaurantDetails.filter((restaurants) => {
-                        const available = true;
-                        // const available = restaurants.approved && restaurants.online;
+                        // const available = true;
+                        const available = restaurants.approved && restaurants.online;
                         return available;
                     });
                     
@@ -281,7 +287,7 @@ function Main(){
           <>
 
             <div className='Main'>
-                <Debug filteredRestaurants={filteredRestaurants}/>
+                {/* <Debug filteredRestaurants={filteredRestaurants}/> */}
                 <Suggestion />
                 <div style={{paddingTop: "10px"}}>
                     <SearchBar searchQ={searchQ} setSearchQ={setSearchQ}/>
