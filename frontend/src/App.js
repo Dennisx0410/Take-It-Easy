@@ -31,7 +31,7 @@ function NoMatch() {
 
 
 function App(){
-    const [token, setToken] = useState();
+    const [token, setToken] = useState(null);
     const [userInfo, setUserInfo]= useState({});
     //Try Fetch from sessionStorage
     useEffect(()=>{

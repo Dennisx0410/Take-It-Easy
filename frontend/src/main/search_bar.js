@@ -60,7 +60,7 @@ export default function SearchBar(props) {
                     <StyledInputBase
                         placeholder="Search…" 
                         inputProps={{ 'aria-label': 'search' }} 
-                        onChange={(e)=>{props.setSearchQ(e.target.value)}}
+                        onChange={(e)=>{props.setSearchQ(e.target.value);props.setRErender(true);}}
                     />
                 </Search>
             </div>
