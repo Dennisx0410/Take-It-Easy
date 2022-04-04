@@ -17,7 +17,7 @@ server port: `5000`
 
 [-Restaurant](#documentation-restaurant)
 
-[-Order](#documentation-restaurant)
+[-Order](#documentation-order)
 
 # Documentation (Customer)
 [Return to top](#backend)
