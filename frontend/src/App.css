@@ -19,7 +19,19 @@
     position: sticky;
     top: 0;
     height: 100vh;
+    animation: 2s slideInFromLeft;
     background-image: linear-gradient(to right, #567ace , #b9281d); 
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 100;
+  }
 }
 
 html, body {

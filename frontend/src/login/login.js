@@ -99,57 +99,56 @@ export default function Login(props) {
 
   return(
     <>
-        <div className="login-container">
-          <h1>Login</h1>
-          <hr className="header"></hr>
-            <form id="login-form" onSubmit={handleSubmit}>
-              <TextField
-                  select
-                  required
-                  id="usertype"
-                  name="usertype"
-                  defaultValue="customer"
-                  label={<Fragment><AccountCircle/> User type</Fragment>}
-                  onChange={handleUsertypeChange}
-                  sx={{width: 200, marginBottom: 3}}
-              >
-                  {usertypes.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                          <MaterialIconsReact icon={option.icon} /> {option.label}
-                      </MenuItem>
-                  ))}
-              </TextField>
-              <div className="row mb-3">
-                <div className="col-12">
-                  <label htmlFor="username" className="form-label">
-                    <i className="material-icons">edit</i>Username
-                  </label>
-                  <input type="text" className="form-control" id="username" name="username" pattern="^[a-zA-Z0-9_\\.]+$" title="Combinations of alphanumeric characters, full stop('.') and underscore('_') only" required/>
-                </div>
-                <div className="col-12">
-                  <label htmlFor="password" className="form-label">
-                    <i className="material-icons">password</i>Password
-                  </label>
-                  <div className="input-group">
-                    <input type={pwVisibility ? "text" : "password"} className="form-control" id="password" name="password" required/>
-                    <button type="button" className="material-icons input-group-text" onClick={() => setPwVisibility(!pwVisibility)}>{pwVisibility ? "visibility_off" : "visibility"}</button>
-                  </div>
+      <div className="login-container">
+        <h1>Login</h1>
+        <hr className="header"></hr>
+          <form id="login-form" onSubmit={handleSubmit}>
+            <TextField
+                select
+                required
+                id="usertype"
+                name="usertype"
+                defaultValue="customer"
+                label={<Fragment><AccountCircle/> User type</Fragment>}
+                onChange={handleUsertypeChange}
+                sx={{width: 200, marginBottom: 3}}
+            >
+                {usertypes.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                        <MaterialIconsReact icon={option.icon} /> {option.label}
+                    </MenuItem>
+                ))}
+            </TextField>
+            <div className="row mb-3">
+              <div className="col-12">
+                <label htmlFor="username" className="form-label">
+                  <i className="material-icons">edit</i>Username
+                </label>
+                <input type="text" className="form-control" id="username" name="username" pattern="^[a-zA-Z0-9_\\.]+$" title="Combinations of alphanumeric characters, full stop('.') and underscore('_') only" required/>
+              </div>
+              <div className="col-12">
+                <label htmlFor="password" className="form-label">
+                  <i className="material-icons">password</i>Password
+                </label>
+                <div className="input-group">
+                  <input type={pwVisibility ? "text" : "password"} className="form-control" id="password" name="password" required/>
+                  <button type="button" className="material-icons input-group-text" onClick={() => setPwVisibility(!pwVisibility)}>{pwVisibility ? "visibility_off" : "visibility"}</button>
                 </div>
               </div>
-              {  ['UserNotFound', 'InvalidPassword'].includes(loginStatus) ? 
-                  <Alert severity="error">
-                    Invalid username and password pair!
-                  </Alert> : <></> }
-              <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
+            </div>
+            {  ['UserNotFound', 'InvalidPassword'].includes(loginStatus) ? 
+                <Alert severity="error">
+                  Invalid username and password pair!
+                </Alert> : <></> }
+            <button type="submit" className="btn btn-primary">Submit</button>
+          </form>
           <div className='signup'>
             <hr className="header"></hr>
-            OR<br></br>
             <Link to="/signup" className='formattedLink' style={{textAlign: "center"}}>
               Click here to sign up
             </Link>
           </div>
-        </div>
+      </div>
     </>   
   )
 }

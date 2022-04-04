@@ -8,6 +8,12 @@ h1 {
     color: rgb(138, 5, 94);
 }
 
+button.btn {
+    border: 1px solid white;
+    background-color: rgb(138, 5, 94);
+    color: rgb(250, 240, 229);
+}
+
 hr.header {
     border: 1px solid darkslategrey;
 }
@@ -29,4 +35,16 @@ i {
 label {
     margin: auto 3px;
     vertical-align: middle;
+}
+
+.formattedLink:link{
+    display: inline;
+    color:#000000;
+    text-align: center;
+}
+
+.formattedLink:hover{
+    display: inline;
+    color:#000000;
+    text-align: center;
 }
