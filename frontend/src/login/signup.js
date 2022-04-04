@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import './signup.css';
 import { useNavigate } from 'react-router-dom';
+import { Alert, Avatar, MenuItem, Stack, TextField} from '@mui/material';
+import { AccountCircle } from '@mui/icons-material';
+import MaterialIconsReact from 'material-icons-react';
 
 async function signup(form, usertype) {
     return fetch(`http://localhost:5000/${usertype}/signup`, {
@@ -44,7 +47,7 @@ function Signup(props) {
     }
 
     const handleUsertypeChange = async e => {
-        let signupForm = e.target.form;
+        let signupForm = document.getElementById('signup-form');
         setFormUsertype(e.target.value);
 
         // reset form with warning and img preview
@@ -76,21 +79,34 @@ function Signup(props) {
         }
     }
 
+    const usertypes = [
+        {
+            value: 'customer',
+            label: 'customer', 
+            icon: 'person'
+        },
+        {
+            value: 'restaurant',
+            label: 'restaurant',
+            icon: 'restaurant'
+        }
+    ]
+
     const restaurantSignupContent = (
         <>
-        <div className="mb-3">
+        <div className="mb-2">
             <label htmlFor="restaurantName" className="form-label">
                 <i className="material-icons">store</i>Restaurant name
             </label>
             <input type="text" className="form-control" id="restaurantName" name="restaurantName" pattern="^[a-zA-Z0-9\u4e00-\u9fa5_ \\.]+$" title="Combinations of alphanumeric characters, 中文字, space, full stop('.') and underscore('_') only" required/>
         </div>
-        <div className="mb-3">
+        <div className="mb-2">
             <label htmlFor="address" className="form-label">
                 <i className="material-icons">place</i>Address
             </label>
             <input type="text" className="form-control" id="address" name="address" pattern="^[a-zA-Z0-9\u4e00-\u9fa5, \\.]+$" title="Combinations of alphanumeric characters, 中文字, space, full stop('.') and comma(',') only" required/>
         </div>
-        <div className="mb-3">
+        <div className="mb-2">
             <label htmlFor="licenseNum" className="form-label">
                 <i className="material-icons">tag</i>License number
             </label>
@@ -104,43 +120,33 @@ function Signup(props) {
             <div className="signup-container">
                 <h1>Signup</h1>
                 <hr className="header"></hr>
-                <form id="signup" onSubmit={handleSubmit}>
-                    <div>
-                        <label>
-                            <i className="material-icons">account_circle</i>User type
-                        </label>
-                        <div className="container" style={{width: "70%"}}>
-                            <div className="row" onChange={handleUsertypeChange}>
-                                <section className="col-12 col-sm-6">
-                                    <div className="mb-3 form-radio" style={{textAlign: 'center'}}>
-                                        <input className="form-check-input" type="radio" name="usertype" id="customer" value="customer" required/>
-                                        <label className="form-check-label" htmlFor="customer">
-                                            <i className="material-icons d-none d-lg-inline">person</i>
-                                            Customer
-                                        </label>
-                                    </div>
-                                </section>
-                                <section className="col-12 col-sm-6">
-                                    <div className="mb-3 form-radio" style={{textAlign: 'center'}}>
-                                        <input className="form-check-input" type="radio" name="usertype" id="restaurant" value="restaurant" required/>
-                                        <label className="form-check-label" htmlFor="restaurant">
-                                            <i className="material-icons d-none d-lg-inline">restaurant</i>Restaurant
-                                        </label>
-                                    </div>
-                                </section>
-                            </div> 
-                        </div>
-                    </div>
-                    <div className="row mb-3">
+                <form id="signup-form" onSubmit={handleSubmit}>
+                    <TextField
+                        select
+                        required
+                        id="usertype"
+                        name="usertype"
+                        // defaultValue="customer"
+                        label={<Fragment><AccountCircle/> User type</Fragment>}
+                        onChange={handleUsertypeChange}
+                        sx={{width: 200, marginBottom: 3}}
+                    >
+                        {usertypes.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                <MaterialIconsReact icon={option.icon} /> {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <div className="row mb-2">
                         <div className="col-12 col-md-6 d-inline-block">
                             <label htmlFor="username" className="form-label">
                                 <i className="material-icons">edit</i>Username
                             </label>
                             <input type="text" className="form-control" id="username" name="username" pattern="^[a-zA-Z0-9_\\.]+$" title="Combinations of alphanumeric characters, full stop('.') and underscore('_') only" required/>
-                            <p style={{color: "red", display: (signupStatus === 'UserAlreadyExisted') ? "block" : "none"}}> 
-                                <i className="material-icons">warning</i>
-                                User name aleady in used, please choose another username!
-                            </p>
+                            { signupStatus === 'UserAlreadyExisted' ? 
+                                <Alert severity="error">
+                                    User name aleady in used, please choose another username!
+                                </Alert> : <></> }
                         </div>
                         <div className="col-12 col-md-6 d-inline-block">
                             <label htmlFor="password" className="form-label">
@@ -152,7 +158,7 @@ function Signup(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="row mb-3">
+                    <div className="row mb-2">
                         <div className="col-12 col-md-6 d-inline-block">
                             <label htmlFor="email" className="form-label">
                                 <i className="material-icons">email</i>Email
@@ -167,23 +173,29 @@ function Signup(props) {
                         </div>
                     </div>
                     {formUsertype == "restaurant" ? restaurantSignupContent : ''}
-                    <div className="row mb-3">
-                        <section className="col-12 col-md-8">
+                    <div className="row mb-2">
+                        <section className="col-8">
                             <label htmlFor="profile" className="form-label">
                                 <i className="material-icons">add_photo_alternate</i>Profile
                             </label>
                             <input type="file" className="form-control" id="profile" name="profile" accept="image/jpeg, image/png" onChange={showPreview} placeholder="jpg/jepg/jfif/png" required/>
                         </section>
-                        <section className="col-4 d-none d-md-inline">
-                            <div className="preview" >
-                                <img src={imgUrl} id="profile-preview" alt="profile"></img>
-                            </div>
+                        <section className="col-4">
+                            <Stack
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                                spacing={2}
+                                height="100%"
+                            >
+                            <Avatar alt="picture" src={imgUrl} sx={{ width: 85, height: 85 }} />
+                            </Stack>
                         </section>
                     </div>
-                    <p style={{color: "red", display: (signupStatus === 'FileExtensionError') ? "block" : "none"}}> 
-                        <i className="material-icons">warning</i>
-                        Please upload again with jpg/jepg/jfif/png format
-                    </p>
+                    { signupStatus === "FileExtensionError" ? 
+                        <Alert severity="error">
+                            Please upload again with jpg/jepg/jfif/png format
+                        </Alert> : <></> }
                     
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>

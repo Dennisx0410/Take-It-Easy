@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './verification.css';
 import { useNavigate } from 'react-router-dom';
+import { Alert } from '@mui/material';
 
 async function verify(username, otp) {
     return fetch(`http://localhost:5000/customer/activate`, {
@@ -23,8 +24,6 @@ async function reverify(username) {
 function Verification(props) {
     const [verifyStatus, setVerifyStatus] = useState('');
     const navigate = useNavigate();
-
-    console.log(props.userInfo);
 
     const handleOtpSubmit = async e => {
         e.preventDefault();
@@ -60,47 +59,46 @@ function Verification(props) {
         <>
             <div className="verification-container">
                 <h1>Verification</h1>
-                <hr classname="header"></hr>
+                <hr className="header"></hr>
                 <p>The 6-digit verification code has been sent to your registered email, please enter the verification code to activate your account within 2 minutes.</p>
                 <form onSubmit={handleOtpSubmit}>
                     <div className="container">
-                        <div className="row mb-3">
+                        <div className="row mb-2">
                             <div className="col-12 col-md-8 d-block">
                                 <input type="text" className="form-control" id="otp" name="otp" pattern="[0-9]{6}" title="6-digit code" required/>
                             </div>
-
                             <div className="col-12 col-md-4 d-block">
                                 <button type="submit" className="btn btn-primary">Submit</button>
                             </div>
                         </div>
-                        <p style={{color: "red", display: (verifyStatus === 'InvalidOtp') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            Wrong verification code!
-                        </p>
-                        <p style={{color: "red", display: (verifyStatus === 'AlreadyActivated') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            You have already activated your account, please directly login to your account!
-                        </p>
-                        <p style={{color: "red", display: (verifyStatus === 'OtpNotFound') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            User not found!
-                        </p>
-                        <p style={{color: "red", display: (verifyStatus === 'OtpExpired') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            The verification code has been expired, please request for another verification code.
-                        </p>
-                        <p style={{color: "red", display: (verifyStatus === 'TooMuchTrials') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            You have made too much wrong trials, please request for another verification code.
-                        </p>
-                        <p style={{color: "red", display: (verifyStatus === 'PendingOtp') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            There is an unexpired verification code in your mailbox, please enter that code.
-                        </p>
-                        <p style={{color: "blue", display: (verifyStatus === 'VerificationEmailSent') ? "block" : "none"}}> 
-                            <i className="material-icons">warning</i>
-                            New verification code sent, please check your mailbox.
-                        </p>
+                        { verifyStatus === 'InvalidOtp' ? 
+                            <Alert severity="error">
+                                Wrong verification code!
+                            </Alert> : <></> }
+                        { verifyStatus === 'AlreadyActivated' ? 
+                            <Alert severity="error">
+                                You have already activated your account, please directly login to your account!
+                            </Alert> : <></> }
+                        { verifyStatus === 'OtpNotFound' ? 
+                            <Alert severity="error">
+                                User not found!
+                            </Alert> : <></> }
+                        { verifyStatus === 'OtpExpired' ? 
+                            <Alert severity="error">
+                                The verification code has been expired, please request for another verification code.
+                            </Alert> : <></> }
+                        { verifyStatus === 'TooMuchTrials' ? 
+                            <Alert severity="error">
+                                You have made too much wrong trials, please request for another verification code.
+                            </Alert> : <></> }
+                        { verifyStatus === 'PendingOtp' ? 
+                            <Alert severity="error">
+                                There is an unexpired verification code in your mailbox, please enter that code.
+                            </Alert> : <></> }
+                        { verifyStatus === 'VerificationEmailSent' ? 
+                            <Alert severity="success">
+                                New verification code sent, please check your mailbox.
+                            </Alert> : <></> }
                         <a className="formattedLink" onClick={handleReverify}>I dont receive a verification code/please re-issue another code for me</a>
                     </div>
                 </form>

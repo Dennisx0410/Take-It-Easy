@@ -1,10 +1,7 @@
 .signup-container {
-    width: 50%;
-    border: 3px solid darkblue;
-    margin: 10px auto;
-    padding: 20px; 
+    margin: auto;
+    padding: 10px 20px; 
     font-weight: bold;
-    background-color: lightgrey;
 }
 
 hr.header {
@@ -18,14 +15,6 @@ hr.header {
     height: 8vw;
     background-color: whitesmoke;
     text-align: center;
-}
-
-#profile-preview {
-    height: 100%;
-}
-
-#customer, #restaurant, #profile {
-    vertical-align: middle;
 }
 
 i {
