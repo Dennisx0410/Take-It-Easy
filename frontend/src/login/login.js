@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './login.css';
 import { Link, useNavigate } from 'react-router-dom';
-import Socketapi from '../socketIO/socket_api.js'
 
 // send login request to get token 
 async function loginAttempt(input, usertype) {
@@ -62,7 +61,6 @@ export default function Login(props) {
       sessionStorage.setItem("token", res.token)       //Storing Token in Session Storage
       sessionStorage.setItem("username", username)
       sessionStorage.setItem("usertype", usertype)
-      Socketapi.connect();                               //Connect to server after successfully login
       console.log(usertype);
     }
     else {

@@ -14,6 +14,7 @@ import Customer from './main/customer';
 import UserRestaurant from './main/user_restaurant';
 import Admin from './main/admin';
 import { useNavigate } from "react-router-dom";
+import { io} from "socket.io-client"
 
 function NoMatch() {
     const navigate = useNavigate();
@@ -33,6 +34,8 @@ function NoMatch() {
 function App(){
     const [token, setToken] = useState();
     const [userInfo, setUserInfo]= useState({});
+    const [socket, setSocket] = useState(null)
+
     //Try Fetch from sessionStorage
     useEffect(()=>{
         setToken(sessionStorage.getItem("token"))
@@ -40,7 +43,21 @@ function App(){
         let usertype = sessionStorage.getItem("usertype")
         setUserInfo({username, usertype})
     },[])
-    console.log(userInfo)
+
+    useEffect(()=>{
+        if (token != null){
+            setSocket(io("http://localhost:8080", {
+                query:{token}
+              }))
+        }
+      },[token])
+
+    useEffect(() =>{
+      socket?.on('connect', () =>{
+        console.log(`Client Connect to the Server with ID ${socket.id}`)})
+    },[socket])
+
+
     if (token == null) {
         if (userInfo == null) {
             return (
@@ -100,7 +117,7 @@ function App(){
                     <div>
                         <BrowserRouter>
                             {/* Header Bar */}
-                            <HeaderBar usertype={usertype} setToken={setToken} />
+                            <HeaderBar usertype={usertype} setToken={setToken} socket={socket}/>
                             <Routes>
                                 <Route path="/" element={<Main />} />  
                                 {/* <Route path="/signup" element={<Main name="Take It Easy!"/>} />   */}
