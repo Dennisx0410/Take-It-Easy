@@ -98,13 +98,17 @@ function Signup(props) {
             <label htmlFor="restaurantName" className="form-label">
                 <i className="material-icons">store</i>Restaurant name
             </label>
-            <input type="text" className="form-control" id="restaurantName" name="restaurantName" pattern="^[a-zA-Z0-9\u4e00-\u9fa5_ \\.]+$" title="Combinations of alphanumeric characters, 中文字, space, full stop('.') and underscore('_') only" required/>
+            <input type="text" className="form-control" id="restaurantName" name="restaurantName" 
+                pattern="^[a-zA-Z0-9\u4e00-\u9fa5_ \\.]+$" 
+                title="Combinations of alphanumeric characters, 中文字, space, full stop('.') and underscore('_') only" required/>
         </div>
         <div className="mb-2">
             <label htmlFor="address" className="form-label">
                 <i className="material-icons">place</i>Address
             </label>
-            <input type="text" className="form-control" id="address" name="address" pattern="^[a-zA-Z0-9\u4e00-\u9fa5, \\.]+$" title="Combinations of alphanumeric characters, 中文字, space, full stop('.') and comma(',') only" required/>
+            <input type="text" className="form-control" id="address" name="address" 
+                pattern="^[a-zA-Z0-9\u4e00-\u9fa5, \\.]+$" 
+                title="Combinations of alphanumeric characters, 中文字, space, full stop('.') and comma(',') only" required/>
         </div>
         <div className="mb-2">
             <label htmlFor="licenseNum" className="form-label">
@@ -153,7 +157,7 @@ function Signup(props) {
                                 <i className="material-icons">password</i>Password
                             </label>
                             <div className="input-group">
-                                <input type={pwVisibility ? "text" : "password"} className="form-control" id="password" name="password" required/>
+                                <input type={pwVisibility ? "text" : "password"} className="form-control" id="password" name="password" pattern="^.{8,}$" title="length should be longer than 8 characters" required/>
                                 <button type="button" className="material-icons input-group-text" onClick={() => setPwVisibility(!pwVisibility)}>{pwVisibility ? "visibility_off" : "visibility"}</button>
                             </div>
                         </div>
@@ -188,7 +192,7 @@ function Signup(props) {
                                 spacing={2}
                                 height="100%"
                             >
-                            <Avatar alt="picture" src={imgUrl} sx={{ width: 85, height: 85 }} />
+                                <Avatar alt="picture" src={imgUrl} sx={{ width: 85, height: 85 }} />
                             </Stack>
                         </section>
                     </div>
