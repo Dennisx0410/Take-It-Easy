@@ -13,7 +13,7 @@ const res = require('express/lib/response');
 
 // handle for image upload
 const upload = multer({
-    limits: {fileSize: 3 * 1024 * 1024}, // 3MB
+    limits: {fileSize: 5 * 1024 * 1024}, // 5MB
     fileFilter(req, file, cb) {
         console.log('file info:', file)
         if (file.mimetype == 'image/png' || file.mimetype == 'image/jpeg') { // jpg, jpeg, jfif are udner image/jpeg

@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import './login.css';
 import { Link, useNavigate } from 'react-router-dom';
+import Socketapi from '../socketIO/socket_api.js'
+import { Alert, MenuItem, TextField } from '@mui/material';
+import { AccountCircle } from '@mui/icons-material';
+import MaterialIconsReact from 'material-icons-react';
 
 // send login request to get token 
 async function loginAttempt(input, usertype) {
@@ -35,16 +39,6 @@ export default function Login(props) {
     console.log(username);
     console.log(usertype);
     console.log(props.setToken);
-    // if (username == ""){
-    //   console.log("Blank Username");
-    //   invalid_message = true;
-    //   return;
-    // }
-    // if (password == ""){
-    //   console.log("Blank Password");
-    //   invalid_message = true;
-    //   return;
-    // }
     props.setUserInfo({
         username: formData.get('username'),
         usertype: formData.get('usertype')
@@ -74,49 +68,58 @@ export default function Login(props) {
         console.log('account not approved!');
         navigate('/verification');
       }
-      // invalid_message = true;
     }
   }
+
+    const handleUsertypeChange = async e => {
+      let loginForm = document.getElementById('login-form');
+
+      loginForm.reset();
+
+      // reset choice after reset form
+      loginForm.usertype.value = e.target.value;
+    }
   
+  const usertypes = [
+    {
+      value: 'customer',
+      label: 'customer', 
+      icon: 'person'
+    },
+    {
+      value: 'restaurant',
+      label: 'restaurant',
+      icon: 'restaurant'
+    },
+    {
+      value: 'admin',
+      label: 'admin',
+      icon: 'manage_accounts'
+    }
+  ]
+
   return(
     <>
-    <div className="row" style={{width: "100%"}}>
-      <div className="col-md-9 background">
-        <img src={process.env.PUBLIC_URL+"food.jpeg"} className="w-100" />
-      </div>
-      <div className="col-md-3">
-        <div className="container">
+        <div className="login-container">
           <h1>Login</h1>
           <hr className="header"></hr>
-            <form id="login" onSubmit={handleSubmit}>
-              <div>
-                <label>
-                  <i className="material-icons">account_circle</i>User type
-                </label>
-                <div className="container">
-                  <div className="row">
-                    <div className="mb-3 form-radio" style={{textAlign: ''}}>
-                      <input className="form-check-input" type="radio" name="usertype" id="customer" value="customer" required/>
-                      <label className="form-check-label" htmlFor="customer">
-                        <i className="material-icons d-none d-lg-inline">person</i>
-                        Customer
-                      </label>
-                    </div>
-                    <div className="mb-3 form-radio" style={{textAlign: ''}}>
-                      <input className="form-check-input" type="radio" name="usertype" id="restaurant" value="restaurant" required/>
-                      <label className="form-check-label" htmlFor="restaurant">
-                        <i className="material-icons d-none d-lg-inline">restaurant</i>Restaurant
-                      </label>
-                    </div>
-                    <div className="mb-3 form-radio" style={{textAlign: ''}}>
-                      <input className="form-check-input" type="radio" name="usertype" id="admin" value="admin" required/>
-                      <label className="form-check-label" htmlFor="admin">
-                        <i className="material-icons d-none d-lg-inline">manage_accounts</i>Admin
-                      </label>
-                    </div>
-                  </div> 
-                </div>
-              </div>
+            <form id="login-form" onSubmit={handleSubmit}>
+              <TextField
+                  select
+                  required
+                  id="usertype"
+                  name="usertype"
+                  defaultValue="customer"
+                  label={<Fragment><AccountCircle/> User type</Fragment>}
+                  onChange={handleUsertypeChange}
+                  sx={{width: 200, marginBottom: 3}}
+              >
+                  {usertypes.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                          <MaterialIconsReact icon={option.icon} /> {option.label}
+                      </MenuItem>
+                  ))}
+              </TextField>
               <div className="row mb-3">
                 <div className="col-12">
                   <label htmlFor="username" className="form-label">
@@ -134,42 +137,13 @@ export default function Login(props) {
                   </div>
                 </div>
               </div>
-              <p style={{color: "red", display: ['UserNotFound', 'InvalidPassword'].includes(loginStatus) ? "block" : "none"}}> 
-                <i className="material-icons">warning</i>
-                Invalid username and password pair!
-              </p>
+              {  ['UserNotFound', 'InvalidPassword'].includes(loginStatus) ? 
+                  <Alert severity="error">
+                    Invalid username and password pair!
+                  </Alert> : <></> }
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
-
-          {/* <form onSubmit={handleSubmit}>
-            <input className="form-check-input" 
-            type="radio" name="usertype" id="customer" value="customer" required/>
-            <label className="form-check-label" htmlFor="customer">
-              customer
-            </label>
-              <span>&nbsp;&nbsp;&nbsp;</span>
-            <input className="form-check-input" 
-            type="radio" name="usertype" id="restaurant" value="restaurant" required/>
-            <label className="form-check-label" htmlFor="restaurant">
-              restaurant
-            </label>
-              <br></br>
-            <label>
-              <p>Username</p>
-              <input id='login-username' type="text" name="username" />
-            </label>
-            <br></br>
-            <label>
-              <p>Password</p>
-              <input id='login-password' type="password" name="password" />
-            </label>
-            <div>
-              <button type="submit">Submit</button>
-            </div>
-          </form> */}
           <div className='signup'>
-            {/* {invalid_message} */}
-            {/* <span style={{color: "red"}}>{invalid_message == true? "Invalid Username/Password":""}</span> */}
             <hr className="header"></hr>
             OR<br></br>
             <Link to="/signup" className='formattedLink' style={{textAlign: "center"}}>
@@ -177,8 +151,6 @@ export default function Login(props) {
             </Link>
           </div>
         </div>
-      </div>
-    </div>
     </>   
   )
 }

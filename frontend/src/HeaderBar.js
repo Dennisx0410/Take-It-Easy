@@ -150,7 +150,7 @@ function HeaderBar(props){
                                     {/* </Link> */}
                                     <Dropdown.Item onClick={() => navigate('/customer/history', { replace: true })}>Order History</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);}} >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=> {navigate('/'); props.setToken(undefined);}} >Logout</Dropdown.Item>
                                     {/* onClick={handleLogout(props.setToken)} */}
                                     </Dropdown.Menu>
                                 </Dropdown>

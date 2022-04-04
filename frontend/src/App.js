@@ -58,31 +58,47 @@ function App(){
     },[socket])
 
 
+    console.log(userInfo)
     if (token == null) {
-        if (userInfo == null) {
+        if (!['customer', 'restaurant', 'admin'].includes(userInfo.usertype)) {
             return (
                 <>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
-                            <Route path="/signup" element={<Signup setToken={setToken} setUserInfo={setUserInfo} />} />
-                            <Route path="*" element={<NoMatch/>} />
-                        </Routes>
-                    </BrowserRouter>
+                    <div className="row main">
+                        <div className="d-none d-md-block col-md-8 background">
+                            <img id="bgd" src={process.env.PUBLIC_URL+"food.jpeg"} />
+                        </div>
+                        <div className="col-md-4">
+                            <BrowserRouter>
+                                <Routes>
+                                    <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
+                                    <Route path="/signup" element={<Signup setToken={setToken} setUserInfo={setUserInfo} />} />
+                                    <Route path="*" element={<NoMatch/>} />
+                                </Routes>
+                            </BrowserRouter>
+                        </div>
+                    </div>
                 </>
             );
         }
         else {
             return (
                 <>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
-                            <Route path="/signup" element={<Signup setToken={setToken} setUserInfo={setUserInfo} />} />
-                            <Route path="/verification" element={<Verification setToken={setToken} userInfo={userInfo} />} />  
-                            <Route path="*" element={<NoMatch/>} />
-                        </Routes>
-                    </BrowserRouter>
+                    <div className="row main">
+                        <div className="d-none d-md-block col-md-8 background">
+                            <img id="bgd" src={process.env.PUBLIC_URL+"food.jpeg"} />
+                        </div>
+                        <div className="col-md-4">
+                            <BrowserRouter>
+                                <Routes>
+                                    <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
+                                    <Route path="/signup" element={<Signup setToken={setToken} setUserInfo={setUserInfo} />} />
+                                    <Route path="/verification" element={<Verification setToken={setToken} userInfo={userInfo} />} />  
+                                    <Route path="*" element={<NoMatch/>} />
+                                </Routes>
+                            </BrowserRouter>
+                        </div>
+                    </div>
+                
                 </>
             );
         }

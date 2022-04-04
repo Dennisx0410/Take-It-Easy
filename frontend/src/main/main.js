@@ -159,7 +159,8 @@ class FileCard extends React.Component{
         super(props);
         this.state = { 
             selected: -1,
-            ImgUrl: ''
+            ImgUrl: '',
+            skip: false
         };
     }
     render() {
@@ -167,34 +168,38 @@ class FileCard extends React.Component{
         let index = this.props.i;
         let restaurant = this.props.restaurant;
         console.log(restaurant);
-        
-        // console.log(this.state.ImgUrl);
-        if (restaurant.restaurantName != "adminDefault3AD"){
-        
-            let profilePic = restaurant.profilePic;
-            // console.log(profilePic);
-            let img = Buffer.from(profilePic.data).toString('base64');
-            // this.loadImage(img);
+        console.log(restaurant.profilePic);
+
+        if (restaurant.profilePic != undefined){
+            if (!this.state.skip){
+                let profilePic = restaurant.profilePic;
+                console.log(profilePic);
+                let img = Buffer.from(profilePic.data).toString('base64');
+                this.setState( ()=>
+                    {   
+                        return { 
+                            ImgUrl: img,
+                            skip: true
+                        }
+                    }
+                );
+            }
+                
         }
-        else{
-        //     console.log("default");
-        //     // this.setState(()=>{ return {ImgUrl: process.env.PUBLIC_URL+restaurant.filename }})
-        }
+
         //Render
         return (
             <Link to={"/restaurant/"+restaurant._id}>
-                <Card sx={{ width: "30%", display: "inline-block", ml:"2%",mt:"1%" , minHeight:"400px", 
+                <Card sx={{ width: "30%", display: "inline-block", ml:"2%",mt:"1%" , minHeight:"350px", 
                     transition: "transform 0.15s ease-in-out", "&:hover": { transform: "scale3d(1.05, 1.05, 1)"} }}
                     onMouseOver={(e) => this.handleMOver(index,e)} 
                     onMouseOut={(e) => this.handleMOut(index,e)} 
                     onClick={(e) => this.handleCLick(index,e)}>
                     <CardActionArea>
                         <CardMedia
-
                         component="img"
                         height="180px"
-                        image={ restaurant.restaurantName == "adminDefault3AD"? process.env.PUBLIC_URL+restaurant.filename : process.env.PUBLIC_URL+"/food.jpeg"}
-                        // `data:image/jpg; base64, ${this.state.ImgUrl}`}
+                        image={ restaurant.restaurantName == "adminDefault3AD"? process.env.PUBLIC_URL+restaurant.filename : `data:image/jpg; base64, ${this.state.ImgUrl}`}
                         alt={restaurant.restaurantName}
                         />
                         <CardContent>
