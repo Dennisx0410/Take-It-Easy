@@ -18,7 +18,7 @@ const customerSchema = new Schema({
     phoneNum : String,
     profilePic : Buffer,
     email : {type: String, required: true},
-    point : Number,
+    point : {type: Number, default: 10},
     lastLogin : Date,
     online : {type: Boolean, default: false}, // true: new token is needed as (old token expired) or (old token not expired but user logged out)
     activated: {type: Boolean, default: false}

@@ -140,7 +140,7 @@ export default function Login(props) {
                 <Alert severity="error">
                   Invalid username and password pair!
                 </Alert> : <></> }
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="submit" className="btn">Submit</button>
           </form>
           <div className='signup'>
             <hr className="header"></hr>

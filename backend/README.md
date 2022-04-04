@@ -91,18 +91,22 @@ POST /customer/signin
 - `UserNotFound`
 - `InvalidPassword`
 
-## Update Account Info 
-**Not implement yet**
+## Change password
 #### URL
 ```
-update /customer/data
+update /customer/password
 ```
 #### Header
-- `Content-type: application/json`
+- `Authorization: Bearer <token>`
 #### Body
-- **not decided yet**
+- `passwordOld`
+- `passwordNew`
 #### Return(json)
-- **not decided yet**
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `InvalidPassword`
+- `SuccessfullyChangedPassword`
 
 ## Get customer data
 #### URL
