@@ -60,6 +60,8 @@ export default function Login(props) {
       console.log('successfully login');
       props.setToken(res.token);
       sessionStorage.setItem("token", res.token)       //Storing Token in Session Storage
+      sessionStorage.setItem("username", username)
+      sessionStorage.setItem("usertype", usertype)
       Socketapi.connect();                               //Connect to server after successfully login
       console.log(usertype);
     }

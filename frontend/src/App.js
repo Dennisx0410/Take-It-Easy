@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {useMatch, useParams, useLocation} from 'react-router-dom';
@@ -29,11 +29,20 @@ function NoMatch() {
     );
 }
 
+
 function App(){
     const [token, setToken] = useState();
-    const [userInfo, setUserInfo]= useState();
-    if (token === undefined) {
-        if (userInfo === undefined) {
+    const [userInfo, setUserInfo]= useState({});
+    //Try Fetch from sessionStorage
+    useEffect(()=>{
+        setToken(sessionStorage.getItem("token"))
+        let username = sessionStorage.getItem("username")
+        let usertype = sessionStorage.getItem("usertype")
+        setUserInfo({username, usertype})
+    },[])
+    console.log(userInfo)
+    if (token == null) {
+        if (userInfo == null) {
             return (
                 <>
                     <BrowserRouter>
