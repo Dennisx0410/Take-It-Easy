@@ -39,6 +39,9 @@ function Verification(props) {
         if (res.token != null) {
             navigate('/');
             props.setToken(res.token);
+            sessionStorage.setItem("token",res.token)
+            sessionStorage.setItem("usertype", "customer")
+            sessionStorage.setItem("username", props.userInfo.username)
         }
         else {
             setVerifyStatus(res.name); 
