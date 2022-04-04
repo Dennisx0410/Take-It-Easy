@@ -1,67 +1,203 @@
 import './customer.css';
-import React, { useState } from 'react';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import React from 'react';
+import { useState, useEffect  } from 'react';
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {useMatch, useParams, useLocation} from 'react-router-dom';
-import ReactDOM from 'react-dom';
-import HeaderBar from '../HeaderBar';
-import Card from 'react-bootstrap/Card'
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
+import Box from '@mui/material/Box';
+import {Buffer} from 'buffer';
 
-class AccountInfo extends React.Component{
+function ChangePassword(){
+    return(
+        <>
+        </>
+    );
+}
+
+function AccountInfo(){
+    const [customerInfo, setCustomerInfo] = useState({});
+    
+    const PREFIX='http://localhost:5000';
+    
+    useEffect(() => {
+        const url_d = PREFIX+'/customer/data';
+        const fetchData = async () => {
+          try {
+            const response = await fetch(
+                url_d, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                }}
+            );
+            const customer_info = await response.json();
+            setCustomerInfo(customer_info);
+            console.log(customer_info);
+
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+
+        // const url_p = PREFIX+'/customer/profilePic';
+        // const fetchCustomerProfilepic = async () => {
+        //     try {
+        //       const response = await fetch(
+        //           url_p, {
+        //           method: 'GET',
+        //           headers: {
+        //               'Authorization': 'Bearer '+sessionStorage.token
+        //           }}
+        //       );
+        //       const json = await response.json();
+        //       setRestaurants(JSON.stringify(json[rid]));
+        //       console.log(json);
+        //     } catch (error) {
+        //       console.log("error", error);
+        //     }
+        // };
+        // fetchCustomerProfilepic();
+        fetchData();
+    }, []);
+
+    //load profile pic
+        const [ImgUrl, setImgUrl] = useState();
+        // let profilePic = customerInfo.profilePic;
+        // // console.log(profilePic);
+        // let img = Buffer.from(profilePic.data).toString('base64');
+        // this.loadImage(img);
+        // setImgUrl(img);
+
+    return(
+        <>
+            <div className="ProfileHeader">
+                <h2 style={{ padding: "1vh 3vw 0 3vw", color: "" }}>Welcome!</h2>
+            </div>
+            <div className='row'>
+                <div className='col-1'></div>
+                <div className='col-10'>
+                    <h3>Glad to meet you, {customerInfo.username}!</h3>
+                    <h4>Your Information:</h4>
+                    {/* profilePic */}
+                    {/* <image src={`data:image/jpg; base64, ${ImgUrl}`}></image> */}
+                    Phone Number: <span style={{color: "black"}}>{customerInfo.phoneNum}</span><br/>
+                    E-mail: <span style={{color: "black"}}>{customerInfo.email}</span><br/>
+                    Points: <span style={{color: "black"}}>{customerInfo.points? customerInfo.points:0}</span><br/>
+                    <ChangePassword/>
+                </div>
+                <div className='col-1'></div>
+            </div>
+            
+        </>
+        
+    );
+
+}
+
+function Order(props){
+    console.log("In order");
+    console.log(props);
+    return(
+        <>
+            {/* {props.i} */}
+            {/* {props.order} */}
+            
+        </>
+        
+    );
+}
+
+// /order/fetchByCustomer
+function OrderHistory(){
+    const [orderHistory, setOrderHistory] = useState([]);
+    
+    const PREFIX='http://localhost:5000';
+    useEffect(() => {
+        const url_d = PREFIX+'/order/fetchByCustomer';
+        const fetchOrder= async () => {
+          try {
+            const response = await fetch(
+                url_d, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                }}
+            );
+            const order_history = await response.json();
+            setOrderHistory(order_history);
+            console.log(order_history);
+
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+        fetchOrder();
+    }, []);
+
+    if (orderHistory == []){
+        console.log("Hi");
+        return(
+            <>
+                <div className="ProfileHeader">
+                    <h2>Your Order History:</h2>
+                </div>
+                <div>
+                    Loading...
+                </div>
+            </>
+            
+        );
+    }
+    else{
+        return(
+            <>
+                <div className="ProfileHeader">
+                    <h2>Your Order History:</h2>
+                </div>
+                <div>
+                    {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
+                </div>
+            </>
+            
+        );
+    }
     
 }
 
-class OrderHistory extends React.Component{
-    render(){
-        return(
-            <Card style={{ width: '100%' }}>
-                <Card.Body>
-                    <Card.Title></Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                    <Card.Text>
-                    Some quick example text to build on the card title and make up the bulk of
-                    the card's content.
-                    </Card.Text>
-                    <Card.Link href="#">Card Link</Card.Link>
-                    <Card.Link href="#">Another Link</Card.Link>
-                </Card.Body>
-            </Card>
-        );
-    }
-}
-
 class Customer extends React.Component{
+    constructor(props) {
+        super(props);
+    }
     render() {
-        const { action } = this.props.match.params;
-        if (action == "profile"){
+        
+        if (this.props.action == "profile"){
             return(
-                <>
-                    <div className="ProfileHeader">
-                        <h1>Welcome</h1>
+                <>  <div className='userContent'>
+                        <AccountInfo/>
                     </div>
-                    <AccountInfo token={this.props.token}></AccountInfo>
                 </>
                 
             );
         }
-        else if (action ==  "history"){
+        else if (this.props.action ==  "history"){
             return(
                 <>
-                    <div className="ProfileHeader">
-                        <h1>Welcome</h1>
+                    <div className='userContent'>
+                        <OrderHistory/>
                     </div>
-                    <OrderHistory token={this.props.token}></OrderHistory>
+                    
                 </>
-                
             );
         }
         else{
             return(
                 <>
-                    <div className="ProfileHeader">
-                        <h1>Welcome</h1>
-                    </div>
-                    <AccountInfo token={this.props.token}></AccountInfo>
+                    <AccountInfo/>
                 </>
                 
             );
