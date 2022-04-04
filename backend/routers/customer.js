@@ -10,7 +10,7 @@ app.post("/signup", custCtrler.uploadProfilePic, custCtrler.addCustomer, custCtr
 app.post('/activate', custCtrler.verifyOTP, custCtrler.activateAccount); 
 app.post('/reverify', verifyEmail); 
 app.post('/signin', custCtrler.login, verifyEmail);
-app.update('/password', verifyToken, changePw); 
+app.post('/changePw', verifyToken, changePw); 
 app.get('/data', verifyToken, custCtrler.getCustomerData); 
 app.post('/logout', verifyToken, custCtrler.logout);
 app.post('/profilePic', verifyToken, custCtrler.uploadProfilePic, custCtrler.setProfilePic, (req, res) => {

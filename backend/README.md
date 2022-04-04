@@ -94,7 +94,7 @@ POST /customer/signin
 ## Change password
 #### URL
 ```
-update /customer/password
+POST /customer/changePw
 ```
 #### Header
 - `Authorization: Bearer <token>`
