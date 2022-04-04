@@ -52,8 +52,8 @@ function HeaderBar(props){
     useEffect(()=>{
         if (notifications.length > 0){
             let notificationList = notifications.map(notification=>(
-                //Add React Element Here
-                <Dropdown.Item id={notification._id} >
+                //Add React Element Here             
+                <Dropdown.Item id={notification._id}>
                 {notification.message}
                 <div className="notiTime" align="right">{new Date(notification.createdAt).toLocaleString()}</div>
                 </Dropdown.Item>
@@ -134,6 +134,7 @@ function HeaderBar(props){
                                     <MaterialIcon icon="notifications" color='#FFFFFF' />
                                     </DropdownToggle>                                   
                                         <Dropdown.Menu id="NotiContainer">
+                                        <Dropdown.Item><div className='noti-Title'>Notifications</div></Dropdown.Item>
                                         {notificationList}
                                     </Dropdown.Menu>
 
