@@ -25,10 +25,14 @@ const sendEmail = async (receiver, OTP) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         // host: 'smtp.gmail.email',
-        // port: 587,
+        //port: 587,
+        //secure: false,
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PW
+        },
+        tls: {
+            rejectUnauthorized: false
         }
     });
 

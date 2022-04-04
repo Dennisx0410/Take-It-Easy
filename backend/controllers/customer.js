@@ -109,7 +109,7 @@ module.exports = {
     addCustomer: async (req, res, next) => {
         // TODO : Add Customer to database (Register) by credentials
         console.log('> register new accout');
-        console.log('req.body:', req.body); // username, pw.. etc
+        // console.log('req.body:', req.body); // username, pw.. etc
         try {
             // check user with same username already exists
             let customer = await Customers.findOne({username: req.body.username});
@@ -134,10 +134,25 @@ module.exports = {
         }
     },
 
-    updateCustomer: async (req, res) => {
+    changePw: async (req, res) => {
         // TODO: edit and update customer info
+        console.log('> change pw')
         try {
-            res.status(200).send({});
+            // check user with same username already exists
+            let customer = await Customers.findOne({username: req.customer.username});
+
+            // check if old pw matched
+            let matched = await bcrypt.compare(req.body.passwordOld, customer.password);
+            console.log('compare result:', matched);
+            if (!matched) {
+                throw {name: 'InvalidPassword', message: 'Invalid password'};
+            }
+
+            customer.password = req.body.passwordNew;
+            await customer.save();
+
+            // continue to set profile pic
+            res.status(200).send({name: 'SuccessfullyChangedPassword', message: 'Successfully changed pw'});
         }
         catch (err) {
             res.send(err);

@@ -6,7 +6,7 @@
 .stickyBar{
     position: sticky;
     top: 0;
-    z-index:10;
+    z-index: 10;
 }
 
 a.header-title {
@@ -40,4 +40,17 @@ a.header-title:hover{
     color:#ffffff;
     text-decoration:none;
     text-align: center;
+}
+
+.notiTime{
+    color: #6b6a6a;
+    font-size: 3px;
+}
+
+.noti-Title{
+    text-align: center;
+    color: rgb(78, 177, 235);
+    font-weight: bold;
+    border-bottom: 1px solid #aaa;
+    border-top: 1px solid #aaa;
 }

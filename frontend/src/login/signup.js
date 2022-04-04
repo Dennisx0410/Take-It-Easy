@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import './signup.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Avatar, MenuItem, Stack, TextField} from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
 import MaterialIconsReact from 'material-icons-react';
@@ -130,7 +130,7 @@ function Signup(props) {
                         required
                         id="usertype"
                         name="usertype"
-                        // defaultValue="customer"
+                        defaultValue="customer"
                         label={<Fragment><AccountCircle/> User type</Fragment>}
                         onChange={handleUsertypeChange}
                         sx={{width: 200, marginBottom: 3}}
@@ -171,7 +171,7 @@ function Signup(props) {
                         </div>
                         <div className="col-12 col-md-6 d-inline-block">
                             <label htmlFor="phoneNum" className="form-label">
-                                <i className="material-icons">smartphone</i>Phone number
+                                <i className="material-icons">smartphone</i>Phone no.
                             </label>
                             <input type="tel" className="form-control" id="phoneNum" name="phoneNum" pattern="[0-9]{8}" title="8-digit phone number" required/>
                         </div>
@@ -201,8 +201,14 @@ function Signup(props) {
                             Please upload again with jpg/jepg/jfif/png format
                         </Alert> : <></> }
                     
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button type="submit" className="btn">Submit</button>
                 </form>
+                <div className='login'>
+                    <hr className="header"></hr>
+                    <Link to="/" className='formattedLink' style={{textAlign: "center"}}>
+                        Already have an account, click here to login
+                    </Link>
+                </div>
             </div>
         </>
     );
