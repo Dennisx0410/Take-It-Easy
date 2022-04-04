@@ -1,4 +1,5 @@
 const Customer = require("../models/customer")
+const Restaurant = require("../models/restaurant")
 const Order = require("../models/order")
 const foodItem = require("../models/food_item.js")
 const { default: mongoose } = require("mongoose")
@@ -59,8 +60,19 @@ module.exports = {
     addOrder : async (req,res) => {
         console.log('New Order Recieved')
         try{
-            console.log(req.body)
-            let orderDoc = await Order.create(req.body)
+            console.log(req.body.restaurantID)
+            let restaurant = await Restaurant.findOne({username:req.body.restaurantID})
+            if (restaurant == undefined){
+              throw "No such restaurant to place order"
+            }
+            let orderDoc = {}
+            orderDoc.customerID = req.customer.username
+            orderDoc.restaurantID = req.body.restaurantID
+            if (req.body.items.length < 1){
+              throw "Can't place empty order"
+            }
+            orderDoc.items = req.body.items
+            orderDoc = await Order.create(req.body)
             console.log("Created order Document as follow")
             console.log(orderDoc)
             res.status(201).send(orderDoc)
@@ -72,18 +84,25 @@ module.exports = {
     },
     
     finishOrder: async (req,res)=>{
-        console.log('Order', req.body.orderId, "Finish")
         try {
-            let doc = await Order.findOne({_id:req.body.orderId})
-            doc.status = true
-            await doc.save()
-            //TODO: Add function to SOCKET.IO to alert user
-            res.send("Order Status Updated")
+          //The Request sender is not a restaurant
+          if (req.restaurant == undefined){
+            throw "Only Restaurant can updated order status!"
+          }
+          console.log('Order', req.body.orderId, "Finish")
+          let doc = await Order.findOne({_id:req.body.orderId})
+          //Check if the order is already finished
+          if (doc.status){
+            throw `Order with ID ${req.body.orderId} already finished!`
+          }
+
+          doc.status = true
+          await doc.save()
+          //TODO: Add function to SOCKET.IO to alert user
+          res.send("Order Status Updated")
         } catch (err) {
             console.log(err)
             res.send(err)
         }
     }
-
-    
 }

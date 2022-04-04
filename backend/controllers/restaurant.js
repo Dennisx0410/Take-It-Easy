@@ -106,7 +106,7 @@ module.exports = {
     },
 
     getApprovedRestaurant: async (req, res) => {
-        console.log("> fetching not approved restaurants");
+        console.log("> fetching approved restaurants");
         try {
             let list = await Restaurant.find({approved: true});
 
@@ -119,7 +119,7 @@ module.exports = {
     },
 
     getAllRestaurantData: async (req, res) => {
-        //Function only fetch all approved restaurant
+        //Function only fetch all restaurant
         console.log("> fetching all approved restaurants");
         try {
             let list = await Restaurant.find();
