@@ -13,7 +13,6 @@ import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
 function HeaderBar(props){
     const navigate = useNavigate();
-    const [notiVisibility, setnotiVisibility] = useState(false)
     const [notifications, setNotifications] = useState([])
     const [notificationList, setList] = useState()
 
@@ -23,8 +22,13 @@ function HeaderBar(props){
 
 
     const fetchNotification = async () => {
-        const data = await fetch(`http://localhost:5000/notification/all`);
+        const data = await fetch(`http://localhost:5000/notification/fetchIndividual`, {
+            headers:{
+                'Authorization':"Bearer " + props.token
+            }
+        });
         const notis = await data.json(); //Converting data to jason
+        console.log(props.token)
         setNotifications(notis) //Set State with fetched result
     }
 
@@ -49,15 +53,16 @@ function HeaderBar(props){
         if (notifications.length > 0){
             let notificationList = notifications.map(notification=>(
                 //Add React Element Here
-                <Dropdown.Item id={notification._id}>{notification.message}</Dropdown.Item>
+                <Dropdown.Item id={notification._id} >
+                {notification.message}
+                <div className="notiTime" align="right">{new Date(notification.createdAt).toLocaleString()}</div>
+                </Dropdown.Item>
             ))
             setList(notificationList)
         }
 
     },[notifications])
 
-    console.log(notifications)
-    console.log(notificationList)
     // {usertype, setToken}
     // const handleLogout = (logout) => {
     //     console.log("In handle logout");
@@ -124,13 +129,14 @@ function HeaderBar(props){
                                 </Link>
                             </div>
                             <div className='col-1 headerpadding'>
-                               <Dropdown autoClose="outside">
-                                <DropdownToggle id="noti" className="bg-transparent btn-transparent">
+                               <Dropdown autoClose="outside" align={"end"}>
+                                <DropdownToggle id="noti" className="bg-transparent btn-transparent" >
                                     <MaterialIcon icon="notifications" color='#FFFFFF' />
-                                    </DropdownToggle>
-                                    <Dropdown.Menu id="NotiContainer">
-                                    {notificationList}
+                                    </DropdownToggle>                                   
+                                        <Dropdown.Menu id="NotiContainer">
+                                        {notificationList}
                                     </Dropdown.Menu>
+
                                 </Dropdown>
 
                             </div>

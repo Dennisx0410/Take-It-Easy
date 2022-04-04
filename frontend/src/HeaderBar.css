@@ -42,3 +42,8 @@ a.header-title:hover{
     text-decoration:none;
     text-align: center;
 }
+
+.notiTime{
+    color: #6b6a6a;
+    font-size: 3px;
+}
