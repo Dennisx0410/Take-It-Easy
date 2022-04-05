@@ -13,10 +13,10 @@ var onlineRestaurant = []
 
 const pairCustomerID = async (socketId, user_id) =>{
     let user = await cust.getCustomerById(user_id)
-    if (!user.online){
-        user.online = true;
-        await user.save();
-    }
+    // if (!user.online){
+    //     user.online = true;
+    //     await user.save();
+    // }
     let username = user.username
     const customer = {socketId, username}
     onlineCustomer.push(customer)
@@ -33,10 +33,10 @@ const findSocketIdWithUsername = (username) =>{
 const pairRestaurantID = async (socketId, rest_id) =>{
     let user = await rest.getRestaurantById(rest_id)
     let username = user.username
-    if (!user.online){
-        user.online = true;
-        await user.save();
-    }
+    // if (!user.online){
+    //     user.online = true;
+    //     await user.save();
+    // }
     const restaurant = {socketId, username}
     onlineRestaurant.push(restaurant)
     console.log(` >>> Paired Restaurant ${username} with `, socketId)
@@ -71,9 +71,9 @@ io.on("connection", socket =>{
             )
         if (index !== -1){
             console.log(` >>> Remove Customer Key Pair for ${onlineCustomer[index].socketId} with socket ${onlineCustomer[index].username}`)
-            let user = await cust.getCustomerByUsername(onlineCustomer[index].username)
-            user.online = false;
-            await user.save()
+            // let user = await cust.getCustomerByUsername(onlineCustomer[index].username)
+            // user.online = false;
+            // await user.save()
             onlineCustomer.splice(index, 1)[0]
         }
         }else if (data.usertype == "restaurant"){
@@ -83,9 +83,9 @@ io.on("connection", socket =>{
             
         if (index !== -1){
             console.log(` >>> Remove Restaurant Key Pair for ${onlineRestaurant[index].socketId} with socket ${onlineRestaurant[index].username}`)
-            let user = await rest.getRestaurantByUsername(onlineRestaurant[index].username)
-            user.online = false;
-            await user.save()
+            // let user = await rest.getRestaurantByUsername(onlineRestaurant[index].username)
+            // user.online = false;
+            // await user.save()
             onlineRestaurant.splice(index, 1)[0]
         }
         }
