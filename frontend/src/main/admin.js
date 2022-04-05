@@ -354,10 +354,9 @@ class Admin extends React.Component{
                         <div className='col-1'>
                         
                         </div>
-                        <div className='col-10'>
-                            <ResetCustomerPassword/>
-                            <hr/>
+                        <div className='col-10' style={{margin: "1vh"}}>
                             <OrderLists/>
+                            <hr/>
                         </div>
                         <div className='col-1'>
                         

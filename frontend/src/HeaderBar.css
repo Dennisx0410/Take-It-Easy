@@ -55,3 +55,7 @@ a.header-title:hover{
     border-bottom: 1px solid #aaa;
     border-top: 1px solid #aaa;
 }
+
+.rightpadding{
+    padding-right: 5px;
+}

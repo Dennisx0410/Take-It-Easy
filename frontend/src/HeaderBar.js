@@ -175,7 +175,7 @@ function HeaderBar(props){
                                     <Dropdown.Item href="/r/profile">Profile</Dropdown.Item>
                                     <Dropdown.Item href="/r/history">Order History</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);sessionStorage.clear();props.socket.disconnect()}} >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=>{navigate('/');props.setToken(undefined);sessionStorage.clear();props.socket.disconnect()}} >Logout</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>
@@ -257,7 +257,7 @@ function HeaderBar(props){
             <>
                 <div className='header stickyBar'>
                     <div className='container-fluid text-center'>
-                        <div className='row'>
+                        <div className='row' >
                             <div className='col-2'></div>
                             <div className='col-8'>
                                 <Link to="/" className="header-title " style={{textAlign: "center"}}>
@@ -268,18 +268,18 @@ function HeaderBar(props){
                             </div>
                             
                             <div className='col-1 headerpadding'></div>
-                            <div className='col-1 headerpadding bg-transparent btn-transparent'>
+                            <div className='col-1 headerpadding bg-transparent btn-transparent rightpadding'>
                                 <Dropdown className="d-inline mx-2 bg-transparent btn-transparent" autoClose="outside" >
                                     <Dropdown.Toggle id="dropdown-autoclose-outside"  className="bg-transparent "  size="sm">
                                         <MaterialIcon icon="account_circle" color='#FFFFFF' />
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu style={{zIndex:10}} >
-                                    <Dropdown.Item onClick={() => navigate("/", { replace: true })} >orders</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => navigate("/", { replace: true })} >Orders</Dropdown.Item>
                                     <Dropdown.Item onClick={() => navigate("/userlist/customers", { replace: true })} >Customers' List</Dropdown.Item>
                                     <Dropdown.Item onClick={() => navigate("/userlist/restaurants", { replace: true })} >Restaurants' List</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);}} >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=>{navigate('/'); props.setToken(undefined); sessionStorage.clear(); props.socket.disconnect()}} >Logout</Dropdown.Item>
                                     {/* onClick={handleLogout(props.setToken)} */}
                                     </Dropdown.Menu>
                                 </Dropdown>
