@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {useMatch, useParams, useLocation} from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import CardMedia from '@mui/material/CardMedia';
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -230,33 +232,57 @@ const useStyles = makeStyles({
 function CustomerCard(props){
     console.log("In order");
     console.log(props);
+    const [ImgUrl,setImgUrl] = useState();
+    const [skip,setSkip] = useState(false);
     const classes = useStyles();
     let customer = props.customer;
-    
+    // console.log(customer);
+        // let index = props.i;
+        if (!skip){
+            let profilePic = customer.profilePic;
+            let img = Buffer.from(profilePic.data).toString('base64');
+            setSkip(true);
+            setImgUrl(img);
+        }
+            
+        // skip = true;
+                        
     return(
-        <>
-            <Card className={classes.root} >
-                <CardContent>
-                    <Typography gutterBottom variant="h4" component="h4">
-                        <span style={{color: "#8a055e"}}>Order #{}</span>
+        <div  style={{padding: "5px 0"}}>
+            <Card sx={{ display: 'flex' }}>
+                <CardContent sx={{ flex: '1 0 auto' }}>
+                    <Typography variant="h5" color="text.secondary" component="div">
+                        <span style={customer.online? {color: "green"}: {color: "red"}}>◉</span>
+                        {customer.username}&nbsp;(Customer ID: {customer._id})
                     </Typography>
-                    <Typography gutterBottom variant="h5" component="h5">
-                        <span style={{color: "#aaaaaa"}}>Restaurant Name: {}</span>
+                    <span style={customer.activated? {color: "green"}: {color: "red"}}>
+                            {customer.activated? "Activated" : "Not activated"}
+                    </span>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <CardMedia
+                            component="img"
+                            sx={{ width: 151 }}
+                            image={`data:image/jpg; base64, ${ImgUrl}`}
+                            alt="Live from space album cover"
+                        />
                         <br/>
-                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {}</span>
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Order created at: {} <br/>
-                        Order finished at: {}<br/>
-                        Status: {}<br/>
-                    </Typography>
+                        <Typography component="div" variant="subtitle2">
+                            E-mail: {customer.email}<br/>
+                            Phone Number: {customer.phoneNum}<br/>
+                            Points: {customer.points}<br/>
+                            Created at: {customer.createdAt}<br/>
+                            Last login: {customer.lastLogin}<br/>
+                            Updated at: {customer.updatedAt}<br/>
+                        </Typography>
+                        
+                        
+                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+
+                        </Box>
+                    </Box>
                 </CardContent>
             </Card>
-            {/* {props.i} */}
-            {/* {props.order} */}
-            
-        </>
-        
+        </div>
     );
 }
 
@@ -293,19 +319,18 @@ function CustomerList(){
     },[]);
     return(
         <>
-            <h2>List of Customers:</h2>
-            <div className="ProfileHeader">
-                    
-            </div>
-            <div className='row'>
-                <div className='col-1'></div>
-                <div className='col-10'>
-                    <h2 style={{ padding: "1vh 0 0 0", color: "#ba1851" }}>Your Order History: </h2>
+            <h2 style={{ padding: "0 0 0 0", color: "#ba1851" }}>List of Customers:</h2>
+            
+            {/* <div className='row'>
+                <div className='col-1'></div> */}
+                {/* <div className='col-10'>
+                </div> */}
+                <div>
                     {CustomerList.map( (customer,i) => <CustomerCard customer={customer} i={i} key={i} /> )}
                 </div>
-                <div className='col-1'></div>
+                {/* <div className='col-1'></div>
                 
-            </div>
+            </div> */}
 
         </>
     );
@@ -349,7 +374,7 @@ class Admin extends React.Component{
         
         if (this.props.page == "orders"){
             return(
-                <>
+                <div className='page-styling'>
                     <div className='row'>
                         <div className='col-1'>
                         
@@ -363,13 +388,13 @@ class Admin extends React.Component{
                         </div>
                     </div>
                     
-                </>
+                </div>
                 
             );
         }
         else if (this.props.page ==  "ULCustomer"){
             return(
-                <>  
+                <div className='page-styling'>  
                     <div className='row'>
                         <div className='col-1'>
                         
@@ -384,13 +409,13 @@ class Admin extends React.Component{
                         </div>
                     </div>
                     
-                </>
+                </div>
                 
             );
         }
         else if (this.props.page ==  "ULRestaurant"){
             return(
-                <>
+                <div className='page-styling'>
                     <div className='row'>
                         <div className='col-1'>
                         
@@ -405,7 +430,7 @@ class Admin extends React.Component{
                         </div>
                     </div>
                     
-                </>
+                </div>
                 
             );
         }
