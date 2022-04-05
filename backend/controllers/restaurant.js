@@ -119,8 +119,8 @@ module.exports = {
     },
 
     getAllRestaurantData: async (req, res) => {
-        //Function only fetch all restaurant
-        console.log("> fetching all approved restaurants");
+        // TODO: get all restaurant
+        console.log("> fetching all restaurants");
         try {
             let list = await Restaurants.find();
 
@@ -162,7 +162,7 @@ module.exports = {
     },
 
     changePw: async (req, res) => {
-        // TODO: change pw given old and new password pair
+        // TODO: change pw given old and new password pair (request by user)
         console.log('> change pw')
         try {
             let passwordOld = req.body.passwordOld;
@@ -194,6 +194,32 @@ module.exports = {
 
             // continue to set profile pic
             res.status(200).send({name: 'SuccessfullyChangedPassword', message: 'Successfully changed pw'});
+        }
+        catch (err) {
+            res.send(err);
+        }
+    },
+
+    resetPw: async (req, res) => {
+        // TODO: change pw given username (request by admin)
+        console.log('> reset pw')
+        try {
+            let passwordNew = req.body.passwordNew;
+
+            // check user with same username already exists
+            let restaurant = await Restaurants.findOne({username: req.body.username});
+
+            console.log('password len:', passwordNew.length);
+            // check if new pw is longer than 8 characters
+            if (passwordNew.length < 8) {
+                throw {name: 'LengthTooShort', message: 'Password length should be greater than 8'};
+            }
+
+            restaurant.password = passwordNew;
+            await restaurant.save();
+
+            // continue to set profile pic
+            res.status(200).send({name: 'SuccessfullyResetPassword', message: 'Successfully reset pw'});
         }
         catch (err) {
             res.send(err);

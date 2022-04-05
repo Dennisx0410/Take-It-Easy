@@ -1,7 +1,8 @@
 const express = require('express');
 const { login } = require('../controllers/admin');
-const { getCustomers } = require('../controllers/customer');
 const { verifyToken } = require('../controllers/token');
+const custCtrler = require('../controllers/customer');
+const restCtrler = require("../controllers/restaurant");
 const Customers = require('../models/customer');
 const { Otp } = require('../models/otp');
 const Restaurants = require('../models/restaurant');
@@ -9,7 +10,14 @@ const Restaurants = require('../models/restaurant');
 const app = express.Router();
 
 app.post('/signin', login);
-app.get('/customers', verifyToken, getCustomers); 
+
+// customers
+app.get('/customer/all', verifyToken, custCtrler.getAllCustomerData);
+app.post('/customer/resetPw', verifyToken, custCtrler.resetPw);
+
+// restaurants
+app.get('/restaurant/all', verifyToken, restCtrler.getAllRestaurantData);
+app.post('/restaurant/resetPw', verifyToken, restCtrler.resetPw);
 
 // dev only
 // to clear all customer account with 'test@test.com' for easy development, should be removed at final version
