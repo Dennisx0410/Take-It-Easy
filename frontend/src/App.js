@@ -114,7 +114,7 @@ function App(){
                     <div>
                         <BrowserRouter>
                             {/* Header Bar */}
-                            <HeaderBar usertype={usertype} setToken={setToken} socket={socket} token={token}/>
+                            <HeaderBar usertype={usertype} setToken={setToken} setUserInfo={setUserInfo} socket={socket} token={token}/>
                             <Routes> 
                                 <Route path="/" element={<UserRestaurant page="menu" />} />
                                 <Route path="/r/profile" element={<UserRestaurant page="profile" />} />
@@ -133,7 +133,7 @@ function App(){
                     <div>
                         <BrowserRouter>
                             {/* Header Bar */}
-                            <HeaderBar usertype={usertype} setToken={setToken} socket={socket} token={token}/>
+                            <HeaderBar usertype={usertype} setToken={setToken} setUserInfo={setUserInfo} socket={socket} token={token}/>
                             <Routes>
                                 <Route path="/" element={<Main />} />  
                                 {/* <Route path="/signup" element={<Main name="Take It Easy!"/>} />   */}

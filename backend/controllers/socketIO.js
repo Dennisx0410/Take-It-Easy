@@ -13,6 +13,10 @@ var onlineRestaurant = []
 
 const pairCustomerID = async (socketId, user_id) =>{
     let user = await cust.getCustomerById(user_id)
+    if (!user.online){
+        user.online = true;
+        await user.save();
+    }
     let username = user.username
     const customer = {socketId, username}
     onlineCustomer.push(customer)
@@ -29,6 +33,10 @@ const findSocketIdWithUsername = (username) =>{
 const pairRestaurantID = async (socketId, rest_id) =>{
     let user = await rest.getRestaurantById(rest_id)
     let username = user.username
+    if (!user.online){
+        user.online = true;
+        await user.save();
+    }
     const restaurant = {socketId, username}
     onlineRestaurant.push(restaurant)
     console.log(` >>> Paired Restaurant ${username} with `, socketId)
