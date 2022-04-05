@@ -191,16 +191,65 @@ POST /admin/signin
 - `token`
 - `UserNotFound`
 
-## Get customer data 
+## Get all customer data 
 ```
-GET /admin/customers
+GET /admin/customer/all
 ```
 #### Header
 - `Authorization: Bearer <token>`
 #### Body
 - N/A
 #### Return(json)
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
 - array of customer data 
+
+## Reset a customer password 
+```
+GET /admin/customer/resetPw
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- `username`
+- `passwordNew`
+#### Return(json)
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `LengthTooShort`
+- `SuccessfullyResetPassword`
+
+## Get all restaurant data
+```
+GET /admin/restaurant/all
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- N/A
+#### Return(json)
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- array of restaurant data 
+
+## Reset a restaurant password 
+```
+GET /admin/restaurant/resetPw
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- `username`
+- `passwordNew`
+#### Return(json)
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `LengthTooShort`
+- `SuccessfullyResetPassword`
 
 # Documentation (Restaurant)
 [Return to top](#backend)

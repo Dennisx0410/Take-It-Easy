@@ -5,11 +5,14 @@ const { verifyEmail } = require('../controllers/email');
 
 const app = express.Router();
 
+// account management
 app.post("/signup", custCtrler.uploadProfilePic, custCtrler.addCustomer, custCtrler.setProfilePic, verifyEmail);
 app.post('/activate', custCtrler.verifyOTP, custCtrler.activateAccount); 
 app.post('/reverify', verifyEmail); 
 app.post('/signin', custCtrler.login, verifyEmail);
 app.post('/changePw', verifyToken, custCtrler.changePw); 
+
+// actions
 app.get('/data', verifyToken, custCtrler.getCustomerData); 
 app.post('/logout', verifyToken, custCtrler.logout);
 app.post('/profilePic', verifyToken, custCtrler.uploadProfilePic, custCtrler.setProfilePic, (req, res) => {

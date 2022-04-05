@@ -94,7 +94,7 @@ module.exports = {
 
     getCustomerById: getCustomerById,
 
-    getCustomers: async (req, res) => {
+    getAllCustomerData: async (req, res) => {
         // TODO: get all customers
         try {
             let customers = await getCustomers();
@@ -136,7 +136,7 @@ module.exports = {
     },
 
     changePw: async (req, res) => {
-        // TODO: change pw given old and new password pair
+        // TODO: change pw given old and new password pair (request by user)
         console.log('> change pw')
         try {
             let passwordOld = req.body.passwordOld;
@@ -168,6 +168,33 @@ module.exports = {
 
             // continue to set profile pic
             res.status(200).send({name: 'SuccessfullyChangedPassword', message: 'Successfully changed pw'});
+        }
+        catch (err) {
+            res.send(err);
+        }
+    },
+
+
+    resetPw: async (req, res) => {
+        // TODO: change pw given username (request by admin)
+        console.log('> reset pw')
+        try {
+            let passwordNew = req.body.passwordNew;
+
+            // check user with same username already exists
+            let customer = await Customers.findOne({username: req.body.username});
+
+            console.log('password len:', passwordNew.length);
+            // check if new pw is longer than 8 characters
+            if (passwordNew.length < 8) {
+                throw {name: 'LengthTooShort', message: 'Password length should be greater than 8'};
+            }
+
+            customer.password = passwordNew;
+            await customer.save();
+
+            // continue to set profile pic
+            res.status(200).send({name: 'SuccessfullyResetPassword', message: 'Successfully reset pw'});
         }
         catch (err) {
             res.send(err);

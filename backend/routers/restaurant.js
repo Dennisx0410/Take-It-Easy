@@ -4,6 +4,7 @@ const restCtrler = require("../controllers/restaurant");
 
 const app = express.Router();
 
+// account management
 app.post('/signup', restCtrler.uploadProfilePic, restCtrler.addRestaurant, restCtrler.setProfilePic, (req, res) => {
     // wait for admin approve register request
     res.send({name: "RegistrationReceived", value: "registration received, wait for admin approval"});
@@ -11,6 +12,8 @@ app.post('/signup', restCtrler.uploadProfilePic, restCtrler.addRestaurant, restC
 app.post('/approve', restCtrler.approveAccount); 
 app.post('/signin', restCtrler.login);
 app.post('/changePw', verifyToken, restCtrler.changePw); 
+
+// actions
 app.get('/data', verifyToken, restCtrler.getRestaurantData);
 app.get('/all', verifyToken, restCtrler.getAllRestaurantData)
 app.get('/notApproved', restCtrler.getNotApprovedRestaurant);
