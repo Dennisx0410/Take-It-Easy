@@ -64,7 +64,7 @@ function App(){
             return (
                 <>
                     <div className="row main">
-                        <div className="d-none d-md-block col-md-8 background">
+                        <div className="d-none d-md-block col-md-8 background slide-in-l">
                             <img id="bgd" src={process.env.PUBLIC_URL+"food.jpeg"} />
                         </div>
                         <div className="col-md-4 box">
@@ -84,7 +84,7 @@ function App(){
             return (
                 <>
                     <div className="row main">
-                        <div className="d-none d-md-block col-md-8 background">
+                        <div className="d-none d-md-block col-md-8 background slide-in-l">
                             <img id="bgd" src={process.env.PUBLIC_URL+"food.jpeg"} />
                         </div>
                         <div className="col-md-4">
@@ -114,7 +114,7 @@ function App(){
                     <div>
                         <BrowserRouter>
                             {/* Header Bar */}
-                            <HeaderBar usertype={usertype} setToken={setToken} />
+                            <HeaderBar usertype={usertype} setToken={setToken} socket={socket} token={token}/>
                             <Routes> 
                                 <Route path="/" element={<UserRestaurant page="menu" />} />
                                 <Route path="/r/profile" element={<UserRestaurant page="profile" />} />

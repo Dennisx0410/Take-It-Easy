@@ -51,7 +51,7 @@ class Suggestion extends React.Component {
                     <div className="col-1"></div>
                     <div className="col-10 align-self-start">
                         <h4 style={{padding: "5px 0 0 0"}}>Recommended For You</h4>
-                        <div className='lowestZ'>
+                        <div className='lowestZ slide-in-l'>
                             <Box sx={{ display: 'flex', pt:1, pb:1}}>
                                 {this.props.suggestion.map((suggestion,i)=>
                                     <SuggestionCard suggestion={suggestion} i={i} key={i}  />
@@ -141,7 +141,6 @@ class Gallery extends React.Component {
                 <div className="col-1"></div>
                 <div className="col-10 align-self-start">
                     <h4 style={{padding: "5px 0 0 0"}}>Restaurants:</h4>
-                    
                     {    bufferFR.map(
                         (restaurant,i) => <FileCard restaurant={restaurant} i={i} key={i} 
                                             RErender={this.props.RErender} setRErender={this.props.setRErender}/>
@@ -262,7 +261,6 @@ class FileCard extends React.Component{
 
 function Main(){
     const PREFIX='http://localhost:5000';
-    
 
     const [REALrestaurantData, setREALRD] = useState([]);
     useEffect(() => {
@@ -328,7 +326,6 @@ function Main(){
 
     return (
           <>
-
             <div className='Main'>
                 {/* <Debug filteredRestaurants={filteredRestaurants}/> */}
                 <Suggestion suggestion={REALsuggested}/>

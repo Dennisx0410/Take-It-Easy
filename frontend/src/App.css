@@ -19,28 +19,16 @@
   position: sticky;
   top: 0;
   height: 100vh;
-  animation: 2s slideInFromLeft;
   background-image: linear-gradient(to right, #567ace , #b9281d); 
 }
 
-.box {
-  animation: 2s slideInFromRight;
+.slide-in-l {
+  animation: 2s slide-in-from-left;
 }
 
-@keyframes slideInFromLeft {
+@keyframes slide-in-from-left {
   0% {
     transform: translateX(-50%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 100;
-  }
-}
-
-@keyframes slideInFromRight {
-  0% {
-    /* transform: translateX(10%); */
     opacity: 0;
   }
   100% {

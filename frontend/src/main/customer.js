@@ -53,10 +53,10 @@ function ChangePassword(){
                                 'Authorization': 'Bearer '+sessionStorage.getItem("token"),
                                 'Content-type' : 'application/json'
                             },
-                            body: {
+                            body: JSON.stringify({
                                 'passwordOld' : oldPassowrd,
                                 'passwordNew' : newPassword
-                            }
+                            })
                         }
                         
                     );

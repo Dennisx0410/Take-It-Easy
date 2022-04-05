@@ -75,6 +75,7 @@ const getRestaurantById = async (id) => {
 module.exports = {
 
     getRestaurantById: getRestaurantById,
+    getRestaurantByUsername: getRestaurantByUsername,
 
     getRestaurantData: async (req, res) => {
         // TODO: Get restaurant by username
@@ -138,7 +139,6 @@ module.exports = {
         console.log('> register new accout');
         console.log('req.body:', req.body); // username, pw.. etc
         try {
-            // check user with same username already exists
             let restaurant = await Restaurants.findOne({username: req.body.username});
 
             if (restaurant) { // already exists
@@ -167,9 +167,7 @@ module.exports = {
         try {
             let passwordOld = req.body.passwordOld;
             let passwordNew = req.body.passwordNew;
-
-            // check user with same username already exists
-            let restaurant = await getRestaurantByUsername(req.body.username);
+            let restaurant = req.restaurant;
 
             // check if old pw matched
             let matched = await bcrypt.compare(passwordOld, restaurant.password); 
@@ -192,6 +190,8 @@ module.exports = {
             restaurant.password = passwordNew;
             await restaurant.save();
 
+            console.log('> pw changed');
+
             // continue to set profile pic
             res.status(200).send({name: 'SuccessfullyChangedPassword', message: 'Successfully changed pw'});
         }
@@ -206,7 +206,6 @@ module.exports = {
         try {
             let passwordNew = req.body.passwordNew;
 
-            // check user with same username already exists
             let restaurant = await getRestaurantByUsername(req.body.username);
 
             console.log('password len:', passwordNew.length);
