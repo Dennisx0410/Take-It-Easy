@@ -28,7 +28,7 @@ module.exports = {
                     from: 'restaurants',
                     localField: 'restaurantID',
                     foreignField: 'username',
-                    pipeline:[{$project:{'_id':0,'username':1}}],
+                    pipeline:[{$project:{'_id':0,'restaurantName':1}}],
                     as: 'restaurant_Info'
                   },
                 },
@@ -73,7 +73,7 @@ module.exports = {
                     localField: 'restaurantID',
                     foreignField: 'username',
                     as: 'restaurant_Info',
-                    pipeline:[{$project:{'_id':0,'username':1}}]
+                    pipeline:[{$project:{'_id':0,'restaurantName':1}}]
                   },
                 },
                 {
