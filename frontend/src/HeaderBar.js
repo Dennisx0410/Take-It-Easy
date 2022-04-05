@@ -58,14 +58,16 @@ function HeaderBar(props){
 
 
     const fetchNotification = async () => {
-        const data = await fetch(`http://localhost:5000/notification/fetchIndividual`, {
-            headers:{
-                'Authorization':"Bearer " + props.token
-            }
-        });
-        const notis = await data.json(); //Converting data to jason
-        console.log(props.token)
-        setNotifications(notis) //Set State with fetched result
+        if (props.usertype=="customer"){
+            const data = await fetch(`http://localhost:5000/notification/fetchIndividual`, {
+                headers:{
+                    'Authorization':"Bearer " + props.token
+                }
+            });
+            const notis = await data.json(); //Converting data to jason
+            console.log(props.token)
+            setNotifications(notis) //Set State with fetched result
+        }
     }
 
 
@@ -112,29 +114,31 @@ function HeaderBar(props){
     const [customerInfo, setCustomerInfo] = useState({});
     const PREFIX='http://localhost:5000';
     
-    const [skip1, setSkip] = useState(false);
+    const [skip, setSkip] = useState(false);
     const fetchData = async () => {
-        try {
-            const url_d = PREFIX+'/customer/data';
-            const response = await fetch(
-                url_d, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
-                }}
-            );
-            const customer_info = await response.json();
-            setCustomerInfo(customer_info);
-            setSkip(true);
-            // console.log(customer_info);
+        if (props.usertype=="customer"){
+            try {
+                const url_d = PREFIX+'/customer/data';
+                const response = await fetch(
+                    url_d, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    }}
+                );
+                const customer_info = await response.json();
+                setCustomerInfo(customer_info);
+                setSkip(true);
+                // console.log(customer_info);
 
-        } catch (error) {
-            console.log("error", error);
+            } catch (error) {
+                console.log("error", error);
+            }
         }
     };
     useEffect(() => {
             // console.log("XDD");
-        if (!skip1){
+        if (!skip){
             console.log("XDD");
             fetchData();
         }
@@ -142,6 +146,7 @@ function HeaderBar(props){
     });
 
     if (props.usertype=="restaurant"){
+        // setSkip(true);
         return (
             <>
                 <div className='header stickyBar'>
@@ -247,6 +252,7 @@ function HeaderBar(props){
         );
     }
     else if (props.usertype=="admin"){
+        // setSkip(true);
         return (
             <>
                 <div className='header stickyBar'>

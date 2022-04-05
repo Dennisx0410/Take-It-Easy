@@ -214,7 +214,10 @@ function Order(props){
                     <Typography variant="body2" color="textSecondary" component="p">
                         Order created at: {createDate} <br/>
                         Order finished at: {createDate == updateDate? "Not finished" : updateDate}<br/>
-                        Status: {props.order.status? "TAKE": "TOOK"}<br/>
+                        Status: 
+                        <span style={props.order.status? {color: "red"}: {color: "green"}}>
+                            {props.order.status? "Not completed": "Completed"}<br/>
+                        </span>
                     </Typography>
                 </CardContent>
             </Card>

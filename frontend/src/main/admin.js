@@ -210,7 +210,7 @@ function ResetRestaurantPassword(props){
     
 }
 
-function Orders(){
+function OrderLists(){
     return(
         <>
             <h2>Orders:</h2>
@@ -218,14 +218,100 @@ function Orders(){
     );
 }
 
+//
+
+const useStyles = makeStyles({
+    root: {
+      width: "100%",
+      margin: "15px 0"
+    }
+});
+
+function CustomerCard(props){
+    console.log("In order");
+    console.log(props);
+    const classes = useStyles();
+    let customer = props.customer;
+    
+    return(
+        <>
+            <Card className={classes.root} >
+                <CardContent>
+                    <Typography gutterBottom variant="h4" component="h4">
+                        <span style={{color: "#8a055e"}}>Order #{}</span>
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="h5">
+                        <span style={{color: "#aaaaaa"}}>Restaurant Name: {}</span>
+                        <br/>
+                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {}</span>
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        Order created at: {} <br/>
+                        Order finished at: {}<br/>
+                        Status: {}<br/>
+                    </Typography>
+                </CardContent>
+            </Card>
+            {/* {props.i} */}
+            {/* {props.order} */}
+            
+        </>
+        
+    );
+}
+
+
+
 function CustomerList(){
+    const PREFIX='http://localhost:5000';
+    const [reload, setReload] = useState(true);
+    const [CustomerList, setCustomerList] = useState([]);
+    useEffect(() => {
+            const url = PREFIX+'/admin/customer/all';
+            console.log("CA");
+            async function fetchData () {
+                try {
+                    const response = await fetch(
+                        url, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                        }}
+                    );
+                    const customerDetails = await response.json();
+                    setCustomerList(customerDetails);
+                    setReload(false);
+                    
+                } catch (error) {
+                    console.log("error", error);
+                }
+            };
+            if (reload){
+                fetchData();
+            }
+            console.log("CB");
+    },[]);
     return(
         <>
             <h2>List of Customers:</h2>
+            <div className="ProfileHeader">
+                    
+            </div>
+            <div className='row'>
+                <div className='col-1'></div>
+                <div className='col-10'>
+                    <h2 style={{ padding: "1vh 0 0 0", color: "#ba1851" }}>Your Order History: </h2>
+                    {CustomerList.map( (customer,i) => <CustomerCard customer={customer} i={i} key={i} /> )}
+                </div>
+                <div className='col-1'></div>
+                
+            </div>
+
         </>
     );
 
 }
+//
 
 function RestaurantList(){
     return(
@@ -264,7 +350,20 @@ class Admin extends React.Component{
         if (this.props.page == "orders"){
             return(
                 <>
-                    <Orders/>
+                    <div className='row'>
+                        <div className='col-1'>
+                        
+                        </div>
+                        <div className='col-10'>
+                            <ResetCustomerPassword/>
+                            <hr/>
+                            <OrderLists/>
+                        </div>
+                        <div className='col-1'>
+                        
+                        </div>
+                    </div>
+                    
                 </>
                 
             );
@@ -272,8 +371,20 @@ class Admin extends React.Component{
         else if (this.props.page ==  "ULCustomer"){
             return(
                 <>  
-                    <ResetCustomerPassword/>
-                    <CustomerList/>
+                    <div className='row'>
+                        <div className='col-1'>
+                        
+                        </div>
+                        <div className='col-10'>
+                            <ResetCustomerPassword/>
+                            <hr/>
+                            <CustomerList/>
+                        </div>
+                        <div className='col-1'>
+                        
+                        </div>
+                    </div>
+                    
                 </>
                 
             );
@@ -281,8 +392,20 @@ class Admin extends React.Component{
         else if (this.props.page ==  "ULRestaurant"){
             return(
                 <>
-                    <ResetRestaurantPassword/>
-                    <RestaurantList/>
+                    <div className='row'>
+                        <div className='col-1'>
+                        
+                        </div>
+                        <div className='col-10'>
+                            <ResetRestaurantPassword/>
+                            <hr/> 
+                            <RestaurantList/>
+                        </div>
+                        <div className='col-1'>
+                        
+                        </div>
+                    </div>
+                    
                 </>
                 
             );
