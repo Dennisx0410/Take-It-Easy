@@ -28,8 +28,8 @@ module.exports = {
                     from: 'restaurants',
                     localField: 'restaurantID',
                     foreignField: 'username',
-                    as: 'restaurant_Info',
-                    pipeline:[{$project:{'username':1}}]
+                    pipeline:[{$project:{'_id':0,'username':1}}],
+                    as: 'restaurant_Info'
                   },
                 },
                 {
@@ -38,7 +38,7 @@ module.exports = {
                     localField: 'customerID',
                     foreignField: 'username',
                     as: 'customer_Info',
-                    pipeline:[{$project:{'username':1}}]
+                    pipeline:[{$project:{'_id':0,'username':1}}]
                   },
                 }
               ]);
@@ -73,7 +73,7 @@ module.exports = {
                     localField: 'restaurantID',
                     foreignField: 'username',
                     as: 'restaurant_Info',
-                    pipeline:[{$project:{'username':1}}]
+                    pipeline:[{$project:{'_id':0,'username':1}}]
                   },
                 },
                 {
@@ -81,8 +81,9 @@ module.exports = {
                     from: 'customers',
                     localField: 'customerID',
                     foreignField: 'username',
-                    as: 'customer_Info',
-                    pipeline:[{$project:{'username':1}}]
+                    pipeline:[{$project:{'_id':0,'username':1}}],
+                    as: 'customer_Info'
+
                   },
                 }
               ]);
