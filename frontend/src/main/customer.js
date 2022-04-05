@@ -50,8 +50,8 @@ function ChangePassword(){
                         url_d, {
                             method: 'POST',
                             headers: {
-                                'Authorization': 'Bearer '+ sessionStorage.getItem("token"),
-                                'Content-type': 'application/json'
+                                'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                                'Content-type' : 'application/json'
                             },
                             body: JSON.stringify({
                                 'passwordOld' : oldPassowrd,

@@ -10,12 +10,71 @@ import { useNavigate } from "react-router-dom";
 import { IconButton } from '@mui/material';
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
+// function Points(){
+//     const [skipTriggerFetch, setskipTF] = useState(false);
+//     const [customerInfo, setCustomerInfo] = useState([]);
+    
+//     const PREFIX='http://localhost:5000';
+    
+//     useEffect(() => {
+//         const url_d = PREFIX+'/customer/data';
+//         const fetchData = async () => {
+//           try {
+//             const response = await fetch(
+//                 url_d, {
+//                 method: 'GET',
+//                 headers: {
+//                     'Authorization': 'Bearer '+sessionStorage.getItem("token")
+//                 }}
+//             );
+//             const customer_info = await response.json();
+//             setCustomerInfo(customer_info);
+//             console.log(customer_info);
+
+//           } catch (error) {
+//             console.log("error", error);
+//           }
+//         };
+//         fetchData();
+//     }, []);
+//     return(
+//         <>
+//             {customerInfo.points}
+//         </>
+//     );
+
+// }
+
 
 function HeaderBar(props){
     let navigate = useNavigate();
+    const [customerInfo, setCustomerInfo] = useState([]);
+    const PREFIX='http://localhost:5000';
+    useEffect(() => {
+        console.log("A");
+        const url_d = PREFIX+'/customer/data';
+        const fetchData = async () => {
+          try {
+            const response = await fetch(
+                url_d, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                }}
+            );
+            const customer_info = await response.json();
+            setCustomerInfo(customer_info);
+            console.log(customer_info);
+
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+        fetchData();
+    }, []);
     const [notifications, setNotifications] = useState([]);
     const [notificationList, setList] = useState();
-    const [skipTriggerFetch, setskipTF] = useState(false);
+    
     useEffect(()=>{
         fetchNotification()
     }, []);
@@ -72,32 +131,7 @@ function HeaderBar(props){
 
     // }
     // console.log(props.setToken);
-    const [customerInfo, setCustomerInfo] = useState({});
     
-    const PREFIX='http://localhost:5000';
-    
-    function triggerFetch(){
-            const url_d = PREFIX+'/customer/data';
-            const fetchData = async () => {
-            try {
-                const response = await fetch(
-                    url_d, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': 'Bearer '+sessionStorage.getItem("token")
-                    }}
-                );
-                const customer_info = await response.json();
-                setCustomerInfo(customer_info);
-                console.log(customer_info);
-
-            } catch (error) {
-                console.log("error", error);
-            }
-            };
-            fetchData();
-            setskipTF(true);
-    }
 
     if (props.usertype=="restaurant"){
         return (
@@ -139,10 +173,10 @@ function HeaderBar(props){
         );
     }
     else if (props.usertype=="customer"){
-        if (skipTriggerFetch == false){
-            triggerFetch();
-            console.log(customerInfo);
-        }
+        // if (skipTriggerFetch == false){
+        //     triggerFetch();
+        //     console.log(skipTriggerFetch);
+        // }
         return (
             <>
                 <div className='header stickyBar'>
@@ -171,7 +205,10 @@ function HeaderBar(props){
                             </div>
                             
                             <div className='col-1 points'>
-                                <MaterialIcon icon="savings" color='#FFFFFF' />{customerInfo.points}
+                                {/* Points */}
+                                <MaterialIcon icon="savings" color='#FFFFFF'/>
+                                {/* <Points/> */}
+                                {customerInfo.points? customerInfo.points: -1}
                             </div>
                             <div className='col-1 headerpadding bg-transparent btn-transparent'>
                                 <Dropdown className="d-inline bg-transparent btn-transparent" autoClose="outside" >
