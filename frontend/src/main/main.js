@@ -79,7 +79,7 @@ class SuggestionCard extends React.Component{
     }
 
     render() {
-        let i = this.props.i;
+        // let i = this.props.i;
         let suggestion = this.props.suggestion;
         if (suggestion.profilePic != undefined){
             if (!this.state.skip){
@@ -110,7 +110,7 @@ class SuggestionCard extends React.Component{
                     <CardContent >
                     <Typography gutterBottom variant="body" component="div">
                         <span style={{color: "#567ace"}}>
-                            {i=0?<MaterialIcon icon="thumb_up"/>:i=1?<MaterialIcon icon="star"/>:<MaterialIcon icon="local_fire_department"/>}
+                            {this.props.i==0?<MaterialIcon icon="thumb_up"/>:this.props.i==1?<MaterialIcon icon="star"/>:<MaterialIcon icon="local_fire_department"/>}
                             {/* {suggest_type[i].remarks} */}
                         </span>
                         <br/>
@@ -242,8 +242,8 @@ class FileCard extends React.Component{
                                 <br></br>
                                 <br></br>
                                 <span className="card-text">
-                                    <MaterialIcon icon="phone" color='#000000'/>
-                                    {restaurant.phoneNum}
+                                    {/* <MaterialIcon icon="phone" color='#000000'/> */}
+                                    Telephone No.:{restaurant.phoneNum}
                                 </span> 
                                 </>
                             }
@@ -313,7 +313,7 @@ function Main(){
         });
     };
 
-    var REALsuggested = makeSuggestion(REALrestaurantData);
+    const REALsuggested = makeSuggestion(REALrestaurantData);
     function makeSuggestion(restaurant_list){
         if(restaurant_list.length < 3){
             return restaurant_list;
@@ -337,7 +337,7 @@ function Main(){
                 </div>
                 <Gallery filteredRestaurants={filteredRestaurants} RErender={RErender} setRErender={setRErender}/>
             </div>
-              
+            
           </>
     );
 }

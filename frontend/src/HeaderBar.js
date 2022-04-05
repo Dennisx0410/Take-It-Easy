@@ -12,10 +12,10 @@ import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
 
 function HeaderBar(props){
-    const navigate = useNavigate();
-    const [notifications, setNotifications] = useState([])
-    const [notificationList, setList] = useState()
-
+    let navigate = useNavigate();
+    const [notifications, setNotifications] = useState([]);
+    const [notificationList, setList] = useState();
+    const [skipTriggerFetch, setskipTF] = useState(false);
     useEffect(()=>{
         fetchNotification()
     }, []);
@@ -76,27 +76,28 @@ function HeaderBar(props){
     
     const PREFIX='http://localhost:5000';
     
-    useEffect(() => {
-        const url_d = PREFIX+'/customer/data';
-        const fetchData = async () => {
-          try {
-            const response = await fetch(
-                url_d, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
-                }}
-            );
-            const customer_info = await response.json();
-            setCustomerInfo(customer_info);
-            console.log(customer_info);
+    function triggerFetch(){
+            const url_d = PREFIX+'/customer/data';
+            const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    url_d, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    }}
+                );
+                const customer_info = await response.json();
+                setCustomerInfo(customer_info);
+                console.log(customer_info);
 
-          } catch (error) {
-            console.log("error", error);
-          }
-        };
-        fetchData();
-    }, []);
+            } catch (error) {
+                console.log("error", error);
+            }
+            };
+            fetchData();
+            setskipTF(true);
+    }
 
     if (props.usertype=="restaurant"){
         return (
@@ -138,20 +139,16 @@ function HeaderBar(props){
         );
     }
     else if (props.usertype=="customer"){
+        if (skipTriggerFetch == false){
+            triggerFetch();
+            console.log(customerInfo);
+        }
         return (
             <>
                 <div className='header stickyBar'>
                     <div className='container-fluid text-center'>
                         <div className='row'>
-                            <div className='col-3'></div>
-                            <div className='col-6'>
-                                <Link to="/" className="header-title " style={{textAlign: "center"}}>
-                                    <MaterialIcon icon="takeout_dining" color='#FFFFFF' />
-                                    <span ><b>TAKE IT EASY</b></span>
-                                    <MaterialIcon icon="takeout_dining" color='#FFFFFF' />
-                                </Link>
-                            </div>
-                            <div className='col-1 headerpadding'>
+                            <div className='col-1' style={{padding: "3px"}} >
                                <Dropdown autoClose="outside" align={"end"}>
                                 <DropdownToggle id="noti" className="bg-transparent btn-transparent" >
                                     <MaterialIcon icon="notifications" color='#FFFFFF' />
@@ -164,8 +161,17 @@ function HeaderBar(props){
                                 </Dropdown>
                                 
                             </div>
+                            <div className='col-1'></div>
+                            <div className='col-8'>
+                                <Link to="/" className="header-title " style={{textAlign: "center"}}>
+                                    <MaterialIcon icon="takeout_dining" color='#FFFFFF' />
+                                    <span ><b>TAKE IT EASY</b></span>
+                                    <MaterialIcon icon="takeout_dining" color='#FFFFFF' />
+                                </Link>
+                            </div>
+                            
                             <div className='col-1 points'>
-                                <MaterialIcon icon="savings" color='#FFFFFF' />{customerInfo.point}
+                                <MaterialIcon icon="savings" color='#FFFFFF' />{customerInfo.points}
                             </div>
                             <div className='col-1 headerpadding bg-transparent btn-transparent'>
                                 <Dropdown className="d-inline bg-transparent btn-transparent" autoClose="outside" >

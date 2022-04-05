@@ -83,6 +83,7 @@ module.exports = {
     getCustomerData: async (req, res) => {
         // TODO: return customer data
         res.send({
+            userID: req.customer._id,
             username: req.customer.username, 
             phoneNum: req.customer.phoneNum, 
             email: req.customer.email,

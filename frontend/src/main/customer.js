@@ -96,6 +96,8 @@ function AccountInfo(){
                     <h4>Your Information:</h4>
                     {/* profilePic */}
                     <Avatar alt="picture" src={`data:image/jpeg; base64, ${ImgUrl}`} sx={{ width: 85, height: 85 }} />
+                    User ID: <span style={{color: "black"}}>{customerInfo.userID}</span><br/>
+                    Username: <span style={{color: "black"}}>{customerInfo.username}</span><br/>
                     Phone Number: <span style={{color: "black"}}>{customerInfo.phoneNum}</span><br/>
                     E-mail: <span style={{color: "black"}}>{customerInfo.email}</span><br/>
                     Points: <span style={{color: "black"}}>{customerInfo.points? customerInfo.points:0}</span><br/>

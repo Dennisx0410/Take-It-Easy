@@ -11,7 +11,7 @@
 
 a.header-title {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 30px;
+    font-size: 200%;
     color: #ffffff;
     padding: 7px 5px;
     text-decoration:none;
@@ -22,7 +22,8 @@ a.header-title {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
     color: #ffffff;
-    padding: 3px 5% 0 1vw;
+    padding: 0.5vw 0 0 0;
+    text-align: right;
 
 }
 
