@@ -1,7 +1,7 @@
 import './HeaderBar.css';
 import React, { useState , useEffect} from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
-import {useMatch, useParams, useLocation} from 'react-router-dom';
+import {useMatch, useParams, useLocation, useRef} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import MaterialIcon, {colorPalette} from 'material-icons-react';
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -48,30 +48,7 @@ import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
 function HeaderBar(props){
     let navigate = useNavigate();
-    const [customerInfo, setCustomerInfo] = useState([]);
-    const PREFIX='http://localhost:5000';
-    useEffect(() => {
-        console.log("A");
-        const url_d = PREFIX+'/customer/data';
-        const fetchData = async () => {
-          try {
-            const response = await fetch(
-                url_d, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
-                }}
-            );
-            const customer_info = await response.json();
-            setCustomerInfo(customer_info);
-            console.log(customer_info);
 
-          } catch (error) {
-            console.log("error", error);
-          }
-        };
-        fetchData();
-    }, []);
     const [notifications, setNotifications] = useState([]);
     const [notificationList, setList] = useState();
     
@@ -117,6 +94,7 @@ function HeaderBar(props){
                 <div className="notiTime" align="right">{new Date(notification.createdAt).toLocaleString()}</div>
                 </Dropdown.Item>
             ))
+            // console.log("1")
             setList(notificationList)
         }
 
@@ -131,7 +109,37 @@ function HeaderBar(props){
 
     // }
     // console.log(props.setToken);
+    const [customerInfo, setCustomerInfo] = useState({});
+    const PREFIX='http://localhost:5000';
     
+    const [skip1, setSkip] = useState(false);
+    const fetchData = async () => {
+        try {
+            const url_d = PREFIX+'/customer/data';
+            const response = await fetch(
+                url_d, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                }}
+            );
+            const customer_info = await response.json();
+            setCustomerInfo(customer_info);
+            setSkip(true);
+            // console.log(customer_info);
+
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
+    useEffect(() => {
+            // console.log("XDD");
+        if (!skip1){
+            console.log("XDD");
+            fetchData();
+        }
+        
+    });
 
     if (props.usertype=="restaurant"){
         return (

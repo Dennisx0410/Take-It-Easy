@@ -21,19 +21,20 @@ import zIndex from '@mui/material/styles/zIndex';
 // import { useNavigate } from 'react-router-dom';
 // let navigate = useNavigate();
 
-const suggest_type = [{remarks: "Just TAKE it"}, {remarks: "I'm loving IT"}, {remarks: "EASYer's Choice"}];
-const suggested = [
-    {filename: "/cuhk-2013.jpg", restaurantName: "Restaurant 1", address:    "address 1", phoneNum: "Restaurant Info1"},
-    {filename: "/cuhk-2017.jpg", restaurantName: "Restaurant 2", address:    "address 2", phoneNum: "Restaurant Info2"},
-    {filename: "/sci-2013.jpg", restaurantName: "Restaurant 3", address:    "address 3", phoneNum: "Restaurant Info3"},
-];
 
-const restaurantData = [
-  {filename: "/cuhk-2013.jpg", restaurantName: "adminDefault3AD", address:    "default", phoneNum: "00000000"}
-];
 
 // class Debug extends React.Component{
 //     render(){
+        // const suggest_type = [{remarks: "Just TAKE it"}, {remarks: "I'm loving IT"}, {remarks: "EASYer's Choice"}];
+        // const suggested = [
+        //     {filename: "/cuhk-2013.jpg", restaurantName: "Restaurant 1", address:    "address 1", phoneNum: "Restaurant Info1"},
+        //     {filename: "/cuhk-2017.jpg", restaurantName: "Restaurant 2", address:    "address 2", phoneNum: "Restaurant Info2"},
+        //     {filename: "/sci-2013.jpg", restaurantName: "Restaurant 3", address:    "address 3", phoneNum: "Restaurant Info3"},
+        // ];
+
+        // const restaurantData = [
+        // {filename: "/cuhk-2013.jpg", restaurantName: "adminDefault3AD", address:    "default", phoneNum: "00000000"}
+        // ];
 //         return(<></>);
 //     }
 // }
@@ -99,11 +100,12 @@ class SuggestionCard extends React.Component{
         }
         return (
             <Link to={"/restaurant/"+suggestion._id}>
-                <Card sx={{ display: 'flex' , ml: 2}}>
+                <Card sx={{ display: 'flex' , ml: 1}}>
                 <CardActionArea sx={{ display: 'flex' }}>
                     <CardMedia
                     component="img"
                     height="150px"
+                    width="30%"
                     image = {`data:image/jpg; base64, ${this.state.ImgUrl}`}
                     alt={suggestion.restaurantName}
                     />

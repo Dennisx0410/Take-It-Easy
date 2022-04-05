@@ -61,7 +61,7 @@ function ChangePassword(){
                         
                     );
                     const attempt_result = await response.json();
-                    setCPstatus(JSON.stringify(attempt_result));
+                    setCPstatus(attempt_result);
                     console.log(attempt_result);
 
                 } catch (error) {
@@ -70,6 +70,7 @@ function ChangePassword(){
             };
             attempt();
         }
+        loginForm.reset();
         
     }
 
@@ -107,7 +108,7 @@ function ChangePassword(){
                 <br/>
                 <input type="submit" value="Submit" style={{color: "#8a055e" }}/>
             </form>
-            <span style={{color: "red"}}>{CPstatus}</span>
+            <span style={{color: "red"}}>{CPstatus.message}</span>
         </>
     );
 }
@@ -136,25 +137,6 @@ function AccountInfo(){
             console.log("error", error);
           }
         };
-
-        // const url_p = PREFIX+'/customer/profilePic';
-        // const fetchCustomerProfilepic = async () => {
-        //     try {
-        //       const response = await fetch(
-        //           url_p, {
-        //           method: 'GET',
-        //           headers: {
-        //               'Authorization': 'Bearer '+sessionStorage.token
-        //           }}
-        //       );
-        //       const json = await response.json();
-        //       setRestaurants(JSON.stringify(json[rid]));
-        //       console.log(json);
-        //     } catch (error) {
-        //       console.log("error", error);
-        //     }
-        // };
-        // fetchCustomerProfilepic();
         fetchData();
     }, []);
 
@@ -214,17 +196,20 @@ function Order(props){
     const classes = useStyles();
     var createDate = props.order.createdAt;
     var updateDate = props.order.createdAt;
-    var restaurantName = props.order.restaurantID;
+    var restaurantName = props.order.restaurant_Info[0].restaurantName;
+    var restaurantID = props.order.restaurantID;
     var orderNo = props.order.orderNo;
     return(
         <>
             <Card className={classes.root} >
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h4" component="h4">
                         <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
                     </Typography>
-                    <Typography gutterBottom variant="h6" component="h3">
-                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantName}</span>
+                    <Typography gutterBottom variant="h5" component="h5">
+                        <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span>
+                        <br/>
+                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantID}</span>
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         Order created at: {createDate} <br/>
