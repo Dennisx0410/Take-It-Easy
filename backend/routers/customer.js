@@ -2,7 +2,6 @@ const express = require('express');
 const custCtrler = require('../controllers/customer');
 const { verifyToken } = require('../controllers/token');
 const { verifyEmail } = require('../controllers/email');
-const { changePw } = require('../controllers/customer');
 
 const app = express.Router();
 
@@ -10,7 +9,7 @@ app.post("/signup", custCtrler.uploadProfilePic, custCtrler.addCustomer, custCtr
 app.post('/activate', custCtrler.verifyOTP, custCtrler.activateAccount); 
 app.post('/reverify', verifyEmail); 
 app.post('/signin', custCtrler.login, verifyEmail);
-app.post('/changePw', verifyToken, changePw); 
+app.post('/changePw', verifyToken, custCtrler.changePw); 
 app.get('/data', verifyToken, custCtrler.getCustomerData); 
 app.post('/logout', verifyToken, custCtrler.logout);
 app.post('/profilePic', verifyToken, custCtrler.uploadProfilePic, custCtrler.setProfilePic, (req, res) => {

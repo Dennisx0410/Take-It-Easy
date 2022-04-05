@@ -106,6 +106,8 @@ POST /customer/changePw
 - `JsonWebTokenError`
 - `TokenExpiredError`
 - `InvalidPassword`
+- `DuplicatedNewPassword`
+- `LengthTooShort`
 - `SuccessfullyChangedPassword`
 
 ## Get customer data
@@ -251,7 +253,26 @@ POST /restaurant/signin
 - `UserNotFound`
 - `InvalidPassword`
 
-## Get A Restaurant Info
+## Change password
+#### URL
+```
+POST /restaurant/changePw
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- `passwordOld`
+- `passwordNew`
+#### Return(json)
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `InvalidPassword`
+- `DuplicatedNewPassword`
+- `LengthTooShort`
+- `SuccessfullyChangedPassword`
+
+## Get A Restaurant Data
 #### URL
 ```
 GET /restaurant/data

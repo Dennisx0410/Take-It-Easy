@@ -135,20 +135,34 @@ module.exports = {
     },
 
     changePw: async (req, res) => {
-        // TODO: edit and update customer info
+        // TODO: change pw given old and new password pair
         console.log('> change pw')
         try {
+            let passwordOld = req.body.passwordOld;
+            let passwordNew = req.body.passwordNew;
+
             // check user with same username already exists
             let customer = await Customers.findOne({username: req.customer.username});
 
             // check if old pw matched
-            let matched = await bcrypt.compare(req.body.passwordOld, customer.password);
+            let matched = await bcrypt.compare(passwordOld, customer.password); 
             console.log('compare result:', matched);
             if (!matched) {
                 throw {name: 'InvalidPassword', message: 'Invalid password'};
             }
 
-            customer.password = req.body.passwordNew;
+            // check if new pw same as old pw
+            if (passwordOld === passwordNew) {
+                throw {name: 'DuplicatedNewPassword', message: 'New password is same as the old password'};
+            }
+
+            console.log('password len:', passwordNew.length);
+            // check if new pw is longer than 8 characters
+            if (passwordNew.length < 8) {
+                throw {name: 'LengthTooShort', message: 'Password length should be greater than 8'};
+            }
+
+            customer.password = passwordNew;
             await customer.save();
 
             // continue to set profile pic

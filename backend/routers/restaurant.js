@@ -10,7 +10,7 @@ app.post('/signup', restCtrler.uploadProfilePic, restCtrler.addRestaurant, restC
 });
 app.post('/approve', restCtrler.approveAccount); 
 app.post('/signin', restCtrler.login);
-// app.post('/update', verifyToken, updateCustomer); // not implemented yet
+app.post('/changePw', verifyToken, restCtrler.changePw); 
 app.get('/data', verifyToken, restCtrler.getRestaurantData);
 app.get('/all', verifyToken, restCtrler.getAllRestaurantData)
 app.get('/notApproved', restCtrler.getNotApprovedRestaurant);

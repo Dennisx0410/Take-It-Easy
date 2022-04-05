@@ -1,5 +1,5 @@
 // model
-const Restaurant = require("../models/restaurant.js")
+const Restaurants = require("../models/restaurant.js")
 const foodItem = require("../models/food_item.js")
 
 // package
@@ -31,7 +31,7 @@ const authRestaurant = async (username, password) => {
     // TODO: authenticate restaurant by username, password and return the restaurant doc if matched
 
     // fetch restaurant by username
-    let restaurant = await Restaurant.findOne({username});
+    let restaurant = await Restaurants.findOne({username});
     if (restaurant == null) {
         throw {name: 'UserNotFound', message: 'User does not exist'};
     }
@@ -50,7 +50,7 @@ const authRestaurant = async (username, password) => {
 const getRestaurantByUsername = async (username) => {
     // TODO: get restaurant by username
     console.log('searching restaurant with username:', username);
-    let restaurant = await Restaurant.findOne({username});
+    let restaurant = await Restaurants.findOne({username});
     if (restaurant == null) {
         throw {name : 'UserNotExist', message: 'User does not exist'};
     }
@@ -62,7 +62,7 @@ const getRestaurantByUsername = async (username) => {
 const getRestaurantById = async (id) => {
     // TODO: get restaurant by id
     console.log('searching restaurant with id:', id);
-    let restaurant = await Restaurant.findOne({_id: id});
+    let restaurant = await Restaurants.findOne({_id: id});
     if (restaurant == null) {
         throw {name : 'UserNotExist', message: 'User does not exist'};
     }
@@ -82,7 +82,7 @@ module.exports = {
         console.log(req.restaurant)
         try {
             // fetch restaurant by username
-            let data = await Restaurant.findOne({_id:req.restaurant._id});
+            let data = await Restaurants.findOne({_id:req.restaurant._id});
 
             res.status(200).send(data);
         }
@@ -95,7 +95,7 @@ module.exports = {
     getNotApprovedRestaurant: async (req, res) => {
         console.log("> fetching not approved restaurants");
         try {
-            let list = await Restaurant.find({approved: false});
+            let list = await Restaurants.find({approved: false});
 
             res.status(200).send(list);
         }
@@ -108,7 +108,7 @@ module.exports = {
     getApprovedRestaurant: async (req, res) => {
         console.log("> fetching approved restaurants");
         try {
-            let list = await Restaurant.find({approved: true});
+            let list = await Restaurants.find({approved: true});
 
             res.status(200).send(list);
         }
@@ -122,7 +122,7 @@ module.exports = {
         //Function only fetch all restaurant
         console.log("> fetching all approved restaurants");
         try {
-            let list = await Restaurant.find();
+            let list = await Restaurants.find();
 
             res.status(200).send(list);
         }
@@ -139,14 +139,14 @@ module.exports = {
         console.log('req.body:', req.body); // username, pw.. etc
         try {
             // check user with same username already exists
-            let restaurant = await Restaurant.findOne({username: req.body.username});
+            let restaurant = await Restaurants.findOne({username: req.body.username});
 
             if (restaurant) { // already exists
                 throw {name: 'UserAlreadyExisted', message: 'User with same username already registed'};
             }
 
             // create restaurant account
-            restaurant = await Restaurant.create(req.body);
+            restaurant = await Restaurants.create(req.body);
             // console.log(restaurant)
 
             req.restaurant = restaurant
@@ -161,10 +161,39 @@ module.exports = {
         }
     },
 
-    updateRestaurant: async (req, res) => {
-        // TODO: edit and update restaurant info
+    changePw: async (req, res) => {
+        // TODO: change pw given old and new password pair
+        console.log('> change pw')
         try {
-            res.status(200).send({});
+            let passwordOld = req.body.passwordOld;
+            let passwordNew = req.body.passwordNew;
+
+            // check user with same username already exists
+            let restaurant = await Restaurants.findOne({username: req.restaurant.username});
+
+            // check if old pw matched
+            let matched = await bcrypt.compare(passwordOld, restaurant.password); 
+            console.log('compare result:', matched);
+            if (!matched) {
+                throw {name: 'InvalidPassword', message: 'Invalid password'};
+            }
+
+            // check if new pw same as old pw
+            if (passwordOld === passwordNew) {
+                throw {name: 'DuplicatedNewPassword', message: 'New password is same as the old password'};
+            }
+
+            console.log('password len:', passwordNew.length);
+            // check if new pw is longer than 8 characters
+            if (passwordNew.length < 8) {
+                throw {name: 'LengthTooShort', message: 'Password length should be greater than 8'};
+            }
+
+            restaurant.password = passwordNew;
+            await restaurant.save();
+
+            // continue to set profile pic
+            res.status(200).send({name: 'SuccessfullyChangedPassword', message: 'Successfully changed pw'});
         }
         catch (err) {
             res.send(err);
@@ -311,7 +340,7 @@ module.exports = {
             console.log('decoded with data:', data);
 
             // check with db and pull out restaurant doc
-            let restaurant = await Restaurant.findOne({_id : data._id})
+            let restaurant = await Restaurants.findOne({_id : data._id})
             if (restaurant == null) {
                 console.log('verify error');
                 throw {name: 'VerifyError', message: 'unable to find user'};
