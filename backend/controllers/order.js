@@ -22,6 +22,24 @@ module.exports = {
                     foreignField: '_id',
                     as: 'items' // output key to be store
                   }
+                },
+                {
+                  $lookup:{
+                    from: 'restaurants',
+                    localField: 'restaurantID',
+                    foreignField: 'username',
+                    as: 'restaurant_Info',
+                    pipeline:[{$project:{'username':1}}]
+                  },
+                },
+                {
+                  $lookup:{
+                    from: 'customers',
+                    localField: 'customerID',
+                    foreignField: 'username',
+                    as: 'customer_Info',
+                    pipeline:[{$project:{'username':1}}]
+                  },
                 }
               ]);
               res.send(orders)
@@ -48,6 +66,24 @@ module.exports = {
                     foreignField: '_id',
                     as: 'items' // output key to be store
                   }
+                },
+                {
+                  $lookup:{
+                    from: 'restaurants',
+                    localField: 'restaurantID',
+                    foreignField: 'username',
+                    as: 'restaurant_Info',
+                    pipeline:[{$project:{'username':1}}]
+                  },
+                },
+                {
+                  $lookup:{
+                    from: 'customers',
+                    localField: 'customerID',
+                    foreignField: 'username',
+                    as: 'customer_Info',
+                    pipeline:[{$project:{'username':1}}]
+                  },
                 }
               ]);
               res.send(orders)

@@ -114,7 +114,7 @@ function App(){
                     <div>
                         <BrowserRouter>
                             {/* Header Bar */}
-                            <HeaderBar usertype={usertype} setToken={setToken} />
+                            <HeaderBar usertype={usertype} setToken={setToken} socket={socket} token={token}/>
                             <Routes> 
                                 <Route path="/" element={<UserRestaurant page="menu" />} />
                                 <Route path="/r/profile" element={<UserRestaurant page="profile" />} />
