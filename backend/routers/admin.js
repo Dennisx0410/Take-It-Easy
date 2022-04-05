@@ -6,6 +6,7 @@ const restCtrler = require("../controllers/restaurant");
 const Customers = require('../models/customer');
 const { Otp } = require('../models/otp');
 const Restaurants = require('../models/restaurant');
+const { approvalEmail, rejectEmail } = require('../controllers/email');
 
 const app = express.Router();
 
@@ -16,6 +17,8 @@ app.get('/customer/all', verifyToken, custCtrler.getAllCustomerData);
 app.post('/customer/resetPw', verifyToken, custCtrler.resetPw);
 
 // restaurants
+app.post('/restaurant/approve', verifyToken, restCtrler.approveAccount, approvalEmail);
+app.post('/restaurant/reject', verifyToken, restCtrler.rejectAccount, rejectEmail);
 app.get('/restaurant/all', verifyToken, restCtrler.getAllRestaurantData);
 app.post('/restaurant/resetPw', verifyToken, restCtrler.resetPw);
 

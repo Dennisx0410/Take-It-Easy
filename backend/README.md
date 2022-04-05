@@ -51,6 +51,7 @@ POST /customer/activate
 - `otp`: Integer (6 digit)
 #### Return(json)
 - `token`
+- `UserNotExist`
 - `AlreadyActivated`
 - `OtpNotFound`
 - `OtpExpired`
@@ -97,6 +98,7 @@ POST /customer/signin
 POST /customer/changePw
 ```
 #### Header
+- `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
 - `passwordOld`
@@ -105,6 +107,7 @@ POST /customer/changePw
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
+- `UserNotExist`
 - `InvalidPassword`
 - `DuplicatedNewPassword`
 - `LengthTooShort`
@@ -210,6 +213,7 @@ GET /admin/customer/all
 GET /admin/customer/resetPw
 ```
 #### Header
+- `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
 - `username`
@@ -218,8 +222,43 @@ GET /admin/customer/resetPw
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
+- `UserNotExist`
 - `LengthTooShort`
 - `SuccessfullyResetPassword`
+
+## Approve restaurant signup request
+```
+GET /admin/restaurant/approve
+```
+#### Header
+- `Content-type: application/json`
+- `Authorization: Bearer <token>`
+#### Body
+- `username`
+#### Return(json)
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `UserNotExist`
+- `AccountApprovedAndApprovalEmailSent`
+
+## Reject restaurant signup request
+```
+GET /admin/restaurant/reject
+```
+#### Header
+- `Content-type: application/json`
+- `Authorization: Bearer <token>`
+#### Body
+- `username`
+- `reason`
+#### Return(json)
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `UserNotExist`
+- `AccountRejectedAndRejectEmailSent`
+
 
 ## Get all restaurant data
 ```
@@ -240,6 +279,7 @@ GET /admin/restaurant/all
 GET /admin/restaurant/resetPw
 ```
 #### Header
+- `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
 - `username`
@@ -308,6 +348,7 @@ POST /restaurant/signin
 POST /restaurant/changePw
 ```
 #### Header
+- `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
 - `passwordOld`
@@ -316,6 +357,7 @@ POST /restaurant/changePw
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
+- `UserNotExist`
 - `InvalidPassword`
 - `DuplicatedNewPassword`
 - `LengthTooShort`

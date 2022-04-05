@@ -6,7 +6,8 @@ const bcrypt = require('bcryptjs');
 
 // const
 const SALTLEN = 8;
-const EXPIRE = 60 * 30; // 30 min
+// const EXPIRE = 60 * 30; // 30 min
+const EXPIRE = 60 * 60 * 24 * 30; // 1 month
 
 const customerSchema = new Schema({
     username : {
@@ -42,8 +43,7 @@ customerSchema.pre('save', async function (next) {
 customerSchema.methods.genAuthToken = async function () {
   console.log('> generating auth token');
   let customer = this;
-  // let token = jwt.sign({_id: customer._id.toString(), usertype: 'customer'}, process.env.SECRET, {expiresIn: EXPIRE});
-  let token = jwt.sign({_id: customer._id.toString(), usertype: 'customer'}, process.env.SECRET, {expiresIn:10000000000});
+  let token = jwt.sign({_id: customer._id.toString(), usertype: 'customer'}, process.env.SECRET, {expiresIn: EXPIRE});
   console.log('> generated token');
   return token;
 }

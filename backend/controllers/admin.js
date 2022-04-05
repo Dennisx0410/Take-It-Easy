@@ -2,7 +2,8 @@
 const jwt = require('jsonwebtoken');
 
 // const
-const EXPIRE = 60 * 30; // 30 min
+// const EXPIRE = 60 * 30; // 30 min
+const EXPIRE = 60 * 60 * 24 * 30; // 1 month
 
 const authAdmin = async (username, password) => {
     // TODO: authenticate admin by username, password and return the admin doc if matched

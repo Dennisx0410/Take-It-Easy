@@ -35,7 +35,7 @@ const authRestaurant = async (username, password) => {
     if (restaurant == null) {
         throw {name: 'UserNotFound', message: 'User does not exist'};
     }
-    console.log('restaurant doc:', restaurant.username);
+    // console.log('restaurant doc:', restaurant.username);
 
     // check if password matched
     let matched = await bcrypt.compare(password, restaurant.password);
@@ -54,7 +54,7 @@ const getRestaurantByUsername = async (username) => {
     if (restaurant == null) {
         throw {name : 'UserNotExist', message: 'User does not exist'};
     }
-    console.log('restaurant doc:', restaurant.username);
+    // console.log('restaurant doc:', restaurant.username);
 
     return restaurant;
 }
@@ -66,7 +66,7 @@ const getRestaurantById = async (id) => {
     if (restaurant == null) {
         throw {name : 'UserNotExist', message: 'User does not exist'};
     }
-    console.log('restaurant doc:', restaurant.username);
+    // console.log('restaurant doc:', restaurant.username);
 
     return restaurant;
 }
@@ -169,7 +169,7 @@ module.exports = {
             let passwordNew = req.body.passwordNew;
 
             // check user with same username already exists
-            let restaurant = await Restaurants.findOne({username: req.restaurant.username});
+            let restaurant = await getRestaurantByUsername(req.body.username);
 
             // check if old pw matched
             let matched = await bcrypt.compare(passwordOld, restaurant.password); 
@@ -207,7 +207,7 @@ module.exports = {
             let passwordNew = req.body.passwordNew;
 
             // check user with same username already exists
-            let restaurant = await Restaurants.findOne({username: req.body.username});
+            let restaurant = await getRestaurantByUsername(req.body.username);
 
             console.log('password len:', passwordNew.length);
             // check if new pw is longer than 8 characters
@@ -305,7 +305,7 @@ module.exports = {
             let token = await restaurant.genAuthToken();
 
             restaurant.online = true
-            restaurant.save()
+            await restaurant.save()
 
             console.log("you get token:", token)
 
@@ -322,7 +322,7 @@ module.exports = {
         console.log('> logout');
         try {
             req.restaurant.online = false
-            req.restaurant.save()
+            await req.restaurant.save()
             res.status(200).send({name: 'SuccessfullyLogout', message: 'Successfully logout'});
         }
         catch (err) {
@@ -330,28 +330,61 @@ module.exports = {
         }
     },
 
-    approveAccount: async (req, res) => {
-        // TODO: activate account by clicking the link in email
-        console.log(`> Restaurant ${req.body.username} activate account`);
+    approveAccount: async (req, res, next) => {
+        // TODO: approve account by admin
+        console.log(`> Admin approved restaurant ${req.body.username}`);
 
         try {
             let restaurant = await getRestaurantByUsername(req.body.username);
-            console.log('restaurant doc:', restaurant);
+            // console.log('restaurant doc:', restaurant);
 
-            // update last login
-            if (restaurant.approved){
-                throw {msg:"Account Already approved"}
+            // check if already approved
+            if (restaurant.approved) {
+                throw {name: 'AlreadyApproved', message: 'Account already activated'};
             }
+
+            // approve account
             restaurant.approved = true;
+            console.log(`${restaurant.restaurantName} approved by admin`);
             await restaurant.save();
 
-            res.status(200).send({msg:"Account approved"}); // 200: OK
+            req.accStatus = 'AccountApproved';
+            req.restaurant = restaurant;
+
+            // res.status(200).send({msg:"Account approved"}); // 200: OK
+            // continue to send email notify restaurant
+            next();
         }
         catch (err) {
             console.log(err);
             res.status(403).send(err);
         }
     },
+
+    rejectAccount: async (req, res, next) => {
+        // TODO: reject account by admin
+        console.log(`> Admin rejected restaurant ${req.body.username}`);
+
+        try {
+            let restaurant = await getRestaurantByUsername(req.body.username);
+            // console.log('restaurant doc:', restaurant);
+
+            // reject account
+            console.log(`${restaurant.restaurantName} rejected by admin`);
+
+            req.accStatus = 'AccountRejected';
+            req.restaurant = restaurant;
+            await Restaurants.deleteOne({username: req.body.username});
+
+            // continue to send email notify restaurant
+            next();
+        }
+        catch (err) {
+            console.log(err);
+            res.status(403).send(err);
+        }
+    },
+
     verifyToken: async (req, res, next) => {
         // TODO: verify token by matching docs in db
         console.log('> verify token');
@@ -371,7 +404,7 @@ module.exports = {
                 console.log('verify error');
                 throw {name: 'VerifyError', message: 'unable to find user'};
             }
-            console.log('restaurant doc', restaurant.username);
+            // console.log('restaurant doc:', restaurant.username);
 
             // check restaurant currently logging in
             // if (!restaurant.online) {
@@ -446,7 +479,7 @@ module.exports = {
         try {
             
             req.restaurant.menu.remove(req.body.foodId)
-            req.restaurant.save()
+            await req.restaurant.save()
 
             await foodItem.remove({_id:req.body.foodId})
             console.log("Removed Food Item Successfully")

@@ -67,7 +67,7 @@ function App(){
                         <div className="d-none d-md-block col-md-8 background">
                             <img id="bgd" src={process.env.PUBLIC_URL+"food.jpeg"} />
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-md-4 box">
                             <BrowserRouter>
                                 <Routes>
                                     <Route path="/" element={<Login setToken={setToken} setUserInfo={setUserInfo}/>} />  
