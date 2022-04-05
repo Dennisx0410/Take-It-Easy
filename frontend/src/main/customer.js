@@ -11,14 +11,102 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-
+import MaterialIcon, {colorPalette} from 'material-icons-react';
 
 import {Buffer} from 'buffer';
 import { Avatar, Stack } from '@mui/material';
 
 function ChangePassword(){
+    const PREFIX='http://localhost:5000';
+    var oldPassowrd = null, newPassword = null;
+    const [CPstatus, setCPstatus] = useState("");
+    const [mask, setMask] = useState(true);
+    function handleSubmit(e) {
+        e.preventDefault();
+        let loginForm = e.target;
+        let formData = new FormData(loginForm);
+        let oldpwd = formData.get('oldpwd');
+        let newpwd = formData.get('newpwd');
+        let REnewpwd = formData.get('REnewpwd');
+        if (oldpwd == "" || newpwd == "" || REnewpwd == ""){
+            console.log("Empty");
+            setCPstatus("Please fill in all the fields.");
+        }
+        else if(newpwd != REnewpwd){
+            console.log(newpwd);
+            console.log(REnewpwd);
+            setCPstatus("The new password you typed does not match the re-entered new password. Please try again.");
+        }
+        else{
+            oldPassowrd = oldpwd;
+            newPassword = newpwd;
+            console.log(oldPassowrd);
+            console.log(newPassword);
+            // setCPstatus("Valid New password");
+            const url_d = PREFIX+'/customer/changePw';
+            const attempt = async () => {
+                try {
+                    const response = await fetch(
+                        url_d, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                            },
+                            body: {
+                                'passwordOld' : oldPassowrd,
+                                'passwordNew' : newPassword
+                            }
+                        }
+                        
+                    );
+                    const attempt_result = await response.json();
+                    setCPstatus(JSON.stringify(attempt_result));
+                    console.log(attempt_result);
+
+                } catch (error) {
+                    console.log("error", error);
+                }
+            };
+            attempt();
+        }
+        
+    }
+
     return(
         <>
+            <hr/>
+            <h3>Change password:</h3>
+            
+            <form onSubmit={(e)=>{handleSubmit(e)}}>
+                <label>
+                    <h5>Old password: </h5>
+                    
+                    <input name="oldpwd" type="password" required/>
+                    
+                </label>
+                <br/>
+                <label>
+                    <h5>New password: 
+                        <span style={{fontSize:"15px"}}>
+                            <button type="button" onClick={() => setMask(!mask)} 
+                                style={{ backgroundColor: '#faf0e5', border: "none", textAlign: "center", color: "#333333"}} >
+                                {/* <MaterialIcon icon={mask ? "visibility_off" : "visibility"} color='#8a055e'/> */}
+                                {mask ? "Show new password" : "Hide new password"}
+                            </button>
+                        </span>
+                    </h5>
+                    <input name="newpwd" type={mask ? "password" : "text"}  required/>
+                </label>
+                <br/>
+                <label>
+                    <h5>Please re-enter your new password: </h5>
+                   
+                    <input name="REnewpwd" type={mask ? "password" : "text"} required/>
+                </label>
+                <br/>
+                <input type="submit" value="Submit" style={{color: "#8a055e" }}/>
+            </form>
+            <span style={{color: "red"}}>{CPstatus}</span>
         </>
     );
 }
@@ -135,7 +223,7 @@ function Order(props){
                         <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
                     </Typography>
                     <Typography gutterBottom variant="h6" component="h3">
-                        {restaurantName}
+                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantName}</span>
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         Order created at: {createDate} <br/>
