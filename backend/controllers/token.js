@@ -27,7 +27,7 @@ module.exports = {
                     user = await cust.getCustomerById(data._id);
                 }
                 else if (usertype == 'restaurant') { // restaurant
-                    // check with db and pull out customer doc
+                    // check with db and pull out restaurant doc
                     user = await rest.getRestaurantById(data._id);
                 }
                 else if (usertype == 'admin') { // admin

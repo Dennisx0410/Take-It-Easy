@@ -9,7 +9,6 @@ const sharp = require('sharp');
 
 // const
 const { MAX_TRIAL } = require('../models/otp');
-const res = require('express/lib/response');
 
 // handle for image upload
 const upload = multer({
@@ -93,6 +92,7 @@ module.exports = {
     },
 
     getCustomerById: getCustomerById,
+
     getCustomerByUsername: getCustomerByUsername,
 
     getAllCustomerData: async (req, res) => {
