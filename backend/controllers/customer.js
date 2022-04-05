@@ -83,6 +83,7 @@ module.exports = {
     getCustomerData: async (req, res) => {
         // TODO: return customer data
         res.send({
+            userID: req.customer._id,
             username: req.customer.username, 
             phoneNum: req.customer.phoneNum, 
             email: req.customer.email,
@@ -112,7 +113,7 @@ module.exports = {
         // console.log('req.body:', req.body); // username, pw.. etc
         try {
             // check user with same username already exists
-            let customer = await Customers.findOne({username: req.body.username});
+            let customer = await Customers.findOne({username})
 
             if (customer) { // already exists
                 console.log('> user already existed');
@@ -127,7 +128,7 @@ module.exports = {
             req.accStatus = 'SignupSuccess';
 
             // continue to set profile pic
-            next()
+            next();
         } 
         catch (err) {
             res.status(400).send(err); // 400: Bad request // code 11000 would be sent if username duplicated
@@ -142,7 +143,7 @@ module.exports = {
             let passwordNew = req.body.passwordNew;
 
             // check user with same username already exists
-            let customer = await Customers.findOne({username: req.customer.username});
+            let customer = await getCustomerByUsername(req.body.username);
 
             // check if old pw matched
             let matched = await bcrypt.compare(passwordOld, customer.password); 
@@ -181,7 +182,7 @@ module.exports = {
             let passwordNew = req.body.passwordNew;
 
             // check user with same username already exists
-            let customer = await Customers.findOne({username: req.body.username});
+            let customer = await getCustomerByUsername(req.body.username);
 
             console.log('password len:', passwordNew.length);
             // check if new pw is longer than 8 characters
@@ -267,9 +268,9 @@ module.exports = {
             console.log(req.body);
 
             // already activated
-            let customer = await Customers.findOne({username: req.body.username});
+            let customer = await getCustomerByUsername(req.body.username);
             if (customer.activated) {
-                throw {name: 'AlreadyActivated', message: 'account already activated'}
+                throw {name: 'AlreadyActivated', message: 'Account already activated'}
             }
 
             // OTP not exists in db
@@ -310,7 +311,7 @@ module.exports = {
     },
 
     activateAccount: async (req, res) => {
-        // TODO: activate account by clicking the link in email
+        // TODO: activate account after verifying OTP
         console.log(`> user ${req.body.username} activate account`);
 
         try {
@@ -366,7 +367,7 @@ module.exports = {
             // update last login
             customer.lastLogin = new Date();
             customer.online = true;
-            customer.save();
+            await customer.save();
 
             console.log("you get token:", token)
 

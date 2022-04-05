@@ -44,7 +44,6 @@ module.exports = {
                     throw {name: 'VerifyError', message: 'unable to find user'};
                 }
             }
-            console.log(`${usertype} doc`, user.username);
 
             // check user currently logging in
             if (!user.online) {
@@ -60,7 +59,7 @@ module.exports = {
             next();
         }
         catch (err) {
-            console.log(err)
+            // console.log(err)
             res.status(401).send(err); // 401: unauthorized
         }
     }, 

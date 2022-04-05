@@ -51,6 +51,7 @@ POST /customer/activate
 - `otp`: Integer (6 digit)
 #### Return(json)
 - `token`
+- `UserNotExist`
 - `AlreadyActivated`
 - `OtpNotFound`
 - `OtpExpired`
@@ -105,6 +106,7 @@ POST /customer/changePw
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
+- `UserNotExist`
 - `InvalidPassword`
 - `DuplicatedNewPassword`
 - `LengthTooShort`
@@ -218,8 +220,41 @@ GET /admin/customer/resetPw
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
+- `UserNotExist`
 - `LengthTooShort`
 - `SuccessfullyResetPassword`
+
+## Approve restaurant signup request
+```
+GET /admin/restaurant/approve
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- `username`
+#### Return(json)
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `UserNotExist`
+- `AccountApprovedAndApprovalEmailSent`
+
+## Reject restaurant signup request
+```
+GET /admin/restaurant/reject
+```
+#### Header
+- `Authorization: Bearer <token>`
+#### Body
+- `username`
+- `reason`
+#### Return(json)
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `UserNotExist`
+- `AccountRejectedAndRejectEmailSent`
+
 
 ## Get all restaurant data
 ```
@@ -316,6 +351,7 @@ POST /restaurant/changePw
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
+- `UserNotExist`
 - `InvalidPassword`
 - `DuplicatedNewPassword`
 - `LengthTooShort`

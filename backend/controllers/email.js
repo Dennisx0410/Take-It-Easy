@@ -20,7 +20,7 @@ const generateOTP = () => {
     
 }
 
-const sendEmail = async (receiver, OTP) => {
+const sendEmail = async (receiver, template) => {
     // create email transporter
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -37,28 +37,19 @@ const sendEmail = async (receiver, OTP) => {
     });
 
     // email template
-    let template = await transporter.sendMail({
+    let email = await transporter.sendMail({
         from: `'Take it easy' <${process.env.GMAIL_USER}>`, 
         to: receiver.email, 
-        subject: 'Welcome to Take It Easy', 
-        html: `
-            <h1>Welcome to Take It Easy!</h1> <br>
-            Hi ${receiver.username}, welcome to Take It Easy. <br>
-            To activate your account, please enter the following verification code to the take it easy website: <br>
-            <h2><b>${OTP}</b></h2> <br>
-            This code will be expired in 2 minutes!
-            Enjoy placing order! <br>
-            <br>
-            Take It Easy <br>
-            CSCI3100 Group F4
-        `
+        subject: template.subject,
+        html: template.html
     });
 
-    console.log("Message sent: %s", template.messageId);
+    console.log("Message sent: %s", email.messageId);
 }
 
 module.exports = {
     verifyEmail: async (req, res) => { 
+        // TODO: send OTP to customer to verify email
         try {
             // generate OTP
             console.log('> generating OTP');
@@ -132,12 +123,30 @@ module.exports = {
                 } 
             }
 
+            // receiver info
             let receiver = {
                 username: customer.username,
                 email: customer.email
             }
             console.log(receiver);
-            sendEmail(receiver, OTP);
+
+            // email template
+            let template = {
+                subject: 'Welcome to Take It Easy', 
+                html: `
+                    <h1>Welcome to Take It Easy!</h1> <br>
+                    Hi ${receiver.username}, welcome to Take It Easy. <br>
+                    To activate your account, please enter the following verification code to the take it easy website: <br>
+                    <h2><b>${OTP}</b></h2> <br>
+                    This code will be expired in 2 minutes!
+                    Enjoy placing order! <br>
+                    <br>
+                    Take It Easy <br>
+                    CSCI3100 Group F4
+                `
+            }
+            
+            sendEmail(receiver, template);
 
             if (req.accStatus) { // only login and signup would have extra status
                 res.send({name: `${req.accStatus}AndVerificationEmailSent`, message: "Verification email sent"});
@@ -145,6 +154,77 @@ module.exports = {
             else {
                 res.send({name: 'VerificationEmailSent', message: 'Verification email sent'});
             }
+        }
+        catch (err) {
+            res.send(err);
+        }
+    }, 
+
+    approvalEmail: async (req, res) => {
+        try {
+            console.log('> send approval email')
+
+            // receiver info
+            let receiver = {
+                username: req.restaurant.username,
+                email: req.restaurant.email
+            }
+            console.log(receiver);
+
+            let template = {
+                subject: '[Approved] Signup to Take It Easy', 
+                html: `
+                    Hi ${receiver.username}, this is Take It Easy. <br>
+                    We are happy to inform your restaurant that the signup request has been approved by our admin! <br>
+                    You may now signin to our platform to received orders! <br>
+                    <br>
+                    Take It Easy <br>
+                    CSCI3100 Group F4
+                `
+            }
+
+            // email template
+            sendEmail(receiver, template);
+
+            res.send({name: `${req.accStatus}AndApprovalEmailSent`, message: "Approval email sent"});
+
+        }
+        catch (err) {
+            res.send(err);
+        }
+    }, 
+
+    rejectEmail: async (req, res) => {
+        try {
+            console.log('> send reject email')
+
+            // receiver info
+            let receiver = {
+                username: req.restaurant.username,
+                email: req.restaurant.email
+            }
+            console.log(receiver);
+
+            let template = {
+                subject: '[Rejected] Signup to Take It Easy', 
+                html: `
+                    Hi ${receiver.username}, this is Take It Easy. <br>
+                    We are sorry to inform your restaurant that the signup request has been rejected by our admin. <br>
+                    Please do the signup again. <br>
+                    <br>
+                    Reason: <br>
+                    <i>${req.body.reason}</i> <br>
+                    <br>
+                    Take It Easy <br>
+                    CSCI3100 Group F4
+                `
+            }
+
+            // email template
+            sendEmail(receiver, template);
+
+            res.send({name: `${req.accStatus}AndRejectEmailSent`, message: "Reject email sent"});
+
         }
         catch (err) {
             res.send(err);

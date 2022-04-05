@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './verification.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Alert } from '@mui/material';
 
 async function verify(username, otp) {
@@ -115,6 +115,9 @@ function Verification(props) {
                 <h1>Thank you</h1>
                 <hr className="header"></hr>
                 <p>Your restaurant signup request is sent, please wait for admin approval. You will receive an email about your signup progress after admin has reviewed your request.</p>
+                <Link to="/" className='formattedLink' style={{textAlign: "center"}}>
+                    Go back to login page
+                </Link>
             </div>
         </>
     );
