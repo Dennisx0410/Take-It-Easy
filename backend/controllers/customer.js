@@ -142,9 +142,7 @@ module.exports = {
         try {
             let passwordOld = req.body.passwordOld;
             let passwordNew = req.body.passwordNew;
-
-            // check user with same username already exists
-            let customer = await getCustomerByUsername(req.body.username);
+            let customer = req.customer;
 
             // check if old pw matched
             let matched = await bcrypt.compare(passwordOld, customer.password); 
@@ -167,6 +165,8 @@ module.exports = {
             customer.password = passwordNew;
             await customer.save();
 
+            console.log('> pw changed');
+
             // continue to set profile pic
             res.status(200).send({name: 'SuccessfullyChangedPassword', message: 'Successfully changed pw'});
         }
@@ -182,7 +182,6 @@ module.exports = {
         try {
             let passwordNew = req.body.passwordNew;
 
-            // check user with same username already exists
             let customer = await getCustomerByUsername(req.body.username);
 
             console.log('password len:', passwordNew.length);
