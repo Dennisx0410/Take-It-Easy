@@ -75,6 +75,7 @@ const getRestaurantById = async (id) => {
 module.exports = {
 
     getRestaurantById: getRestaurantById,
+    getRestaurantByUsername: getRestaurantByUsername,
 
     getRestaurantData: async (req, res) => {
         // TODO: Get restaurant by username

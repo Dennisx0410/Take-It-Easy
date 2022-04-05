@@ -128,7 +128,7 @@ function HeaderBar(props){
                                     <Dropdown.Item href="/r/profile">Profile</Dropdown.Item>
                                     <Dropdown.Item href="/r/history">Order History</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);sessionStorage.clear();}} >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);sessionStorage.clear();props.socket.disconnect()}} >Logout</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>
@@ -187,7 +187,7 @@ function HeaderBar(props){
                                     {/* </Link> */}
                                     <Dropdown.Item onClick={() => navigate('/customer/history', { replace: true })}>Order History</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item onClick={()=> {navigate('/'); props.setToken(undefined); sessionStorage.clear()}} >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=> {navigate('/'); props.setToken(undefined); sessionStorage.clear(); props.socket.disconnect()}} >Logout</Dropdown.Item>
                                     {/* onClick={handleLogout(props.setToken)} */}
                                     </Dropdown.Menu>
                                 </Dropdown>

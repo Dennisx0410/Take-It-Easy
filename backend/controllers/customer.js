@@ -93,6 +93,7 @@ module.exports = {
     },
 
     getCustomerById: getCustomerById,
+    getCustomerByUsername: getCustomerByUsername,
 
     getAllCustomerData: async (req, res) => {
         // TODO: get all customers
