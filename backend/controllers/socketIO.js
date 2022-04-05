@@ -55,7 +55,7 @@ io.on("connection", socket =>{
     }
 
 
-    socket.on("disconnect", () =>{
+    socket.on("disconnect", async () =>{
         var index = -1;
         if (data.usertype == "customer"){
             index = onlineCustomer.findIndex((customer)=>
@@ -63,6 +63,9 @@ io.on("connection", socket =>{
             )
         if (index !== -1){
             console.log(` >>> Remove Customer Key Pair for ${onlineCustomer[index].socketId} with socket ${onlineCustomer[index].username}`)
+            let user = await cust.getCustomerByUsername(onlineCustomer[index].username)
+            user.online = false;
+            await user.save()
             onlineCustomer.splice(index, 1)[0]
         }
         }else if (data.usertype == "restaurant"){
@@ -72,6 +75,9 @@ io.on("connection", socket =>{
             
         if (index !== -1){
             console.log(` >>> Remove Restaurant Key Pair for ${onlineRestaurant[index].socketId} with socket ${onlineRestaurant[index].username}`)
+            let user = await rest.getRestaurantByUsername(onlineRestaurant[index].username)
+            user.online = false;
+            await user.save()
             onlineRestaurant.splice(index, 1)[0]
         }
         }
