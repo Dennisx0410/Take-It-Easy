@@ -98,6 +98,7 @@ POST /customer/signin
 POST /customer/changePw
 ```
 #### Header
+- `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
 - `passwordOld`
@@ -212,6 +213,7 @@ GET /admin/customer/all
 GET /admin/customer/resetPw
 ```
 #### Header
+- `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
 - `username`
@@ -229,6 +231,7 @@ GET /admin/customer/resetPw
 GET /admin/restaurant/approve
 ```
 #### Header
+- `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
 - `username`
@@ -244,6 +247,7 @@ GET /admin/restaurant/approve
 GET /admin/restaurant/reject
 ```
 #### Header
+- `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
 - `username`
@@ -275,6 +279,7 @@ GET /admin/restaurant/all
 GET /admin/restaurant/resetPw
 ```
 #### Header
+- `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
 - `username`
@@ -343,6 +348,7 @@ POST /restaurant/signin
 POST /restaurant/changePw
 ```
 #### Header
+- `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
 - `passwordOld`
