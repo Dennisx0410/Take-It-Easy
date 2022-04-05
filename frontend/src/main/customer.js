@@ -316,7 +316,6 @@ class Customer extends React.Component{
                         <AccountInfo/>
                     </div>
                 </>
-                
             );
         }
         else if (this.props.action ==  "history"){
@@ -325,7 +324,6 @@ class Customer extends React.Component{
                     <div className='userContent'>
                         <OrderHistory/>
                     </div>
-                    
                 </>
             );
         }
@@ -334,7 +332,6 @@ class Customer extends React.Component{
                 <>
                     <AccountInfo/>
                 </>
-                
             );
         }
     }

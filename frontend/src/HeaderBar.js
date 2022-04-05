@@ -7,7 +7,7 @@ import MaterialIcon, {colorPalette} from 'material-icons-react';
 import Dropdown from 'react-bootstrap/Dropdown'
 import { handleBreakpoints } from '@mui/system';
 import { useNavigate } from "react-router-dom";
-import { IconButton } from '@mui/material';
+import { Badge, IconButton } from '@mui/material';
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
 // function Points(){
@@ -185,7 +185,9 @@ function HeaderBar(props){
                             <div className='col-1' style={{padding: "3px"}} >
                                <Dropdown autoClose="outside" align={"end"}>
                                 <DropdownToggle id="noti" className="bg-transparent btn-transparent" >
-                                    <MaterialIcon icon="notifications" color='#FFFFFF' />
+                                    <Badge badgeContent={!notificationList ? 0 : notificationList.length} color="secondary">
+                                        <MaterialIcon icon="notifications" color='#FFFFFF' />
+                                    </Badge>
                                     </DropdownToggle>                                   
                                         <Dropdown.Menu id="NotiContainer">
                                         <Dropdown.Item><div className='noti-Title'>Notifications</div></Dropdown.Item>
