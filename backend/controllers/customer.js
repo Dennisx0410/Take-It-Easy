@@ -86,7 +86,7 @@ module.exports = {
             username: req.customer.username, 
             phoneNum: req.customer.phoneNum, 
             email: req.customer.email,
-            point: req.customer.point, 
+            points: req.customer.points, 
             profilePic: req.customer.profilePic
         })
     },
