@@ -385,7 +385,7 @@ module.exports = {
             // update active status
             req.customer.online = false;
             await req.customer.save();
-
+            console.log(`${req.customer.username} have logout`)
             res.status(200).send({name: 'SuccessfullyLogout', message: 'Successfully logout'});
         }
         catch (err) {
