@@ -128,12 +128,12 @@ function ResetRestaurantPassword(props){
         let REnewpwd = formData.get('REnewpwd');
         if (username == "" || newpwd == "" || REnewpwd == ""){
             console.log("Empty");
-            setCPstatus({"message":"Please fill in all the fields."});
+            setCPstatus({name: "EmptyPw", message:"Please fill in all the fields."});
         }
         else if(newpwd != REnewpwd){
             console.log(newpwd);
             console.log(REnewpwd);
-            setCPstatus({"message":"The new password you typed does not match the re-entered new password. Please try again."});
+            setCPstatus({name: "NewPwMismatched", message:"The new password you typed does not match the re-entered new password. Please try again."});
         }
         else{
             targetUsername = username;
