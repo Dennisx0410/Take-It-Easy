@@ -35,7 +35,7 @@ function ResetCustomerPassword(props){
         else if(newpwd != REnewpwd){
             console.log(newpwd);
             console.log(REnewpwd);
-            setCPstatus("The new password you typed does not match the re-entered new password. Please try again.");
+            setCPstatus({"message":"The new password you typed does not match the re-entered new password. Please try again."});
         }
         else{
             targetUsername = username;
@@ -128,12 +128,12 @@ function ResetRestaurantPassword(props){
         let REnewpwd = formData.get('REnewpwd');
         if (username == "" || newpwd == "" || REnewpwd == ""){
             console.log("Empty");
-            setCPstatus("Please fill in all the fields.");
+            setCPstatus({name: "EmptyPw", message:"Please fill in all the fields."});
         }
         else if(newpwd != REnewpwd){
             console.log(newpwd);
             console.log(REnewpwd);
-            setCPstatus("The new password you typed does not match the re-entered new password. Please try again.");
+            setCPstatus({name: "NewPwMismatched", message:"The new password you typed does not match the re-entered new password. Please try again."});
         }
         else{
             targetUsername = username;
@@ -230,7 +230,7 @@ const useStyles = makeStyles({
 });
 
 function CustomerCard(props){
-    console.log("In order");
+    console.log("In CC");
     console.log(props);
     const [ImgUrl,setImgUrl] = useState();
     const [skip,setSkip] = useState(false);
@@ -253,31 +253,31 @@ function CustomerCard(props){
                 <CardContent sx={{ flex: '1 0 auto' }}>
                     <Typography variant="h5" color="text.secondary" component="div">
                         <span style={customer.online? {color: "green"}: {color: "red"}}>◉</span>
-                        {customer.username}&nbsp;(Customer ID: {customer._id})
+                        Username:&nbsp;{customer.username}&nbsp;(Customer ID: {customer._id})
                     </Typography>
                     <span style={customer.activated? {color: "green"}: {color: "red"}}>
                             {customer.activated? "Activated" : "Not activated"}
                     </span>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <CardMedia
-                            component="img"
-                            sx={{ width: 151 }}
-                            image={`data:image/jpg; base64, ${ImgUrl}`}
-                            alt="Live from space album cover"
-                        />
-                        <br/>
-                        <Typography component="div" variant="subtitle2">
-                            E-mail: {customer.email}<br/>
-                            Phone Number: {customer.phoneNum}<br/>
-                            Points: {customer.points}<br/>
-                            Created at: {customer.createdAt}<br/>
-                            Last login: {customer.lastLogin}<br/>
-                            Updated at: {customer.updatedAt}<br/>
-                        </Typography>
-                        
-                        
+                    <br/>
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-
+                            <CardMedia
+                                display="flex"
+                                component="img"
+                                sx={{ width: 151 }}
+                                image={`data:image/jpg; base64, ${ImgUrl}`}
+                                alt="Live from space album cover"
+                            />
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                            <Typography component="div" variant="subtitle2">
+                                E-mail: {customer.email}<br/>
+                                Phone Number: {customer.phoneNum}<br/>
+                                Points: {customer.points}<br/>
+                                Created at: {customer.createdAt}<br/>
+                                Last login: {customer.lastLogin}<br/>
+                                Updated at: {customer.updatedAt}<br/>
+                            </Typography>
                         </Box>
                     </Box>
                 </CardContent>
@@ -337,12 +337,122 @@ function CustomerList(){
 
 }
 //
-
+//Restaurant
+function RestaurantCard(props){
+    console.log("In RC");
+    console.log(props);
+    const [ImgUrl,setImgUrl] = useState();
+    const [skip,setSkip] = useState(false);
+    const classes = useStyles();
+    let restaurant = props.restaurant;
+    // console.log(customer);
+        // let index = props.i;
+        if (!skip){
+            let profilePic = restaurant.profilePic;
+            let img = Buffer.from(profilePic.data).toString('base64');
+            setSkip(true);
+            setImgUrl(img);
+        }
+            
+        // skip = true;
+                        
+    return(
+        <div  style={{padding: "5px 0"}}>
+            <Card sx={{ display: 'flex' }}>
+                <CardContent sx={{ flex: '1 0 auto' }}>
+                    <Typography variant="h5" color="text.secondary" component="div">
+                        <span style={restaurant.online? {color: "green"}: {color: "red"}}>◉</span>
+                        {restaurant.restaurantName}&nbsp;(Restaurant ID: {restaurant._id})
+                    </Typography>
+                    <span style={restaurant.approved? {color: "green"}: {color: "red"}}>
+                            {restaurant.approved? "Approved" : "Not approved"}
+                    </span>
+                    <br/>
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                            <CardMedia
+                                display="flex"
+                                component="img"
+                                sx={{ width: 151 }}
+                                image={`data:image/jpg; base64, ${ImgUrl}`}
+                                alt="Live from space album cover"
+                            />
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                            <Typography component="div" variant="subtitle2">
+                                E-mail: {restaurant.email}<br/>
+                                Phone Number: {restaurant.phoneNum}<br/>
+                                Created at: {restaurant.createdAt}<br/>
+                                Last login: {restaurant.lastLogin}<br/>
+                                Updated at: {restaurant.updatedAt}<br/>
+                            </Typography>
+                        </Box>
+                    </Box>
+                    {/* menu probably? */}
+                    {/* <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                            <CardMedia
+                                display="flex"
+                                component="img"
+                                sx={{ width: 151 }}
+                                image={`data:image/jpg; base64, ${ImgUrl}`}
+                                alt="Live from space album cover"
+                            />
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                            <Typography component="div" variant="subtitle2">
+                            </Typography>
+                        </Box>
+                    </Box> */}
+                </CardContent>
+                <CardActions disableSpacing>
+                    <Button size="small" color="primary">
+                        Approve
+                    </Button>
+                    <Button size="small" color="secondary">
+                        Ban
+                    </Button>
+                </CardActions>
+            </Card>
+        </div>
+    );
+}
 function RestaurantList(){
+    const PREFIX='http://localhost:5000';
+    const [reload, setReload] = useState(true);
+    const [RestaurantList, setRestaurantList] = useState([]);
+    useEffect(() => {
+            const url = PREFIX+'/admin/restaurant/all';
+            console.log("CA");
+            async function fetchData () {
+                try {
+                    const response = await fetch(
+                        url, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                        }}
+                    );
+                    const restaurantDetails = await response.json();
+                    setRestaurantList(restaurantDetails);
+                    setReload(false);
+                    
+                } catch (error) {
+                    console.log("error", error);
+                }
+            };
+            if (reload){
+                fetchData();
+            }
+            console.log("CB");
+    },[]);
     return(
         <>
             <h2>List of Restaurants:</h2>
-            <Card>
+            <div>
+                {RestaurantList.map( (restaurant,i) => <RestaurantCard restaurant={restaurant} i={i} key={i} setReload={setReload}  /> )}
+            </div>
+            {/* <Card>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                         : #
@@ -351,15 +461,8 @@ function RestaurantList(){
                         {}
                     </Typography>
                 </CardContent>
-                <CardActions disableSpacing>
-                    <Button size="small" color="primary">
-                    Approve
-                    </Button>
-                    <Button size="small" color="secondary">
-                    Ban
-                    </Button>
-                </CardActions>
-            </Card>
+                
+            </Card> */}
         </>
     );
 }
