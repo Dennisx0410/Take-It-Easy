@@ -1,11 +1,8 @@
 import './main.css';
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
-import { Search } from 'react-router-dom';
 import SearchBar from './search_bar'
-import { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {Buffer} from 'buffer';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -13,9 +10,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import Box from '@mui/material/Box';
-import MaterialIcon, {colorPalette} from 'material-icons-react';
-import { display } from '@mui/system';
-import zIndex from '@mui/material/styles/zIndex';
+import MaterialIcon from 'material-icons-react';
 
 
 // import { useNavigate } from 'react-router-dom';
@@ -137,22 +132,22 @@ class Gallery extends React.Component {
         bufferFR = this.props.filteredRestaurants
         // console.log(this.props.filteredRestaurants);
         return (
-
-          <main className="container-fluid">
-            <div className="row">
-                <div className="col-1"></div>
-                <div className="col-10 align-self-start">
-                    <h4 style={{padding: "5px 0 0 0"}}>Restaurants:</h4>
-                    {    bufferFR.map(
-                        (restaurant,i) => <FileCard restaurant={restaurant} i={i} key={i} 
-                                            RErender={this.props.RErender} setRErender={this.props.setRErender}/>
-                        )
-                    }
-                    
-                </div>
-                <div className="col-1"></div>
-            </div>
-          </main>
+            <>
+                <main className="container-fluid">
+                    <div className="row">
+                        <div className="col-1"></div>
+                        <div className="col-10 align-self-start">
+                            <h4 style={{padding: "5px 0 0 0"}}>Restaurants:</h4>
+                            {   bufferFR.map(
+                                (restaurant,i) => <FileCard restaurant={restaurant} i={i} key={i} 
+                                                    RErender={this.props.RErender} setRErender={this.props.setRErender}/>
+                                )
+                            }
+                        </div>
+                        <div className="col-1"></div>
+                    </div>
+                </main>
+            </>
         );
     }
 }
@@ -260,6 +255,73 @@ class FileCard extends React.Component{
 
 }
 
+// async function getAvailableRestaurants(url) {
+//     const response = await fetch(
+//         url, {
+//         method: 'GET',
+//         headers: {
+//             'Authorization': 'Bearer '+sessionStorage.getItem("token")
+//         }}
+//     );
+//     const restaurantDetails = await response.json();
+//     console.log("Restaurants:")
+//     console.log(restaurantDetails);
+
+//     const availableR = restaurantDetails.filter((restaurants) => {
+//         // const available = true;
+//         const available = restaurants.approved && restaurants.online;
+//         return available;
+//     });
+
+//     return availableR;
+// }
+
+// function FavoriteRestaurant() {
+//     const PREFIX='http://localhost:5000';
+//     const [REALrestaurantData, setREALRD] = useState([]);
+
+//     useEffect(async () => {
+//             const url = PREFIX+'/customer/fav';
+//             console.log('in fav');
+//             console.log('A');
+
+//             let availableR;
+//                 try {
+//                     availableR = await getAvailableRestaurants(url);
+//                     console.log(availableR);
+//                     setREALRD(availableR);
+//                 }
+//                 catch (err) {
+//                     console.log('error:', err);
+//                 }
+//             console.log("B");
+//     },[]);
+    
+//     const [RErender, setRErender] = useState(true);
+
+//     return (
+//           <>
+//             <div className='Main'>
+//                 <Gallery filteredRestaurants={REALrestaurantData} RErender={RErender} setRErender={setRErender}/>
+//             </div>
+//           </>
+//     );
+// }
+
+
+// function Main(props) {
+//     console.log(props.action)
+//     if (props.action == 'fav') {
+//         return (
+//             <FavoriteRestaurant/>
+//         );
+//     }
+//     else {
+//         return (
+//             <Main2/>
+//         )
+//     }
+// }
 
 function Main(){
     const PREFIX='http://localhost:5000';
@@ -340,7 +402,5 @@ function Main(){
           </>
     );
 }
-
-
 
 export default Main;

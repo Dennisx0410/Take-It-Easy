@@ -1,13 +1,10 @@
 import './HeaderBar.css';
 import React, { useState , useEffect} from 'react';
-import { BrowserRouter, Route, Routes} from 'react-router-dom';
-import {useMatch, useParams, useLocation, useRef} from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import MaterialIcon, {colorPalette} from 'material-icons-react';
+import MaterialIcon from 'material-icons-react';
 import Dropdown from 'react-bootstrap/Dropdown'
-import { handleBreakpoints } from '@mui/system';
 import { useNavigate } from "react-router-dom";
-import { Badge, IconButton, Snackbar, Button ,Alert} from '@mui/material';
+import { Badge, IconButton, Snackbar, Alert} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
@@ -297,6 +294,7 @@ function HeaderBar(props){
                                     {/* <Link to="/customer/profile">
                                         Profile */}
                                     <Dropdown.Item onClick={() => navigate('/', { replace: true })}>Restaurant</Dropdown.Item>
+                                    {/* <Dropdown.Item onClick={() => navigate('/customer/fav', { replace: true })}>Fav</Dropdown.Item> */}
                                     <Dropdown.Item onClick={() => navigate('/customer/profile', { replace: true })}>Profile</Dropdown.Item>
                                     {/* </Link> */}
                                     <Dropdown.Item onClick={() => navigate('/customer/history', { replace: true })}>Order History</Dropdown.Item>

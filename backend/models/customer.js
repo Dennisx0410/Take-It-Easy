@@ -22,7 +22,11 @@ const customerSchema = new Schema({
     points : {type: Number, default: 10},
     lastLogin : Date,
     online : {type: Boolean, default: false}, // true: new token is needed as (old token expired) or (old token not expired but user logged out)
-    activated: {type: Boolean, default: false}
+    activated: {type: Boolean, default: false}, 
+    fav: [{
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "Restaurants"
+    }]
 }, {timestamps: true});
 
 // listen save action and hash the password before saving

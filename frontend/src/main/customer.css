@@ -4,8 +4,13 @@
     min-height: 100vh;
 }
 
-.userContent{
+.userContent {
     background-color: rgb(250, 240, 229);
     color: rgb(138, 5, 94);
     min-height: 100vh;
+}
+
+.content-header {
+    padding: 1vh 0 0 0;
+    color: #ba1851;
 }
