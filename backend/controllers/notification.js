@@ -36,7 +36,7 @@ module.exports = {
         try {
             if (req.customer != undefined){
                 console.log(`>> ${req.customer.username} is fetching notification`)
-                let noti = await Notification.find({$or:[{reciever:req.customer.username},{reciever:"All"}]}).sort({createdAt: -1}).limit(5)
+                let noti = await Notification.find({$or:[{reciever:req.customer.username},{reciever:"All"}],dismissed:false}).sort({createdAt: -1}).limit(5)
                 res.status(200).send(noti)
             }
         } catch (err) {
@@ -62,6 +62,20 @@ module.exports = {
             console.log("> Created new targeted noti to ",noti.reciever)
             socketio.notifySingle(noti.reciever, targettype, noti)
             res.status(201).send(noti)
+        } catch (err) {
+            console.log(err)
+            res.status(400).send(err)
+        }
+    },
+    dismissNotification: async (req,res)=>{
+        try {
+            let noti = await Notification.findById(req.params.id)
+            if (noti === undefined){
+                throw `Notification with id ${req.params.id} not exist`
+            }
+            noti.dismissed = true
+            await noti.save()
+            res.status(200).send(`Dismissed Notification with id ${req.params.id}`)
         } catch (err) {
             console.log(err)
             res.status(400).send(err)

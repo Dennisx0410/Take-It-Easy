@@ -94,6 +94,50 @@ module.exports = {
         }
     },
 
+    getOrderByID : async (req,res) =>{
+        try {
+          console.log("Fetch orders from", req.customer.username)
+          const orders = await Order.aggregate([     //Joining two db to get order detail
+              {
+                $match: {
+                  _id: req.body.orderId
+                }
+              },
+              {
+                $lookup: {
+                  from: 'fooditems', // secondary Db Name
+                  localField: 'items',
+                  foreignField: '_id',
+                  as: 'items' // output key to be store
+                }
+              },
+              {
+                $lookup:{
+                  from: 'restaurants',
+                  localField: 'restaurantID',
+                  foreignField: 'username',
+                  as: 'restaurant_Info',
+                  pipeline:[{$project:{'_id':0,'restaurantName':1}}]
+                },
+              },
+              {
+                $lookup:{
+                  from: 'customers',
+                  localField: 'customerID',
+                  foreignField: 'username',
+                  pipeline:[{$project:{'_id':0,'username':1}}],
+                  as: 'customer_Info'
+
+                },
+              }
+            ]);
+            res.send(orders)
+      } catch (err) {
+          console.log(err)
+          res.send(err)
+      }
+    },
+
     addOrder : async (req,res) => {
         console.log('New Order Recieved')
         try{

@@ -59,3 +59,11 @@ a.header-title:hover{
 .rightpadding{
     padding-right: 5px;
 }
+
+.NotiItem{
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+    display: flex;
+    list-style-type: none;
+    align-items: center;
+}

@@ -7,7 +7,8 @@ import MaterialIcon, {colorPalette} from 'material-icons-react';
 import Dropdown from 'react-bootstrap/Dropdown'
 import { handleBreakpoints } from '@mui/system';
 import { useNavigate } from "react-router-dom";
-import { Badge, IconButton } from '@mui/material';
+import { Badge, IconButton, Snackbar, Button ,Alert} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
 // function Points(){
@@ -51,6 +52,25 @@ function HeaderBar(props){
 
     const [notifications, setNotifications] = useState([]);
     const [notificationList, setList] = useState();
+    const [snackOpen, setSnackOpen] = useState(false)
+    const [snackMessage, setSnackMsg] = useState("")
+    const horizontal = 'right'
+    const vertical = 'top'
+
+    const handleSnackOpen = () => {
+        setSnackOpen(true);
+        setSnackMsg("Helllo World")
+    }
+
+    const handleSnackClose = (event, reason) =>{
+        if (reason === 'clickaway') {
+            return;
+          }
+      
+          setSnackOpen(false);
+    }
+
+    const handleDeleteNoti = 
     
     useEffect(()=>{
         fetchNotification()      
@@ -70,16 +90,12 @@ function HeaderBar(props){
             setNotifications(notis) //Set State with fetched result
         }
     }
-
-
-    function handleOnClick(){
-        console.log("clicked")
-    }
-
     useEffect(()=>{
         //Listen to notificaition update
         props.socket?.on('notification', doc =>{
             setNotifications(prev=>[doc, ...prev])
+            setSnackOpen(true)
+            setSnackMsg(doc.message)
         })
 
         return() =>{
@@ -91,14 +107,27 @@ function HeaderBar(props){
     useEffect(()=>{
         if (notifications.length > 0){
             let notificationList = notifications.map(notification=>(
-                //Add React Element Here             
-                <Dropdown.Item id={notification._id}>
-                {notification.message}
-                <div className="notiTime" align="right">{new Date(notification.createdAt).toLocaleString()}</div>
-                </Dropdown.Item>
+                //Add React Element Here
+                <div id={notification._id} key={notification._id} className="NotiItem">
+                <Dropdown.Item id={notification._id + "Main"}>
+                        {notification.message}
+                        <div id={notification._id + "TimeStamp"} className="notiTime" align="right">{new Date(notification.createdAt).toLocaleString()}</div>
+                </Dropdown.Item>   
+                <IconButton id={notification._id + "DeleteButton"} aria-label="delete" style={{borderRadius: 0}} className="Noti-Delete" onClick={() =>{
+                        let newNoti = notifications.filter(noti => noti._id !== notification._id)
+                        setNotifications(newNoti)
+                        }}>
+                        <DeleteIcon />
+                </IconButton>    
+                </div>   
             ))
             // console.log("1")
             setList(notificationList)
+        }else{
+          let notificationList = (
+              <Dropdown.Item disabled={true}>There are no notifications yet!</Dropdown.Item>
+          )
+          setList(notificationList)
         }
 
     },[notifications])
@@ -171,6 +200,11 @@ function HeaderBar(props){
         // setSkip(true);
         return (
             <>
+            <Snackbar open={snackOpen} autoHideDuration={6000} onClose={handleSnackClose} anchorOrigin={{vertical, horizontal}}>
+                    <Alert onClose={handleSnackClose} severity="success" sx={{ width: '100%' }}>
+                        {snackMessage}
+                    </Alert>
+                </Snackbar>
                 <div className='header stickyBar'>
                     <div className='container-fluid text-center'>
                         <div className='row'>
@@ -214,6 +248,11 @@ function HeaderBar(props){
         // }
         return (
             <>
+                <Snackbar open={snackOpen} autoHideDuration={6000} onClose={handleSnackClose} anchorOrigin={{vertical, horizontal}}>
+                    <Alert onClose={handleSnackClose} severity="success" sx={{ width: '100%' }}>
+                        {snackMessage}
+                    </Alert>
+                </Snackbar>
                 <div className='header stickyBar'>
                     <div className='container-fluid text-center'>
                         <div className='row'>
@@ -225,7 +264,7 @@ function HeaderBar(props){
                                     </Badge>
                                     </DropdownToggle>                                   
                                         <Dropdown.Menu id="NotiContainer">
-                                        <Dropdown.Item><div className='noti-Title'>Notifications</div></Dropdown.Item>
+                                        <Dropdown.ItemText><div className='noti-Title'>Notifications</div></Dropdown.ItemText>
                                         {notificationList}
                                     </Dropdown.Menu>
 
