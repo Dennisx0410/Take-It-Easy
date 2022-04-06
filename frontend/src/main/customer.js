@@ -241,6 +241,7 @@ function AccountInfo(){
                     Phone Number: <span style={{color: "black"}}>{customerInfo.phoneNum}</span><br/>
                     E-mail: <span style={{color: "black"}}>{customerInfo.email}</span><br/>
                     Points: <span style={{color: "black"}}>{customerInfo.points? customerInfo.points:0}</span><br/> */}
+                    <hr></hr>
                     <ChangePassword/>
                 </div>
                 <div className='col-1'></div>
