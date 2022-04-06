@@ -30,12 +30,12 @@ function ChangePassword(){
         let REnewpwd = formData.get('REnewpwd');
         if (oldpwd == "" || newpwd == "" || REnewpwd == ""){
             console.log("Empty");
-            setCPstatus("Please fill in all the fields.");
+            setCPstatus({"message":"Please fill in all the fields."});
         }
         else if(newpwd != REnewpwd){
             console.log(newpwd);
             console.log(REnewpwd);
-            setCPstatus("The new password you typed does not match the re-entered new password. Please try again.");
+            setCPstatus({"message":"The new password you typed does not match the re-entered new password. Please try again."});
         }
         else{
             oldPassowrd = oldpwd;
