@@ -118,22 +118,23 @@ module.exports = {
     getApprovedRestaurant: async (req, res) => {
         console.log("> fetching approved restaurants");
         try {
-            let list = await Restaurants.aggregate([     //Joining two db to get order detail
-              {
-                $match: {
-                  approved:true
-                }
-              },
-              {
-                $lookup: {
-                  from: 'fooditems', // secondary Db Name
-                  localField: 'menu',
-                  foreignField: '_id',
-                  as: 'menu' // output key to be store
-                }
-              }
-            ])
-
+            let list = await Restaurants.find()
+            // let list = await Restaurants.aggregate([     //Joining two db to get order detail
+            //   {
+            //     $match: {
+            //       approved:true
+            //     }
+            //   },
+            //   {
+            //     $lookup: {
+            //       from: 'fooditems', // secondary Db Name
+            //       localField: 'menu',
+            //       foreignField: '_id',
+            //       as: 'menuDetail' // output key to be store
+            //     }
+            //   }
+            // ])
+            console.log(">>>>>>>>>>>>>>>>", list[0].profilePic.data)
             res.status(200).send(list);
         }
         catch (err) {
