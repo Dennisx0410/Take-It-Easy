@@ -54,7 +54,7 @@ function HeaderBar(props){
     
     useEffect(()=>{
         fetchNotification()      
-        window.addEventListener("beforeunload", closeHandler)
+        //window.addEventListener("beforeunload", closeHandler)
     }, []);
 
 

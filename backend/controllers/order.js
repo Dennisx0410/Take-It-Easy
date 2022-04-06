@@ -120,7 +120,7 @@ module.exports = {
         }
     },
     
-    finishOrder: async (req,res)=>{
+    finishOrder: async (req,res, next)=>{
         try {
           //The Request sender is not a restaurant
           if (req.restaurant == undefined){
@@ -136,7 +136,9 @@ module.exports = {
           doc.status = true
           await doc.save()
           //TODO: Add function to SOCKET.IO to alert user
-          res.send("Order Status Updated")
+          req.body.targetUser = doc.customerID
+          req.body.message = `Your order placed at ${req.restaurant.restaurantName} is ready for pick up!`
+          next()
         } catch (err) {
             console.log(err)
             res.send(err)
