@@ -169,7 +169,7 @@ module.exports = {
             console.log('> pw changed');
 
             // continue to set profile pic
-            res.status(200).send({name: 'SuccessfullyChangedPassword', message: 'Successfully changed pw'});
+            res.status(200).send({name: 'SuccessfullyChangedPassword', message: 'Successfully changed password'});
         }
         catch (err) {
             res.send(err);
@@ -195,7 +195,7 @@ module.exports = {
             await customer.save();
 
             // continue to set profile pic
-            res.status(200).send({name: 'SuccessfullyResetPassword', message: 'Successfully reset pw'});
+            res.status(200).send({name: 'SuccessfullyResetPassword', message: 'Successfully reset password'});
         }
         catch (err) {
             res.send(err);
