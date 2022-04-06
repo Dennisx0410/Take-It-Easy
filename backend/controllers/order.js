@@ -187,5 +187,24 @@ module.exports = {
             console.log(err)
             res.send(err)
         }
+    },
+
+    getAllOrderData: async (req, res) =>{
+      try {
+        let orders = await Order.aggregate([
+          {
+            $lookup:{
+              from: 'fooditems', // secondary Db Name
+                    localField: 'items',
+                    foreignField: '_id',
+                    as: 'items' // output key to be store
+            }
+          }
+        ])
+        res.status(200).send(orders)
+      } catch (err) {
+        console.log(err)
+        res.status(400).send(err)
+      }
     }
 }

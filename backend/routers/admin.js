@@ -7,6 +7,7 @@ const Customers = require('../models/customer');
 const { Otp } = require('../models/otp');
 const Restaurants = require('../models/restaurant');
 const { approvalEmail, rejectEmail } = require('../controllers/email');
+const orderCtrler = require("../controllers/order")
 
 const app = express.Router();
 
@@ -21,6 +22,9 @@ app.post('/restaurant/approve', verifyToken, restCtrler.approveAccount, approval
 app.post('/restaurant/reject', verifyToken, restCtrler.rejectAccount, rejectEmail);
 app.get('/restaurant/all', verifyToken, restCtrler.getAllRestaurantData);
 app.post('/restaurant/resetPw', verifyToken, restCtrler.resetPw);
+
+//order
+app.get('/order/all', verifyToken, orderCtrler.getAllOrderData)
 
 // dev only
 // to clear all customer account with 'test@test.com' for easy development, should be removed at final version
