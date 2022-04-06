@@ -186,11 +186,13 @@ function AccountInfo(){
     }
 
     const rows = [
-        {name: 'User ID', data: restaurantInfo.userID},
+        {name: 'User ID', data: restaurantInfo._id},
         {name: 'Username', data: restaurantInfo.username},
         {name: 'Phone number', data: restaurantInfo.phoneNum},
         {name: 'Email', data: restaurantInfo.email},
-        {name: 'Points', data: restaurantInfo.points ? restaurantInfo.points : 0},
+        {name: 'Address', data: restaurantInfo.address},
+        {name: 'License Number', data: restaurantInfo.licenseNum},
+        {name: 'Address', data: restaurantInfo.address}
     ];
 
     return(
@@ -205,7 +207,7 @@ function AccountInfo(){
                     <h4><i className="material-icons">badge</i>Your information:</h4>
                     <div className='row'>
                         {/* profilePic */}
-                        <div className='col-12 col-md-3 mb-3'>
+                        <div className='col-12 col-md-3 mb-3' style={{ alignContent: "center" }}>
                             <Stack
                                 direction="row"
                                 justifyContent="center"
@@ -241,7 +243,7 @@ function AccountInfo(){
                     Phone Number: <span style={{color: "black"}}>{restaurantInfo.phoneNum}</span><br/>
                     E-mail: <span style={{color: "black"}}>{restaurantInfo.email}</span><br/>
                     Points: <span style={{color: "black"}}>{restaurantInfo.points? restaurantInfo.points:0}</span><br/> */}
-                    <hr></hr>
+                    <hr/>
                     <ChangePassword/>
                 </div>
                 <div className='col-1'></div>
