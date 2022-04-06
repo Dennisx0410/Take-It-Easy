@@ -357,17 +357,19 @@ function RestaurantCard(props){
         // skip = true;
                         
     return(
-        <div  style={{padding: "5px 0"}}>
+        <div style={{padding: "5px 0"}}>
             <Card sx={{ display: 'flex' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
                     <Typography variant="h5" color="text.secondary" component="div">
                         <span style={restaurant.online? {color: "green"}: {color: "red"}}>◉</span>
                         {restaurant.restaurantName}&nbsp;(Restaurant ID: {restaurant._id})
                     </Typography>
-                    <span style={restaurant.approved? {color: "green"}: {color: "red"}}>
+                    <Typography variant="h7" component="h7">
+                        <span style={restaurant.approved? {color: "green", paddingLeft:"1%"}: {color: "red", paddingLeft:"1%"}}>
                             {restaurant.approved? "Approved" : "Not approved"}
-                    </span>
-                    <br/>
+                        </span>
+                        <br/>
+                    </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                             <CardMedia
@@ -378,13 +380,13 @@ function RestaurantCard(props){
                                 alt="Live from space album cover"
                             />
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                            <Typography component="div" variant="subtitle2">
+                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1}}>
+                            <Typography component="subtitle1" variant="subtitle1">
+                                Address: {restaurant.address}<br/>
+                                Username: {restaurant.username}<br/>
                                 E-mail: {restaurant.email}<br/>
                                 Phone Number: {restaurant.phoneNum}<br/>
-                                Created at: {restaurant.createdAt}<br/>
-                                Last login: {restaurant.lastLogin}<br/>
-                                Updated at: {restaurant.updatedAt}<br/>
+                                License Number: {restaurant.licenseNum}
                             </Typography>
                         </Box>
                     </Box>
@@ -404,15 +406,20 @@ function RestaurantCard(props){
                             </Typography>
                         </Box>
                     </Box> */}
-                </CardContent>
-                <CardActions disableSpacing>
-                    <Button size="small" color="primary">
-                        Approve
-                    </Button>
-                    <Button size="small" color="secondary">
-                        Ban
-                    </Button>
-                </CardActions>
+                    {restaurant.approved? 
+                        ""
+                        :
+                        <CardActions>
+                                
+                                <Button size="small" color="primary" >
+                                    Approve
+                                </Button>
+                                <Button size="small" color="secondary">
+                                    Reject
+                                </Button> 
+                        </CardActions>
+                    }
+                </CardContent >
             </Card>
         </div>
     );
