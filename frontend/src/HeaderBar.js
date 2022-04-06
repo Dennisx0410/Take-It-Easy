@@ -113,9 +113,10 @@ function HeaderBar(props){
                         {notification.message}
                         <div id={notification._id + "TimeStamp"} className="notiTime" align="right">{new Date(notification.createdAt).toLocaleString()}</div>
                 </Dropdown.Item>   
-                <IconButton id={notification._id + "DeleteButton"} aria-label="delete" style={{borderRadius: 0}} className="Noti-Delete" onClick={() =>{
+                <IconButton id={notification._id + "DeleteButton"} aria-label="delete" style={{borderRadius: 0}} className="Noti-Delete" onClick={async () =>{
                         let newNoti = notifications.filter(noti => noti._id !== notification._id)
                         setNotifications(newNoti)
+                        await fetch("http://localhost:5000/notification/dismiss/"+ notification._id,{method:"POST"})
                         }}>
                         <DeleteIcon />
                 </IconButton>    
@@ -125,7 +126,7 @@ function HeaderBar(props){
             setList(notificationList)
         }else{
           let notificationList = (
-              <Dropdown.Item disabled={true}>There are no notifications yet!</Dropdown.Item>
+              <Dropdown.Item disabled={true}>There is no notification yet!</Dropdown.Item>
           )
           setList(notificationList)
         }
