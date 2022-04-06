@@ -16,7 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from '@mui/material/Box';
 import {Buffer} from 'buffer';
 
-function ResetCustomerPassword(props){    
+function ResetCustomerPassword(){    
     const PREFIX='http://localhost:5000';
     var targetUsername = null, newPassword = null;
     const [CPstatus, setCPstatus] = useState("");
@@ -114,7 +114,7 @@ function ResetCustomerPassword(props){
     
 }
 
-function ResetRestaurantPassword(props){    
+function ResetRestaurantPassword(){    
     const PREFIX='http://localhost:5000';
     var targetUsername = null, newPassword = null;
     const [CPstatus, setCPstatus] = useState("");
@@ -339,7 +339,71 @@ function CustomerList(){
 //
 //Restaurant
 function RestaurantCard(props){
+    const PREFIX='http://localhost:5000';
     console.log("In RC");
+    const [update,setUpdate] = useState(true);
+    function handleClick(action,username){
+        setUpdate(false);
+        if (action == "Approve"){
+            const url = PREFIX+'/admin/restaurant/approve';
+            console.log("CA");
+            async function approve() {
+                try {
+                    const response = await fetch(
+                        url, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                                'Content-type' : 'application/json'
+                            },
+                            body: JSON.stringify({
+                                'username': username
+                            })
+                        }
+                    );
+                    const approve_result = await response.json();
+                    console.log(approve_result);
+                    props.setReload(true);
+                } catch (error) {
+                    console.log("error", error);
+                }
+            };
+            approve();
+            console.log("CB");
+        }
+        else if (action == "Reject"){
+            const url = PREFIX+'/admin/restaurant/reject';
+            console.log("CA");
+            async function reject() {
+                try {
+                    const response = await fetch(
+                        url, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                                'Content-type' : 'application/json'
+                            },
+                            body: JSON.stringify({
+                                'username': username,
+                                'reason': "violating our regulation(s)." 
+                            })
+                        }
+                    );
+                    const approve_result = await response.json();
+                    console.log(approve_result);
+                    props.setReload(true);
+                } catch (error) {
+                    console.log("error", error);
+                }
+            };
+            reject();
+            console.log("CB");
+        }
+        window.location.reload();
+        console.log("setting reload");
+        setUpdate(true);
+        
+    }
     console.log(props);
     const [ImgUrl,setImgUrl] = useState();
     const [skip,setSkip] = useState(false);
@@ -364,7 +428,7 @@ function RestaurantCard(props){
                         <span style={restaurant.online? {color: "green"}: {color: "red"}}>◉</span>
                         {restaurant.restaurantName}&nbsp;(Restaurant ID: {restaurant._id})
                     </Typography>
-                    <Typography variant="h7" component="h7">
+                    <Typography variant="h6" component="h6">
                         <span style={restaurant.approved? {color: "green", paddingLeft:"1%"}: {color: "red", paddingLeft:"1%"}}>
                             {restaurant.approved? "Approved" : "Not approved"}
                         </span>
@@ -381,7 +445,7 @@ function RestaurantCard(props){
                             />
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1}}>
-                            <Typography component="subtitle1" variant="subtitle1">
+                            <Typography component="div" variant="body1">
                                 Address: {restaurant.address}<br/>
                                 Username: {restaurant.username}<br/>
                                 E-mail: {restaurant.email}<br/>
@@ -411,10 +475,10 @@ function RestaurantCard(props){
                         :
                         <CardActions>
                                 
-                                <Button size="small" color="primary" >
+                                <Button size="small" color="primary" onClick={() =>{handleClick("Approve",restaurant.username)}}>
                                     Approve
                                 </Button>
-                                <Button size="small" color="secondary">
+                                <Button size="small" color="secondary" onClick={() =>{handleClick("Reject",restaurant.username)}}>
                                     Reject
                                 </Button> 
                         </CardActions>
@@ -459,17 +523,6 @@ function RestaurantList(){
             <div>
                 {RestaurantList.map( (restaurant,i) => <RestaurantCard restaurant={restaurant} i={i} key={i} setReload={setReload}  /> )}
             </div>
-            {/* <Card>
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        : #
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {}
-                    </Typography>
-                </CardContent>
-                
-            </Card> */}
         </>
     );
 }

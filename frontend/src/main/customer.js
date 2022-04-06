@@ -12,7 +12,6 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import MaterialIcon, {colorPalette} from 'material-icons-react';
-
 import {Buffer} from 'buffer';
 import { Alert, Avatar, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
@@ -326,39 +325,19 @@ function OrderHistory(){
         fetchOrder();
     }, []);
 
-    if (orderHistory == []){
-        console.log("Hi");
-        return(
-            <>
-                <div className="ProfileHeader">
-                    <h2 style={{ padding: "1vh 3vw 0 3vw", color: "#ba1851" }} >Your Order History:</h2>
+    return(
+        <>
+            <div className='row'>
+                <div className='col-1'></div>
+                <div className='col-10'>
+                    <h2 style={{ padding: "1vh 0 0 0", color: "#ba1851" }}>Your Order History: </h2>
+                    {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
                 </div>
-                <div>
-                    Loading...
-                </div>
-            </>
-            
-        );
-    }
-    else{
-        return(
-            <>
-                <div className="ProfileHeader">
-                    
-                </div>
-                <div className='row'>
-                    <div className='col-1'></div>
-                    <div className='col-10'>
-                        <h2 style={{ padding: "1vh 0 0 0", color: "#ba1851" }}>Your Order History: </h2>
-                        {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
-                    </div>
-                    <div className='col-1'></div>
-                </div>
-            </>
-            
-        );
-    }
-    
+                <div className='col-1'></div>
+            </div>
+        </>
+        
+    );
 }
 
 class Customer extends React.Component{
@@ -394,3 +373,22 @@ class Customer extends React.Component{
     }
 }
 export default Customer;
+
+// if (orderHistory.length == 0){
+    //     console.log("Hi");
+    //     return(
+    //         <>
+    //             <div className='row'>
+    //                 <div className='col-1'></div>
+    //                 <div className='col-10'>
+    //                     <h2 style={{ padding: "1vh 0 0 0", color: "#ba1851" }}>Your Order History: </h2>
+    //                     You havent make any order yet. 
+    //                 </div>
+    //                 <div className='col-1'></div>
+    //             </div>
+    //         </>
+            
+    //     );
+    // }
+    // else{
+    // }
