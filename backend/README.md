@@ -210,7 +210,7 @@ GET /admin/customer/all
 
 ## Reset a customer password 
 ```
-GET /admin/customer/resetPw
+POST /admin/customer/resetPw
 ```
 #### Header
 - `Content-type: application/json`
@@ -228,7 +228,7 @@ GET /admin/customer/resetPw
 
 ## Approve restaurant signup request
 ```
-GET /admin/restaurant/approve
+POST /admin/restaurant/approve
 ```
 #### Header
 - `Content-type: application/json`
@@ -244,7 +244,7 @@ GET /admin/restaurant/approve
 
 ## Reject restaurant signup request
 ```
-GET /admin/restaurant/reject
+POST /admin/restaurant/reject
 ```
 #### Header
 - `Content-type: application/json`
@@ -276,7 +276,7 @@ GET /admin/restaurant/all
 
 ## Reset a restaurant password 
 ```
-GET /admin/restaurant/resetPw
+POST /admin/restaurant/resetPw
 ```
 #### Header
 - `Content-type: application/json`
