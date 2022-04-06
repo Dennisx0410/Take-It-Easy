@@ -76,25 +76,25 @@ function ChangePassword(){
     return(
         <>
             {/* <h3>Change password:</h3> */}
-            <h3><i className="material-icons">password</i>Change password:</h3>
+            <h4><i className="material-icons">password</i>Change password:</h4>
             
             <form onSubmit={(e)=>{handleSubmit(e)}}>
                 <label htmlFor="password" className="form-label">
-                    <h5>Old password:</h5>
+                    <h6>Old password:</h6>
                 </label>
                 <div className="input-group mb-2" style={{width: "250px"}}>
                     <input type={mask ? "text" : "password"} className="form-control" name="oldpwd" required/>
                     <button type="button" className="material-icons input-group-text" onClick={() => setMask(!mask)}>{mask ? "visibility_off" : "visibility"}</button>
                 </div>
                 <label htmlFor="password" className="form-label">
-                    <h5>New password:</h5>
+                    <h6>New password:</h6>
                 </label>
                 <div className="input-group mb-2" style={{width: "250px"}}>
                     <input type={mask ? "text" : "password"} className="form-control" name="newpwd" required/>
                     <button type="button" className="material-icons input-group-text" onClick={() => setMask(!mask)}>{mask ? "visibility_off" : "visibility"}</button>
                 </div>
                 <label htmlFor="password" className="form-label">
-                    <h5>Please re-enter your new password</h5>
+                    <h6>Please re-enter your new password</h6>
                 </label>
                 <div className="input-group mb-2" style={{width: "250px"}}>
                     <input type={mask ? "text" : "password"} className="form-control" name="REnewpwd" required/>
@@ -202,7 +202,7 @@ function AccountInfo(){
                 <div className='col-1'></div>
                 <div className='col-10'>
                     <h3>Glad to meet you, {customerInfo.username}!</h3>
-                    <h4>Your Information:</h4>
+                    <h4><i className="material-icons">badge</i>Your information:</h4>
                     <div className='row'>
                         {/* profilePic */}
                         <div className='col-12 col-md-3 mb-3'>

@@ -447,10 +447,10 @@ module.exports = {
     addFoodItem: async (req, res) => {
         console.log('> add Food Item');
         try {
-            // resize Food Item pic to 100x100px before storing to db
+            // resize Food Item pic to 200x200px before storing to db
             let resizedBuf = await sharp(req.file.buffer).resize({
-                width: 100, 
-                height: 100
+                width: 200,
+                height: 200
             }).toBuffer();
             let doc = new foodItem();
             doc.picture = resizedBuf;
