@@ -79,8 +79,21 @@ module.exports = {
         console.log(req.restaurant)
         try {
             // fetch restaurant by username
-            let data = await Restaurants.findOne({_id:req.restaurant._id});
-
+            const data = await Restaurants.aggregate([     //Joining two db to get order detail
+              {
+                $match: {
+                  _id: req.restaurant._id
+                }
+              },
+              {
+                $lookup: {
+                  from: 'fooditems', // secondary Db Name
+                  localField: 'menu',
+                  foreignField: '_id',
+                  as: 'menu' // output key to be store
+                }
+              }
+            ]);
             res.status(200).send(data);
         }
         catch (err) {
@@ -119,9 +132,18 @@ module.exports = {
         // TODO: get all restaurant
         console.log("> fetching all restaurants");
         try {
-            let list = await Restaurants.find();
+            const data = await Restaurants.aggregate([     //Joining two db to get order detail
+              {
+                $lookup: {
+                  from: 'fooditems', // secondary Db Name
+                  localField: 'menu',
+                  foreignField: '_id',
+                  as: 'menu' // output key to be store
+                }
+              }
+            ]);
 
-            res.status(200).send(list);
+            res.status(200).send(data);
         }
         catch (err) {
             console.log(err);
