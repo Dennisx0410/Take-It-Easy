@@ -14,6 +14,7 @@ app.post('/changePw', verifyToken, custCtrler.changePw);
 
 // actions
 app.get('/data', verifyToken, custCtrler.getCustomerData); 
+app.get('/fav', verifyToken, custCtrler.getFavoriteRestaurant); 
 app.post('/logout', verifyToken, custCtrler.logout);
 app.post('/profilePic', verifyToken, custCtrler.uploadProfilePic, custCtrler.setProfilePic, (req, res) => {
     res.send({name: 'ChangedProfilePic', message: 'successfully uploaded and changed profile pic'});

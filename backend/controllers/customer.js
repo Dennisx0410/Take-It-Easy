@@ -107,6 +107,21 @@ module.exports = {
         }
     },
 
+    // get favorite restaurant
+    getFavoriteRestaurant: async (req, res, next) => {
+        // TODO: fetch all pinned favorite restaurant
+        console.log('> Get all fav restaurant');
+        try {
+            console.log(req.customer.username);
+            let customer = await Customers.findOne({username: req.customer.username}).populate('fav')
+            console.log('fav restaurants:', customer.fav.length);
+            res.send(customer.fav)
+        }
+        catch (err) {
+            res.send(err);
+        }
+    },
+
     // middleware for new user login
     addCustomer: async (req, res, next) => {
         // TODO : Add Customer to database (Register) by credentials

@@ -1,9 +1,7 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
-import {Link} from 'react-router-dom';
-import {useMatch, useParams, useLocation} from 'react-router-dom';
-import ReactDOM from 'react-dom';
+import { useLocation } from 'react-router-dom';
 import Login from './login/login';
 import Signup from './login/signup';
 import Verification from './login/verification';
@@ -13,11 +11,9 @@ import HeaderBar from './HeaderBar';
 import Customer from './main/customer';
 import UserRestaurant from './main/user_restaurant';
 import Admin from './main/admin';
-import { useNavigate } from "react-router-dom";
-import { io} from "socket.io-client"
+import { io } from "socket.io-client"
 
 function NoMatch() {
-    const navigate = useNavigate();
     let location = useLocation();
     console.log(location.pathname);
     // navigate('/', { replace: true })
@@ -140,6 +136,7 @@ function App(){
                                 <Route path="/restaurant/:rid" element={<Restaurant />} />
                                 <Route path="/customer/profile" element={<Customer action={"profile"} />} />
                                 <Route path="/customer/history" element={<Customer action={"history"} />} />
+                                {/* <Route path="/customer/fav" element={<Main action={"fav"} />} /> */}
                                 <Route path="*" element={<NoMatch/>} />
                             </Routes>
                         </BrowserRouter>

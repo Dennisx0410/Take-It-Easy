@@ -1,18 +1,11 @@
 import './customer.css';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes} from 'react-router-dom';
-import {Link} from 'react-router-dom';
-import {useMatch, useParams, useLocation} from 'react-router-dom';
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-import MaterialIcon, {colorPalette} from 'material-icons-react';
-import {Buffer} from 'buffer';
+import { Buffer } from 'buffer';
 import { Alert, Avatar, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
 function ChangePassword(){
@@ -142,7 +135,7 @@ function ChangePassword(){
     );
 }
 
-function AccountInfo(){
+function AccountInfo() {
     const [customerInfo, setCustomerInfo] = useState({});
     
     const PREFIX='http://localhost:5000';
@@ -194,13 +187,13 @@ function AccountInfo(){
 
     return(
         <>
-            <div className="ProfileHeader">
+            {/* <div className="ProfileHeader">
                 <h2 style={{ padding: "1vh 3vw 0 3vw", color: "#ba1851" }}>Welcome!</h2>
-            </div>
+            </div> */}
             <div className='row'>
                 <div className='col-1'></div>
                 <div className='col-10'>
-                    <h3>Glad to meet you, {customerInfo.username}!</h3>
+                    <h2 className="content-header">Glad to meet you, {customerInfo.username}!</h2>
                     <h4><i className="material-icons">badge</i>Your information:</h4>
                     <div className='row'>
                         {/* profilePic */}
@@ -259,7 +252,7 @@ const useStyles = makeStyles({
     }
   });
 
-function Order(props){
+function Order(props) {
     console.log("In order");
     console.log(props);
     const classes = useStyles();
@@ -299,7 +292,7 @@ function Order(props){
 }
 
 // /order/fetchByCustomer
-function OrderHistory(){
+function OrderHistory() {
     const [orderHistory, setOrderHistory] = useState([]);
     
     const PREFIX='http://localhost:5000';
@@ -325,37 +318,37 @@ function OrderHistory(){
         fetchOrder();
     }, []);
 
-    return(
+    return (
         <>
             <div className='row'>
                 <div className='col-1'></div>
                 <div className='col-10'>
-                    <h2 style={{ padding: "1vh 0 0 0", color: "#ba1851" }}>Your Order History: </h2>
+                    <h2 className="content-header">Your Order History: </h2>
                     {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
                 </div>
                 <div className='col-1'></div>
             </div>
         </>
-        
     );
 }
 
 class Customer extends React.Component{
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
     render() {
         
         if (this.props.action == "profile"){
-            return(
-                <>  <div className='userContent'>
+            return (
+                <>  
+                    <div className='userContent'>
                         <AccountInfo/>
                     </div>
                 </>
             );
         }
-        else if (this.props.action ==  "history"){
-            return(
+        else if (this.props.action == "history") {
+            return (
                 <>
                     <div className='userContent'>
                         <OrderHistory/>
@@ -363,8 +356,8 @@ class Customer extends React.Component{
                 </>
             );
         }
-        else{
-            return(
+        else {
+            return (
                 <>
                     <AccountInfo/>
                 </>
