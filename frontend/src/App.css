@@ -23,7 +23,7 @@
 }
 
 .slide-in-l {
-  animation: 2s slide-in-from-left;
+  animation: 2s slide-in-from-top;
 }
 
 @keyframes slide-in-from-left {
@@ -33,6 +33,16 @@
   }
   100% {
     transform: translateX(0);
+    opacity: 100;
+  }
+}
+@keyframes slide-in-from-top {
+  0% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
     opacity: 100;
   }
 }
