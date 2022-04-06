@@ -1,7 +1,7 @@
 import './HeaderBar.css';
 import React, { useState , useEffect} from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
-import {useMatch, useParams, useLocation} from 'react-router-dom';
+import {useMatch, useParams, useLocation, useRef} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import MaterialIcon, {colorPalette} from 'material-icons-react';
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -48,30 +48,7 @@ import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
 function HeaderBar(props){
     let navigate = useNavigate();
-    const [customerInfo, setCustomerInfo] = useState([]);
-    const PREFIX='http://localhost:5000';
-    useEffect(() => {
-        console.log("A");
-        const url_d = PREFIX+'/customer/data';
-        const fetchData = async () => {
-          try {
-            const response = await fetch(
-                url_d, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
-                }}
-            );
-            const customer_info = await response.json();
-            setCustomerInfo(customer_info);
-            console.log(customer_info);
 
-          } catch (error) {
-            console.log("error", error);
-          }
-        };
-        fetchData();
-    }, []);
     const [notifications, setNotifications] = useState([]);
     const [notificationList, setList] = useState();
     
@@ -82,14 +59,16 @@ function HeaderBar(props){
 
 
     const fetchNotification = async () => {
-        const data = await fetch(`http://localhost:5000/notification/fetchIndividual`, {
-            headers:{
-                'Authorization':"Bearer " + props.token
-            }
-        });
-        const notis = await data.json(); //Converting data to jason
-        console.log(props.token)
-        setNotifications(notis) //Set State with fetched result
+        if (props.usertype=="customer"){
+            const data = await fetch(`http://localhost:5000/notification/fetchIndividual`, {
+                headers:{
+                    'Authorization':"Bearer " + props.token
+                }
+            });
+            const notis = await data.json(); //Converting data to jason
+            console.log(props.token)
+            setNotifications(notis) //Set State with fetched result
+        }
     }
 
 
@@ -118,6 +97,7 @@ function HeaderBar(props){
                 <div className="notiTime" align="right">{new Date(notification.createdAt).toLocaleString()}</div>
                 </Dropdown.Item>
             ))
+            // console.log("1")
             setList(notificationList)
         }
 
@@ -153,9 +133,42 @@ function HeaderBar(props){
 
     // }
     // console.log(props.setToken);
+    const [customerInfo, setCustomerInfo] = useState({});
+    const PREFIX='http://localhost:5000';
     
+    const [skip, setSkip] = useState(false);
+    const fetchData = async () => {
+        if (props.usertype=="customer"){
+            try {
+                const url_d = PREFIX+'/customer/data';
+                const response = await fetch(
+                    url_d, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    }}
+                );
+                const customer_info = await response.json();
+                setCustomerInfo(customer_info);
+                setSkip(true);
+                // console.log(customer_info);
+
+            } catch (error) {
+                console.log("error", error);
+            }
+        }
+    };
+    useEffect(() => {
+            // console.log("XDD");
+        if (!skip){
+            console.log("XDD");
+            fetchData();
+        }
+        
+    });
 
     if (props.usertype=="restaurant"){
+        // setSkip(true);
         return (
             <>
                 <div className='header stickyBar'>
@@ -261,11 +274,12 @@ function HeaderBar(props){
         );
     }
     else if (props.usertype=="admin"){
+        // setSkip(true);
         return (
             <>
                 <div className='header stickyBar'>
                     <div className='container-fluid text-center'>
-                        <div className='row'>
+                        <div className='row' >
                             <div className='col-2'></div>
                             <div className='col-8'>
                                 <Link to="/" className="header-title " style={{textAlign: "center"}}>
@@ -276,18 +290,18 @@ function HeaderBar(props){
                             </div>
                             
                             <div className='col-1 headerpadding'></div>
-                            <div className='col-1 headerpadding bg-transparent btn-transparent'>
+                            <div className='col-1 headerpadding bg-transparent btn-transparent rightpadding'>
                                 <Dropdown className="d-inline mx-2 bg-transparent btn-transparent" autoClose="outside" >
                                     <Dropdown.Toggle id="dropdown-autoclose-outside"  className="bg-transparent "  size="sm">
                                         <MaterialIcon icon="account_circle" color='#FFFFFF' />
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu style={{zIndex:10}} >
-                                    <Dropdown.Item onClick={() => navigate("/", { replace: true })} >orders</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => navigate("/", { replace: true })} >Orders</Dropdown.Item>
                                     <Dropdown.Item onClick={() => navigate("/userlist/customers", { replace: true })} >Customers' List</Dropdown.Item>
                                     <Dropdown.Item onClick={() => navigate("/userlist/restaurants", { replace: true })} >Restaurants' List</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);}} >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=>{navigate('/'); props.setToken(undefined); sessionStorage.clear(); props.socket.disconnect()}} >Logout</Dropdown.Item>
                                     {/* onClick={handleLogout(props.setToken)} */}
                                     </Dropdown.Menu>
                                 </Dropdown>

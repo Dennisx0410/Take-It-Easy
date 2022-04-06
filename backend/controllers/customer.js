@@ -9,7 +9,6 @@ const sharp = require('sharp');
 
 // const
 const { MAX_TRIAL } = require('../models/otp');
-const res = require('express/lib/response');
 
 // handle for image upload
 const upload = multer({
@@ -93,6 +92,7 @@ module.exports = {
     },
 
     getCustomerById: getCustomerById,
+
     getCustomerByUsername: getCustomerByUsername,
 
     getAllCustomerData: async (req, res) => {
@@ -114,7 +114,7 @@ module.exports = {
         // console.log('req.body:', req.body); // username, pw.. etc
         try {
             // check user with same username already exists
-            let customer = await Customers.findOne({username})
+            let customer = await Customers.findOne({username: req.body.username});
 
             if (customer) { // already exists
                 console.log('> user already existed');
@@ -122,6 +122,7 @@ module.exports = {
             }
 
             // create customer account
+            
             customer = await Customers.create(req.body);
             // console.log(customer)
 
@@ -232,10 +233,10 @@ module.exports = {
         // TODO: add profile pic to db
         console.log('> add profile');
         try {
-            // resize profile pic to 100x100px before storing to db
+            // resize profile pic to 200x200px before storing to db
             let resizedBuf = await sharp(req.file.buffer).resize({
-                width: 100, 
-                height: 100
+                width: 200,
+                height: 200
             }).toBuffer();
             req.customer.profilePic = resizedBuf;
             await req.customer.save();

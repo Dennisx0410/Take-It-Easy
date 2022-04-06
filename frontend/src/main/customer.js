@@ -14,13 +14,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import MaterialIcon, {colorPalette} from 'material-icons-react';
 
 import {Buffer} from 'buffer';
-import { Avatar, Stack } from '@mui/material';
+import { Alert, Avatar, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
 function ChangePassword(){
     const PREFIX='http://localhost:5000';
     var oldPassowrd = null, newPassword = null;
-    const [CPstatus, setCPstatus] = useState("");
-    const [mask, setMask] = useState(true);
+    const [CPstatus, setCPstatus] = useState({});
+    const [mask, setMask] = useState(false);
     function handleSubmit(e) {
         e.preventDefault();
         let loginForm = e.target;
@@ -30,12 +30,12 @@ function ChangePassword(){
         let REnewpwd = formData.get('REnewpwd');
         if (oldpwd == "" || newpwd == "" || REnewpwd == ""){
             console.log("Empty");
-            setCPstatus("Please fill in all the fields.");
+            setCPstatus({name: "EmptyPw", message: "Please fill in all the fields."});
         }
-        else if(newpwd != REnewpwd){
+        else if (newpwd != REnewpwd) {
             console.log(newpwd);
             console.log(REnewpwd);
-            setCPstatus("The new password you typed does not match the re-entered new password. Please try again.");
+            setCPstatus({name: "NewPwMismatched", message:"The new password you typed does not match the re-entered new password. Please try again."});
         }
         else{
             oldPassowrd = oldpwd;
@@ -61,7 +61,7 @@ function ChangePassword(){
                         
                     );
                     const attempt_result = await response.json();
-                    setCPstatus(JSON.stringify(attempt_result));
+                    setCPstatus(attempt_result);
                     console.log(attempt_result);
 
                 } catch (error) {
@@ -70,16 +70,38 @@ function ChangePassword(){
             };
             attempt();
         }
-        
+        loginForm.reset();
     }
 
     return(
         <>
-            <hr/>
-            <h3>Change password:</h3>
+            {/* <h3>Change password:</h3> */}
+            <h4><i className="material-icons">password</i>Change password:</h4>
             
             <form onSubmit={(e)=>{handleSubmit(e)}}>
-                <label>
+                <label htmlFor="password" className="form-label">
+                    <h6>Old password:</h6>
+                </label>
+                <div className="input-group mb-2" style={{width: "250px"}}>
+                    <input type={mask ? "text" : "password"} className="form-control" name="oldpwd" required/>
+                    <button type="button" className="material-icons input-group-text" onClick={() => setMask(!mask)}>{mask ? "visibility_off" : "visibility"}</button>
+                </div>
+                <label htmlFor="password" className="form-label">
+                    <h6>New password:</h6>
+                </label>
+                <div className="input-group mb-2" style={{width: "250px"}}>
+                    <input type={mask ? "text" : "password"} className="form-control" name="newpwd" required/>
+                    <button type="button" className="material-icons input-group-text" onClick={() => setMask(!mask)}>{mask ? "visibility_off" : "visibility"}</button>
+                </div>
+                <label htmlFor="password" className="form-label">
+                    <h6>Please re-enter your new password</h6>
+                </label>
+                <div className="input-group mb-2" style={{width: "250px"}}>
+                    <input type={mask ? "text" : "password"} className="form-control" name="REnewpwd" required/>
+                    <button type="button" className="material-icons input-group-text" onClick={() => setMask(!mask)}>{mask ? "visibility_off" : "visibility"}</button>
+                </div>
+{/* pattern="^.{8,}$" title="length should be longer than 8 characters"  */}
+                {/* <label>
                     <h5>Old password: </h5>
                     
                     <input name="oldpwd" type="password" required/>
@@ -90,10 +112,10 @@ function ChangePassword(){
                     <h5>New password: 
                         <span style={{fontSize:"15px"}}>
                             <button type="button" onClick={() => setMask(!mask)} 
-                                style={{ backgroundColor: '#faf0e5', border: "none", textAlign: "center", color: "#333333"}} >
+                                style={{ backgroundColor: '#faf0e5', border: "none", textAlign: "center", color: "#333333"}} > */}
                                 {/* <MaterialIcon icon={mask ? "visibility_off" : "visibility"} color='#8a055e'/> */}
-                                {mask ? "Show new password" : "Hide new password"}
-                            </button>
+                                {/* {mask ? "Show new password" : "Hide new password"} */}
+                            {/* </button>
                         </span>
                     </h5>
                     <input name="newpwd" type={mask ? "password" : "text"}  required/>
@@ -104,10 +126,19 @@ function ChangePassword(){
                    
                     <input name="REnewpwd" type={mask ? "password" : "text"} required/>
                 </label>
-                <br/>
-                <input type="submit" value="Submit" style={{color: "#8a055e" }}/>
+                <br/> */}
+                <button type="submit" className="btn">Submit</button>
+                {/* <input type="submit" value="Submit" style={{color: "#8a055e" }}/> */}
             </form>
-            <span style={{color: "red"}}>{CPstatus}</span>
+            { !CPstatus.name ? <></> : 
+             CPstatus.name === "SuccessfullyChangedPassword" ? 
+                <Alert severity="success">
+                    {CPstatus.message}
+                </Alert> : 
+                <Alert severity="error">
+                    {CPstatus.message}
+                </Alert> }
+            {/* <span style={{color: "red"}}>{CPstatus.message}</span> */}
         </>
     );
 }
@@ -136,42 +167,31 @@ function AccountInfo(){
             console.log("error", error);
           }
         };
-
-        // const url_p = PREFIX+'/customer/profilePic';
-        // const fetchCustomerProfilepic = async () => {
-        //     try {
-        //       const response = await fetch(
-        //           url_p, {
-        //           method: 'GET',
-        //           headers: {
-        //               'Authorization': 'Bearer '+sessionStorage.token
-        //           }}
-        //       );
-        //       const json = await response.json();
-        //       setRestaurants(JSON.stringify(json[rid]));
-        //       console.log(json);
-        //     } catch (error) {
-        //       console.log("error", error);
-        //     }
-        // };
-        // fetchCustomerProfilepic();
         fetchData();
     }, []);
 
     //load profile pic
-        const [ImgUrl, setImgUrl] = useState();
-        const [skip , setSkip] = useState(false);
-        if (customerInfo.profilePic != undefined){
-            if (!skip){
-                let profilePic = customerInfo.profilePic;
-                console.log(profilePic);
-                let img = Buffer.from(profilePic.data).toString('base64');
-                setSkip(true);
-                setImgUrl(img);
-                
-            }
+    const [ImgUrl, setImgUrl] = useState();
+    const [skip , setSkip] = useState(false);
+    if (customerInfo.profilePic != undefined){
+        if (!skip){
+            let profilePic = customerInfo.profilePic;
+            console.log(profilePic);
+            let img = Buffer.from(profilePic.data).toString('base64');
+            setSkip(true);
+            setImgUrl(img);
                 
         }
+                
+    }
+
+    const rows = [
+        {name: 'User ID', data: customerInfo.userID},
+        {name: 'Username', data: customerInfo.username},
+        {name: 'Phone number', data: customerInfo.phoneNum},
+        {name: 'Email', data: customerInfo.email},
+        {name: 'Points', data: customerInfo.points ? customerInfo.points : 0},
+    ];
 
     return(
         <>
@@ -182,14 +202,46 @@ function AccountInfo(){
                 <div className='col-1'></div>
                 <div className='col-10'>
                     <h3>Glad to meet you, {customerInfo.username}!</h3>
-                    <h4>Your Information:</h4>
-                    {/* profilePic */}
-                    <Avatar alt="picture" src={`data:image/jpeg; base64, ${ImgUrl}`} sx={{ width: 85, height: 85 }} />
-                    User ID: <span style={{color: "black"}}>{customerInfo.userID}</span><br/>
+                    <h4><i className="material-icons">badge</i>Your information:</h4>
+                    <div className='row'>
+                        {/* profilePic */}
+                        <div className='col-12 col-md-3 mb-3'>
+                            <Stack
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                                spacing={2}
+                                height="100%"
+                            >
+                                <Avatar alt="picture" src={`data:image/jpeg; base64, ${ImgUrl}`} sx={{ width: 200, height: "auto", maxWidth: "100%" }}/>
+                            </Stack>
+                        </div>
+                        <div className='col-12 col-md-9 mb-3'>
+                            <TableContainer sx={{width: 500, maxWidth: "100%"}} component={Paper}>
+                                <Table aria-label="simple table">
+                                    <TableBody>
+                                    {rows.map((row) => (
+                                        <TableRow
+                                            key={row.name}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                        <TableCell component="th" scope="row">
+                                            <h6>{row.name}</h6>
+                                        </TableCell>
+                                        <TableCell align="right">{row.data}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
+                    </div>
+                    {/* User ID: <span style={{color: "black"}}>{customerInfo.userID}</span><br/>
                     Username: <span style={{color: "black"}}>{customerInfo.username}</span><br/>
                     Phone Number: <span style={{color: "black"}}>{customerInfo.phoneNum}</span><br/>
                     E-mail: <span style={{color: "black"}}>{customerInfo.email}</span><br/>
-                    Points: <span style={{color: "black"}}>{customerInfo.points? customerInfo.points:0}</span><br/>
+                    Points: <span style={{color: "black"}}>{customerInfo.points? customerInfo.points:0}</span><br/> */}
+                    <hr></hr>
                     <ChangePassword/>
                 </div>
                 <div className='col-1'></div>
@@ -214,22 +266,28 @@ function Order(props){
     const classes = useStyles();
     var createDate = props.order.createdAt;
     var updateDate = props.order.createdAt;
-    var restaurantName = props.order.restaurantID;
+    var restaurantName = props.order.restaurant_Info[0].restaurantName;
+    var restaurantID = props.order.restaurantID;
     var orderNo = props.order.orderNo;
     return(
         <>
             <Card className={classes.root} >
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h4" component="h4">
                         <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
                     </Typography>
-                    <Typography gutterBottom variant="h6" component="h3">
-                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantName}</span>
+                    <Typography gutterBottom variant="h5" component="h5">
+                        <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span>
+                        <br/>
+                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantID}</span>
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         Order created at: {createDate} <br/>
                         Order finished at: {createDate == updateDate? "Not finished" : updateDate}<br/>
-                        Status: {props.order.status? "TAKE": "TOOK"}<br/>
+                        Status: 
+                        <span style={props.order.status? {color: "red"}: {color: "green"}}>
+                            {props.order.status? "Not completed": "Completed"}<br/>
+                        </span>
                     </Typography>
                 </CardContent>
             </Card>
@@ -295,7 +353,6 @@ function OrderHistory(){
                         {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
                     </div>
                     <div className='col-1'></div>
-                    
                 </div>
             </>
             

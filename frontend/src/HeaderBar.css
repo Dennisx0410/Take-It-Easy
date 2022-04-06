@@ -22,7 +22,7 @@ a.header-title {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
     color: #ffffff;
-    padding: 0.5vw 0 0 0;
+    padding: 0.75vw 0 0 0;
     text-align: right;
 
 }
@@ -54,4 +54,8 @@ a.header-title:hover{
     font-weight: bold;
     border-bottom: 1px solid #aaa;
     border-top: 1px solid #aaa;
+}
+
+.rightpadding{
+    padding-right: 5px;
 }

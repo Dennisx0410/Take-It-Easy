@@ -101,8 +101,8 @@ POST /customer/changePw
 - `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
-- `passwordOld`
-- `passwordNew`
+- `passwordOld`: String
+- `passwordNew`: String
 #### Return(json)
 - `VerifyError`
 - `JsonWebTokenError`
@@ -113,7 +113,7 @@ POST /customer/changePw
 - `LengthTooShort`
 - `SuccessfullyChangedPassword`
 
-## Get customer data
+## Get single customer data
 #### URL
 ```
 GET /customer/data
@@ -210,14 +210,14 @@ GET /admin/customer/all
 
 ## Reset a customer password 
 ```
-GET /admin/customer/resetPw
+POST /admin/customer/resetPw
 ```
 #### Header
 - `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
-- `username`
-- `passwordNew`
+- `username`: String
+- `passwordNew`: String
 #### Return(json)
 - `VerifyError`
 - `JsonWebTokenError`
@@ -228,13 +228,13 @@ GET /admin/customer/resetPw
 
 ## Approve restaurant signup request
 ```
-GET /admin/restaurant/approve
+POST /admin/restaurant/approve
 ```
 #### Header
 - `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
-- `username`
+- `username`: String
 #### Return(json)
 - `VerifyError`
 - `JsonWebTokenError`
@@ -244,14 +244,14 @@ GET /admin/restaurant/approve
 
 ## Reject restaurant signup request
 ```
-GET /admin/restaurant/reject
+POST /admin/restaurant/reject
 ```
 #### Header
 - `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
-- `username`
-- `reason`
+- `username`: String
+- `reason`: String
 #### Return(json)
 - `VerifyError`
 - `JsonWebTokenError`
@@ -276,14 +276,14 @@ GET /admin/restaurant/all
 
 ## Reset a restaurant password 
 ```
-GET /admin/restaurant/resetPw
+POST /admin/restaurant/resetPw
 ```
 #### Header
 - `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
-- `username`
-- `passwordNew`
+- `username`: String
+- `passwordNew`: String
 #### Return(json)
 - `VerifyError`
 - `JsonWebTokenError`
@@ -293,7 +293,7 @@ GET /admin/restaurant/resetPw
 
 # Documentation (Restaurant)
 [Return to top](#backend)
-## Sign Up A Restaurant Account
+## Signup
 #### URL
 ```
 POST /restaurant/signup
@@ -301,32 +301,19 @@ POST /restaurant/signup
 #### Header
 - `Content-type: application/json`
 #### Body
-- `username` : String (Unique),
-- `restaurantName` : String,
-- `password` : String,
-- `email` : String, 
-- `address` : String,
-- `licenseNum` : String,
+- `username`: String (Unique),
+- `restaurantName`: String,
+- `password`: String,
+- `email`: String, 
+- `address`: String,
+- `licenseNum`: String,
 - `profile`: File (jpg/jpeg/jfif/png)
 #### Return
 - `UserAlreadyExisted`
 - `FileExtensionError`
 - `RegisterationReceived`
 
-## Activate Restaurant Account
-#### URL
-```
-POST /restaurant/activate
-```
-#### Header
-- `Authorization: Bearer <token>`
-#### Body
-- N/A
-#### Return
-- `Account already activated`
-- `Account activated`
-
-## Sign in Restaurant Account
+## Signin
 #### URL
 ```
 POST /restaurant/signin
@@ -334,8 +321,8 @@ POST /restaurant/signin
 #### Header
 - `Content-type: application/json`
 #### Body
-- `username` : String,
-- `password` : String
+- `username`: String,
+- `password`: String
 #### Return
 - `token`
 - `AccountNotApproved`
@@ -351,8 +338,8 @@ POST /restaurant/changePw
 - `Content-type: application/json`
 - `Authorization: Bearer <token>`
 #### Body
-- `passwordOld`
-- `passwordNew`
+- `passwordOld`: String
+- `passwordNew`: String
 #### Return(json)
 - `VerifyError`
 - `JsonWebTokenError`
@@ -363,7 +350,7 @@ POST /restaurant/changePw
 - `LengthTooShort`
 - `SuccessfullyChangedPassword`
 
-## Get A Restaurant Data
+## Get single restaurant data
 #### URL
 ```
 GET /restaurant/data
@@ -375,7 +362,7 @@ GET /restaurant/data
 #### Return
 - Restaurant Json document
 
-## Get All Approved Restaurant Info
+## Get all approved restaurant data
 #### URL
 ```
 GET /restaurant/all
@@ -387,7 +374,7 @@ GET /restaurant/all
 #### Return
 - Array of activated restaurant JSON documents
 
-## Get All Not Approved Restaurant Info
+## Get all not approved restaurant data
 #### URL
 ```
 GET /restaurant/notApproved
@@ -411,7 +398,7 @@ POST /restaurant/logout
 #### Return
 - `SuccessfullyLogout`
 
-## Set Profile Picture
+## Set profile picture
 #### URL
 ```
 POST /restaurant/profilePic
@@ -419,7 +406,7 @@ POST /restaurant/profilePic
 #### Header
 - `Authorization: Bearer <token>`
 #### Body
-- `profile` : File (jpg/jpeg/jfif/png)
+- `profile`: File (jpg/jpeg/jfif/png)
 #### Return
 - `VerifyError`
 - `JsonWebTokenError`
@@ -427,7 +414,7 @@ POST /restaurant/profilePic
 - `InactiveUserRequest`
 - `FileExtensionError`
 
-## Get Profile Picture
+## Get profile picture
 #### URL
 ```
 GET /restaurant/profilePic
@@ -446,10 +433,10 @@ GET /restaurant/profilePic
 # Documentation (Order)
 [Return to top](#backend)
 
-## Fetch Order from the respective restaurant
+## Fetch order from the respective restaurant
 #### URL
 ```
-/order/fetchByRestaurant
+GET /order/fetchByRestaurant
 ```
 #### Header
 - `Authorization: Bearer <token>`
@@ -461,7 +448,7 @@ GET /restaurant/profilePic
 ## Fetch order from the respective customer
 #### URL
 ```
-/order/fetchByCustomer
+GET /order/fetchByCustomer
 ```
 #### Header
 - `Authorization: Bearer <token>`
@@ -473,7 +460,7 @@ GET /restaurant/profilePic
 ## Create new order
 #### URL
 ```
-/order/add
+POST /order/add
 ```
 #### Header
 - `Authorization: Bearer <token>`
@@ -486,7 +473,7 @@ GET /restaurant/profilePic
 ## Finished an Order
 #### URL
 ```
-/order/done
+POST /order/done
 ```
 #### Header
 - `Authorization: Bearer <token>`

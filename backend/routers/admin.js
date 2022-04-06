@@ -25,16 +25,19 @@ app.post('/restaurant/resetPw', verifyToken, restCtrler.resetPw);
 // dev only
 // to clear all customer account with 'test@test.com' for easy development, should be removed at final version
 app.delete('/customers', async (req, res) => {
+    console.log('> dummmy customers cleared');
     await Customers.deleteMany({email: 'test@test.com'});
     res.send('cleared');
 })
 // to clear all restaurants account with 'test@test.com' for easy development, should be removed at final version
 app.delete('/restaurants', async (req, res) => {
+    console.log('> dummmy restaurants cleared');
     await Restaurants.deleteMany({email: 'test@test.com'});
     res.send('cleared');
 })
 // to clear all otp account for easy development, should be removed at final version
 app.delete('/otps', async (req, res) => {
+    console.log('> dummmy otp cleared');
     await Otp.deleteMany();
     res.send('cleared');
 })

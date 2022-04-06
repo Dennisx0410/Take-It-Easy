@@ -1,16 +1,12 @@
 // model
-const Restaurants = require("../models/restaurant.js")
-const foodItem = require("../models/food_item.js")
+const Restaurants = require("../models/restaurant.js");
+const foodItem = require("../models/food_item.js");
 
 // package
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const sharp = require('sharp');
-
-// const
-const { MAX_TRIAL } = require('../models/otp');
-const { default: mongoose } = require("mongoose");
 
 // handle for image upload
 const upload = multer({
@@ -71,10 +67,10 @@ const getRestaurantById = async (id) => {
     return restaurant;
 }
 
-
 module.exports = {
 
     getRestaurantById: getRestaurantById,
+
     getRestaurantByUsername: getRestaurantByUsername,
 
     getRestaurantData: async (req, res) => {
@@ -88,7 +84,7 @@ module.exports = {
             res.status(200).send(data);
         }
         catch (err) {
-            console.log(err)
+            console.log(err);
             res.status(404).send(err);
         }
     },
@@ -149,7 +145,7 @@ module.exports = {
             restaurant = await Restaurants.create(req.body);
             // console.log(restaurant)
 
-            req.restaurant = restaurant
+            req.restaurant = restaurant;
 
             console.log(`New Restaurant Register with username ${req.body.username}`)
             
@@ -232,12 +228,12 @@ module.exports = {
         try {
             return upload.single('profile')(req, res, () => {
                 if (!req.file) {
-                    console.log('> upload failed')
+                    console.log('> upload failed');
                     return res.status(400).send({name: "FileExtensionError", message: "image should be jpg or png"});
                 }
                 else {
-                    console.log('filesize:', req.file.size)
-                    console.log('> Upload Success')
+                    console.log('filesize:', req.file.size);
+                    console.log('> Upload Success');
                 }
 
                 // continue to set store profile pic
@@ -265,7 +261,7 @@ module.exports = {
             next();
         }
         catch (err) {
-            console.log(err)
+            console.log(err);
             res.send(err);
         }
     },
@@ -303,15 +299,15 @@ module.exports = {
             // generate token for enter home page
             let token = await restaurant.genAuthToken();
 
-            restaurant.online = true
+            restaurant.online = true;
             await restaurant.save()
 
-            console.log("you get token:", token)
+            console.log("you get token:", token);
 
             res.status(200).send({token}); // 200: OK
         }
         catch (err) {
-            console.log(err)
+            console.log(err);
             res.status(401).send(err) // 401: Unauthorized
         }
     },
@@ -320,8 +316,8 @@ module.exports = {
         // TODO: logout restaurant after token verification
         console.log('> logout');
         try {
-            req.restaurant.online = false
-            await req.restaurant.save()
+            req.restaurant.online = false;
+            await req.restaurant.save();
             res.status(200).send({name: 'SuccessfullyLogout', message: 'Successfully logout'});
         }
         catch (err) {
@@ -384,45 +380,46 @@ module.exports = {
         }
     },
 
-    verifyToken: async (req, res, next) => {
-        // TODO: verify token by matching docs in db
-        console.log('> verify token');
-        try {
-            // extract token
-            let token = req.header('Authorization').replace('Bearer ', '');
-            console.log('token:', token);
+    // verifyToken: async (req, res, next) => {
+    //     // TODO: verify token by matching docs in db
+    //     console.log('> verify token');
+    //     try {
+    //         // extract token
+    //         let token = req.header('Authorization').replace('Bearer ', '');
+    //         console.log('token:', token);
 
-            // decode playload
-            console.log('ready to decode');
-            let data = jwt.verify(token, process.env.SECRET);
-            console.log('decoded with data:', data);
+    //         // decode playload
+    //         console.log('ready to decode');
+    //         let data = jwt.verify(token, process.env.SECRET);
+    //         console.log('decoded with data:', data);
 
-            // check with db and pull out restaurant doc
-            let restaurant = await Restaurants.findOne({_id : data._id})
-            if (restaurant == null) {
-                console.log('verify error');
-                throw {name: 'VerifyError', message: 'unable to find user'};
-            }
-            // console.log('restaurant doc:', restaurant.username);
+    //         // check with db and pull out restaurant doc
+    //         let restaurant = await Restaurants.findOne({_id : data._id})
+    //         if (restaurant == null) {
+    //             console.log('verify error');
+    //             throw {name: 'VerifyError', message: 'unable to find user'};
+    //         }
+    //         // console.log('restaurant doc:', restaurant.username);
 
-            // check restaurant currently logging in
-            // if (!restaurant.online) {
-            //     console.log('restaurant request token verification but his is not logging in');
-            //     throw {name: 'InactiveUserRequest', message: 'restaurant request token verification but his is not logging in'};
-            // }
+    //         // check restaurant currently logging in
+    //         // if (!restaurant.online) {
+    //         //     console.log('restaurant request token verification but his is not logging in');
+    //         //     throw {name: 'InactiveUserRequest', message: 'restaurant request token verification but his is not logging in'};
+    //         // }
 
-            // pass to next middleware/function
-            req.token = token;
-            req.restaurant = restaurant;
+    //         // pass to next middleware/function
+    //         req.token = token;
+    //         req.restaurant = restaurant;
         
-            console.log('> verify success')
-            next();
-        }
-        catch (err) {
-            console.log(err)
-            res.status(401).send(err); // 401: unauthorized
-        }
-    },
+    //         console.log('> verify success')
+    //         next();
+    //     }
+    //     catch (err) {
+    //         console.log(err)
+    //         res.status(401).send(err); // 401: unauthorized
+    //     }
+    // },
+
     //Food Related Function
     uploadFoodItemPic: async (req, res, next) => {
         // TODO: upload profile image with key = 'foodPic' to server
@@ -447,33 +444,33 @@ module.exports = {
         }
     },
 
-    addFoodItem: async (req, res) =>{
+    addFoodItem: async (req, res) => {
         console.log('> add Food Item');
         try {
-            // resize Food Item pic to 100x100px before storing to db
+            // resize Food Item pic to 200x200px before storing to db
             let resizedBuf = await sharp(req.file.buffer).resize({
-                width: 100, 
-                height: 100
+                width: 200,
+                height: 200
             }).toBuffer();
-            let doc = new foodItem()
+            let doc = new foodItem();
             doc.picture = resizedBuf;
             doc.name = req.body.name;
             doc.price = req.body.price;
 
-            doc = await foodItem.create(doc)
+            doc = await foodItem.create(doc);
 
-            req.restaurant.menu.push(doc._id)
+            req.restaurant.menu.push(doc._id);
             await req.restaurant.save();
-            console.log("Added Food item to db with _id", doc._id)
+            console.log("Added Food item to db with _id", doc._id);
             res.send({message: 'Successfully added new food item'});
         }
         catch (err) {
-            console.log(err)
+            console.log(err);
             res.send(err);
         }
     },
 
-    removeFoodItem: async (req, res) =>{
+    removeFoodItem: async (req, res) => {
         console.log("Remove Food Item with ID", req.body.foodId)
         try {
             
@@ -485,7 +482,7 @@ module.exports = {
             res.send("Removed Food Item Successfully");
         }
         catch (err) {
-            console.log(err)
+            console.log(err);
             res.send(err);
         }
     }
