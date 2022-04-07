@@ -141,7 +141,7 @@ function Order(props) {
                         Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
                         Status: 
                         <span style={props.order.status? {color: "green"} : {color: "red"}}>
-                            {props.order.status? "Completed":"Not completed" }<br/>
+                            {props.order.status ? " Completed" : " Not completed" }<br/>
                         </span>
                     </Typography>
                 </CardContent>
