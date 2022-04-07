@@ -147,16 +147,17 @@ module.exports = {
         // TODO: get all restaurant
         console.log("> fetching all restaurants");
         try {
-            const data = await Restaurants.aggregate([     //Joining two db to get order detail
-              {
-                $lookup: {
-                  from: 'fooditems', // secondary Db Name
-                  localField: 'menu',
-                  foreignField: '_id',
-                  as: 'menu' // output key to be store
-                }
-              }
-            ]);
+            let data = await Restaurants.find().populate('menu');
+            // const data = await Restaurants.aggregate([     //Joining two db to get order detail
+            //   {
+            //     $lookup: {
+            //       from: 'fooditems', // secondary Db Name
+            //       localField: 'menu',
+            //       foreignField: '_id',
+            //       as: 'menu' // output key to be store
+            //     }
+            //   }
+            // ]);
 
             res.status(200).send(data);
         }
