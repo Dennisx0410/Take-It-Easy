@@ -5,9 +5,9 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 // schema
 const orderSchema = new Schema({
-    customerID : {type : String, required : true},
-    restaurantID : {type : String, required : true},
-    items : [mongoose.Types.ObjectId],
+    customerID : {type : mongoose.Types.ObjectId, required : true, ref:'Customers'},
+    restaurantID : {type : mongoose.Types.ObjectId, required : true, ref:'Restaurants'},
+    items : [{type:mongoose.Types.ObjectId, ref:'FoodItems'}],
     total : Number,
     status : {type : Boolean, default : false}
 }, {timestamps: true});

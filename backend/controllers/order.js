@@ -8,41 +8,8 @@ module.exports = {
     getOrderByRestaurant : async (req,res) => {
         //TODO : Fetch Order from database
         try {
-            console.log("Fetch orders from", req.restaurant.username)
-            const orders = await Order.aggregate([     //Joining two db to get order detail
-                {
-                  $match: {
-                    restaurantID: req.restaurant.username
-                  }
-                },
-                {
-                  $lookup: {
-                    from: 'fooditems', // secondary Db Name
-                    localField: 'items',
-                    foreignField: '_id',
-                    as: 'items' // output key to be store
-                  }
-                },
-                {
-                  $lookup:{
-                    from: 'restaurants',
-                    localField: 'restaurantID',
-                    foreignField: 'username',
-                    pipeline:[{$project:{'_id':0,'restaurantName':1}}],
-                    as: 'restaurant_Info'
-                  },
-                },
-                {
-                  $lookup:{
-                    from: 'customers',
-                    localField: 'customerID',
-                    foreignField: 'username',
-                    as: 'customer_Info',
-                    pipeline:[{$project:{'_id':0,'username':1}}]
-                  },
-                }
-              ]);
-              res.send(orders)
+            const orders = await Order.find({restaurantID: req.restaurant._id}).populate('items').populate('restaurantID').populate('customerID')
+            res.send(orders)
         } catch (err) {
             console.log(err)
             res.send(err)
@@ -52,42 +19,8 @@ module.exports = {
 
     getOrderByCustomer: async (req,res) =>{
         try {
-            console.log("Fetch orders from", req.customer.username)
-            const orders = await Order.aggregate([     //Joining two db to get order detail
-                {
-                  $match: {
-                    customerID: req.customer.username
-                  }
-                },
-                {
-                  $lookup: {
-                    from: 'fooditems', // secondary Db Name
-                    localField: 'items',
-                    foreignField: '_id',
-                    as: 'items' // output key to be store
-                  }
-                },
-                {
-                  $lookup:{
-                    from: 'restaurants',
-                    localField: 'restaurantID',
-                    foreignField: 'username',
-                    as: 'restaurant_Info',
-                    pipeline:[{$project:{'_id':0,'restaurantName':1}}]
-                  },
-                },
-                {
-                  $lookup:{
-                    from: 'customers',
-                    localField: 'customerID',
-                    foreignField: 'username',
-                    pipeline:[{$project:{'_id':0,'username':1}}],
-                    as: 'customer_Info'
-
-                  },
-                }
-              ]);
-              res.send(orders)
+            const orders = await Order.find({customerID: req.customer._id}).populate('items').populate('restaurantID').populate('customerID')
+            res.send(orders)
         } catch (err) {
             console.log(err)
             res.send(err)
@@ -96,42 +29,8 @@ module.exports = {
 
     getOrderByID : async (req,res) =>{
         try {
-          console.log("Fetch orders from", req.customer.username)
-          const orders = await Order.aggregate([     //Joining two db to get order detail
-              {
-                $match: {
-                  _id: req.body.orderId
-                }
-              },
-              {
-                $lookup: {
-                  from: 'fooditems', // secondary Db Name
-                  localField: 'items',
-                  foreignField: '_id',
-                  as: 'items' // output key to be store
-                }
-              },
-              {
-                $lookup:{
-                  from: 'restaurants',
-                  localField: 'restaurantID',
-                  foreignField: 'username',
-                  as: 'restaurant_Info',
-                  pipeline:[{$project:{'_id':0,'restaurantName':1}}]
-                },
-              },
-              {
-                $lookup:{
-                  from: 'customers',
-                  localField: 'customerID',
-                  foreignField: 'username',
-                  pipeline:[{$project:{'_id':0,'username':1}}],
-                  as: 'customer_Info'
-
-                },
-              }
-            ]);
-            res.send(orders)
+          const order = await Order.findOne({_id: req.body.orderId}).populate('items').populate('restaurantID').populate('customerID')
+          res.send(order)
       } catch (err) {
           console.log(err)
           res.send(err)
@@ -139,15 +38,13 @@ module.exports = {
     },
 
     addOrder : async (req,res) => {
-        console.log('New Order Recieved')
         try{
-            console.log(req.body.restaurantID)
-            let restaurant = await Restaurant.findOne({username:req.body.restaurantID})
+            let restaurant = await Restaurant.findOne({_id:req.body.restaurantID})
             if (restaurant == undefined){
               throw "No such restaurant to place order"
             }
             let orderDoc = {}
-            orderDoc.customerID = req.customer.username
+            orderDoc.customerID = req.customer._id
             orderDoc.restaurantID = req.body.restaurantID
             if (req.body.items.length < 1){
               throw "Can't place empty order"
@@ -180,7 +77,8 @@ module.exports = {
           doc.status = true
           await doc.save()
           //TODO: Add function to SOCKET.IO to alert user
-          req.body.targetUser = doc.customerID
+          const orders = await Order.findOne({_id: req.body.orderId}).populate('customerID')
+          req.body.targetUser = orders.customerID.username
           req.body.message = `Your order placed at ${req.restaurant.restaurantName} is ready for pick up!`
           next()
         } catch (err) {
@@ -191,16 +89,7 @@ module.exports = {
 
     getAllOrderData: async (req, res) =>{
       try {
-        let orders = await Order.aggregate([
-          {
-            $lookup:{
-              from: 'fooditems', // secondary Db Name
-                    localField: 'items',
-                    foreignField: '_id',
-                    as: 'items' // output key to be store
-            }
-          }
-        ])
+        const orders = await Order.find({_id: req.body.orderId}).populate('items').populate('restaurantID').populate('customerID')
         res.status(200).send(orders)
       } catch (err) {
         console.log(err)

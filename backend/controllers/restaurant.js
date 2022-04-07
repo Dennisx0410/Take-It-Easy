@@ -74,26 +74,11 @@ module.exports = {
     getRestaurantByUsername: getRestaurantByUsername,
 
     getRestaurantData: async (req, res) => {
-        // TODO: Get restaurant by username
         console.log('> get restaurant data');
         console.log(req.restaurant)
         try {
             // fetch restaurant by username
-            const data = await Restaurants.aggregate([     //Joining two db to get order detail
-              {
-                $match: {
-                  _id: req.restaurant._id
-                }
-              },
-              {
-                $lookup: {
-                  from: 'fooditems', // secondary Db Name
-                  localField: 'menu',
-                  foreignField: '_id',
-                  as: 'menu' // output key to be store
-                }
-              }
-            ]);
+            const data = await Restaurants.findOne({_id:req.restaurant._id}).populate('menu')
             res.status(200).send(data);
         }
         catch (err) {
@@ -105,7 +90,7 @@ module.exports = {
     getNotApprovedRestaurant: async (req, res) => {
         console.log("> fetching not approved restaurants");
         try {
-            let list = await Restaurants.find({approved: false});
+            let list = await Restaurants.find({approved: false}).populate('menu');
 
             res.status(200).send(list);
         }
@@ -118,22 +103,7 @@ module.exports = {
     getApprovedRestaurant: async (req, res) => {
         console.log("> fetching approved restaurants");
         try {
-            let list = await Restaurants.find()
-            // let list = await Restaurants.aggregate([     //Joining two db to get order detail
-            //   {
-            //     $match: {
-            //       approved:true
-            //     }
-            //   },
-            //   {
-            //     $lookup: {
-            //       from: 'fooditems', // secondary Db Name
-            //       localField: 'menu',
-            //       foreignField: '_id',
-            //       as: 'menuDetail' // output key to be store
-            //     }
-            //   }
-            // ])
+            let list = await Restaurants.find({approved:true}).populate('menu')
             console.log(">>>>>>>>>>>>>>>>", list[0].profilePic.data)
             res.status(200).send(list);
         }
@@ -147,17 +117,7 @@ module.exports = {
         // TODO: get all restaurant
         console.log("> fetching all restaurants");
         try {
-            const data = await Restaurants.aggregate([     //Joining two db to get order detail
-              {
-                $lookup: {
-                  from: 'fooditems', // secondary Db Name
-                  localField: 'menu',
-                  foreignField: '_id',
-                  as: 'menu' // output key to be store
-                }
-              }
-            ]);
-
+            let data = await Restaurants.find().populate('menu');
             res.status(200).send(data);
         }
         catch (err) {
