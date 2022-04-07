@@ -27,7 +27,11 @@ const restaurantSchema = new Schema({
     licenseNum : String,
     approved : {type : Boolean, default: false},
     online: {type : Boolean, default: false},
-    menu : [mongoose.Types.ObjectId]
+    // menu : [mongoose.Types.ObjectId]
+    menu: [{
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "FoodItems"
+    }]
 });
 
 restaurantSchema.pre('save', async function (next) {

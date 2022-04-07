@@ -149,6 +149,7 @@ module.exports = {
         try {
             let data = await Restaurants.find().populate('menu');
             // const data = await Restaurants.aggregate([     //Joining two db to get order detail
+
             //   {
             //     $lookup: {
             //       from: 'fooditems', // secondary Db Name
