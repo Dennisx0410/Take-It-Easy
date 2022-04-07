@@ -336,7 +336,7 @@ function OrderHistory() {
                     <h2><i className="material-icons">receipt_long</i>Your order history:</h2>
                     <hr/>
                     { orderHistory.length == 0? 
-                        <h3>You haven't made any orders yet.</h3>
+                        <h3>You haven't received any orders yet.</h3>
                         : 
                         orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )
                     }
