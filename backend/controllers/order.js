@@ -89,7 +89,7 @@ module.exports = {
 
     getAllOrderData: async (req, res) =>{
       try {
-        const orders = await Order.find({_id: req.body.orderId}).populate('items').populate('restaurantID').populate('customerID')
+        const orders = await Order.find().populate('items').populate('restaurantID').populate('customerID')
         res.status(200).send(orders)
       } catch (err) {
         console.log(err)

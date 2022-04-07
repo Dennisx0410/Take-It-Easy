@@ -223,8 +223,8 @@ function Order(props) {
     var createDate = props.order.createdAt;
     var updateDate = props.order.updatedAt;
     // var restaurantName = props.order.restaurant_Info[0].restaurantName;
-    var restaurantID = props.order.restaurantID;
-    var customerID = props.order.customerID;
+    var restaurantID = props.order.restaurantID._id;
+    var customerID = props.order.customerID._id;
     var orderNo = props.order.orderNo;
     return(
         <div style={{ marginTop: "10px" }}>
