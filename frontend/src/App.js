@@ -102,7 +102,7 @@ function App(){
     }
     else { 
         let usertype = userInfo.usertype;
-        console.log("::::::"+userInfo.usertype);
+        // console.log("::::::"+userInfo.usertype);
         if (usertype == "restaurant"){
             console.log("::::::"+usertype);
             return (

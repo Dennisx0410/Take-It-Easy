@@ -195,7 +195,7 @@ class FileCard extends React.Component{
             // if (!this.state.skip){
                 if (this.props.RErender == true){
                     let profilePic = restaurant.profilePic;
-                    console.log(profilePic);
+                    // console.log(profilePic);
                     let img = Buffer.from(profilePic.data).toString('base64');
                     this.props.setRErender(false);
                     this.setState( ()=>
@@ -330,7 +330,7 @@ function Main(){
     useEffect(() => {
             // const url = PREFIX+'/restaurant/all';
             const url = PREFIX+'/restaurant/approved';
-            console.log("A");
+            // console.log("A");
             async function fetchData () {
                 try {
                     const response = await fetch(
@@ -357,7 +357,7 @@ function Main(){
                 }
             };
             fetchData();
-            console.log("B");
+            // console.log("B");
     },[]);
     
     const [searchQ, setSearchQ] = useState();
