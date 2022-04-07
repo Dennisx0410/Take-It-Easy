@@ -17,7 +17,7 @@ function ResetPassword(props){
     const PREFIX='http://localhost:5000';
     var targetUsername = null, newPassword = null;
     const [CPstatus, setCPstatus] = useState({});
-    const [mask, setMask] = useState(true);
+    const [mask, setMask] = useState(false);
     function handleSubmit(e) {
         e.preventDefault();
         console.log(props);
@@ -95,7 +95,7 @@ function ResetPassword(props){
                 <button type="submit" className="btn">Submit</button>
             </form>
             { !CPstatus.name ? <></> : 
-             CPstatus.name === "SuccessfullyChangedPassword" ? 
+             CPstatus.name === "SuccessfullyResetPassword" ? 
                 <Alert severity="success">
                     {CPstatus.message}
                 </Alert> : 
