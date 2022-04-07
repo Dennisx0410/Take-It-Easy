@@ -51,8 +51,8 @@ function HeaderBar(props){
     const [notificationList, setList] = useState();
     const [snackOpen, setSnackOpen] = useState(false)
     const [snackMessage, setSnackMsg] = useState("")
-    const horizontal = 'right'
-    const vertical = 'top'
+    const horizontal = 'left'
+    const vertical = 'bottom'
 
     const handleSnackOpen = () => {
         setSnackOpen(true);

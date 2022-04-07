@@ -60,12 +60,12 @@ const getCustomerByUsername = async (username) => {
 
 const getCustomerById = async (id) => {
     // TODO: get customer by id
-    console.log('> searching customer with id:', id);
+    //console.log('> searching customer with id:', id);
     let customer = await Customers.findOne({_id: id});
     if (customer == null) {
         throw {name : 'UserNotExist', message: 'User does not exist'};
     }
-    console.log('customer doc:', customer.username, customer.lastLogin);
+    //console.log('customer doc:', customer.username, customer.lastLogin);
 
     return customer;
 }
