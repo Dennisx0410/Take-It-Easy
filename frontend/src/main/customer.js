@@ -221,34 +221,34 @@ function Order(props) {
     var restaurantName = props.order.restaurantID.restaurantName;
     var restaurantID = props.order.restaurantID._id;
     var orderNo = props.order.orderNo;
-    return(
-        <>
-            <Card className={classes.root} >
-                <CardContent>
-                    <Typography gutterBottom variant="h4" component="h4">
-                        <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
-                    </Typography>
-                    <Typography gutterBottom variant="h5" component="h5">
-                        <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span>
-                        <br/>
-                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantID}</span>
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Order created at: {createDate} <br/>
-                        Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
-                        Status: 
-                        <span style={props.order.status? {color: "green"} : {color: "red"}}>
-                            {props.order.status? "Completed":"Not completed" }<br/>
-                        </span>
-                    </Typography>
-                </CardContent>
-            </Card>
-            {/* {props.i} */}
-            {/* {props.order} */}
+        return(
+            <>
+                <Card className={classes.root} >
+                    <CardContent>
+                        <Typography gutterBottom variant="h4" component="h4">
+                            <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
+                        </Typography>
+                        <Typography gutterBottom variant="h5" component="h5">
+                            <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span>
+                            <br/>
+                            <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantID}</span>
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            Order created at: {createDate} <br/>
+                            Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
+                            Status: 
+                            <span style={props.order.status? {color: "green"} : {color: "red"}}>
+                                {props.order.status? "Completed":"Not completed" }<br/>
+                            </span>
+                        </Typography>
+                    </CardContent>
+                </Card>
+                {/* {props.i} */}
+                {/* {props.order} */}
+                
+            </>
             
-        </>
-        
-    );
+        );
 }
 
 // /order/fetchByCustomer
@@ -284,7 +284,12 @@ function OrderHistory() {
                 <div className='col-1'></div>
                 <div className='col-10'>
                     <h2><i className="material-icons">receipt_long</i>Your order history:</h2>
-                    {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
+                    <hr/>
+                    { orderHistory.length == 0? 
+                        <h3>You haven't made any orders yet.</h3>
+                        : 
+                        orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )
+                    }
                 </div>
                 <div className='col-1'></div>
             </div>
