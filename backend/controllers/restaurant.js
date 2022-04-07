@@ -74,12 +74,11 @@ module.exports = {
     getRestaurantByUsername: getRestaurantByUsername,
 
     getRestaurantData: async (req, res) => {
-        // TODO: Get restaurant by username
         console.log('> get restaurant data');
         console.log(req.restaurant)
         try {
             // fetch restaurant by username
-            const data = await Restaurants.find({_id:req.restaurant._id}).populate('menu')
+            const data = await Restaurants.findOne({_id:req.restaurant._id}).populate('menu')
             res.status(200).send(data);
         }
         catch (err) {
