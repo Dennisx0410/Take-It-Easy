@@ -357,7 +357,7 @@ function HeaderBar(props){
                                         props.socket.disconnect()
                                         props.setToken(undefined); 
                                         sessionStorage.clear(); 
-                                        navigate('/'); 
+                                        navigate('/');
                                         }} >Logout</Dropdown.Item>
                                     {/* onClick={handleLogout(props.setToken)} */}
                                     </Dropdown.Menu>
