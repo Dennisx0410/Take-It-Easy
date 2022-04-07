@@ -313,13 +313,12 @@ function CustomerList(props){
             }
             console.log("CB");
     },[]);
-    return(
+    return (
         <> 
             <h2><i className="material-icons">password</i>List of customers:</h2>
             <div>
                 {CustomerList.map( (customer,i) => <CustomerCard customer={customer} i={i} key={i} /> )}
             </div>
-
         </>
     );
 

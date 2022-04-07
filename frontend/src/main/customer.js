@@ -1,4 +1,3 @@
-import './customer.css';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Card from "@material-ui/core/Card";
