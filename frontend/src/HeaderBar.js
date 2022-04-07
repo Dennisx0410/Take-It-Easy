@@ -188,7 +188,7 @@ function HeaderBar(props){
     useEffect(() => {
             // console.log("XDD");
         if (!skip){
-            console.log("XDD");
+            // console.log("XDD");
             fetchData();
         }
         

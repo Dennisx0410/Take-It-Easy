@@ -16,6 +16,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from '@mui/material/Box';
 import {Buffer} from 'buffer';
 
+const NOIMG = "";
+
 function ResetCustomerPassword(){    
     const PREFIX='http://localhost:5000';
     var targetUsername = null, newPassword = null;
@@ -212,14 +214,91 @@ function ResetRestaurantPassword(){
     
 }
 
-function OrderLists(){
+//
+
+function Order(props) {
+    console.log("In order");
+    console.log(props);
+    var createDate = props.order.createdAt;
+    var updateDate = props.order.updatedAt;
+    // var restaurantName = props.order.restaurant_Info[0].restaurantName;
+    var restaurantID = props.order.restaurantID;
+    var customerID = props.order.customerID;
+    var orderNo = props.order.orderNo;
     return(
-        <>
-            <h2>Orders:</h2>
-        </>
+        <div style={{ marginTop: "10px" }}>
+            <Card>
+                <CardContent>
+                    <Typography gutterBottom variant="h4" component="h4">
+                        <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="h5">
+                        {/* <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span> */}
+                        <span style={{color: "#aaaaaa"}}>Customer ID: {customerID}</span>
+                        <br/>
+                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantID}</span>
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        Order created at: {createDate} <br/>
+                        Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
+                        Status: 
+                        <span style={props.order.status? {color: "green"} : {color: "red"}}>
+                            {props.order.status? "Completed":"Not completed" }<br/>
+                        </span>
+                    </Typography>
+                </CardContent>
+            </Card>
+            {/* {props.i} */}
+            {/* {props.order} */}
+            
+        </div>
+        
     );
 }
 
+function OrderHistory() {
+    const [orderHistory, setOrderHistory] = useState([]);
+    const [reload, setReload] = useState(true);
+    // window.location.reload();
+    const PREFIX='http://localhost:5000';
+    useEffect(() => {
+        const url_d = PREFIX+'/admin/order/all';
+        const fetchOrder= async () => {
+          try {
+            const response = await fetch(
+                url_d, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                }}
+            );
+            const order_history = await response.json();
+            setOrderHistory(order_history);
+            console.log(order_history);
+
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+        if (reload){
+            fetchOrder();
+        }
+    }, []);
+
+    return (
+        <>
+            <div className='row'>
+                
+                <div className='col-10'>
+                    <h2 className="content-header" style={{fontSize: "40px"}}>List of orders: </h2>
+                    <hr/>
+                    {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
+                </div>
+                <div className='col-2'></div>
+            </div>
+        </>
+    );
+}
 //
 
 const useStyles = makeStyles({
@@ -238,11 +317,20 @@ function CustomerCard(props){
     let customer = props.customer;
     // console.log(customer);
         // let index = props.i;
+    let profilePic = null;
         if (!skip){
-            let profilePic = customer.profilePic;
-            let img = Buffer.from(profilePic.data).toString('base64');
-            setSkip(true);
-            setImgUrl(img);
+            if (customer.profilePic != undefined){
+                profilePic = customer.profilePic;
+                console.log(profilePic);
+                let img = Buffer.from(profilePic.data).toString('base64');
+                setSkip(true);
+                setImgUrl(img);
+            }
+            else{
+                let img = Buffer.from(NOIMG);
+                setSkip(true);
+                setImgUrl(img);
+            }
         }
             
         // skip = true;
@@ -251,7 +339,7 @@ function CustomerCard(props){
         <div  style={{padding: "5px 0"}}>
             <Card sx={{ display: 'flex' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography variant="h5" color="text.secondary" component="div">
+                    <Typography variant="h5"  component="div">
                         <span style={customer.online? {color: "green"}: {color: "red"}}>◉</span>
                         Username:&nbsp;{customer.username}&nbsp;(Customer ID: {customer._id})
                     </Typography>
@@ -413,7 +501,8 @@ function RestaurantCard(props){
         // let index = props.i;
         if (!skip){
             let profilePic = restaurant.profilePic;
-            let img = Buffer.from(profilePic.data).toString('base64');
+            // let img = Buffer.from(profilePic.data).toString('base64');
+            let img = Buffer.from(profilePic);
             setSkip(true);
             setImgUrl(img);
         }
@@ -543,7 +632,7 @@ class Admin extends React.Component{
                         
                         </div>
                         <div className='col-10' style={{margin: "1vh"}}>
-                            <OrderLists/>
+                            <OrderHistory/>
                             <hr/>
                         </div>
                         <div className='col-1'>

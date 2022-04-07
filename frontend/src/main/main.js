@@ -215,7 +215,7 @@ class FileCard extends React.Component{
         //Render
         return (
             <Link to={"/restaurant/"+restaurant._id}>
-                <Card sx={{ width: "30%", display: "inline-block", ml:"2%",mt:"1%" , minHeight:"350px", 
+                <Card sx={{ width: "30%", display: "inline-block", ml:"2%",mt:"1%" , height:"380px", 
                     transition: "transform 0.15s ease-in-out", "&:hover": { transform: "scale3d(1.05, 1.05, 1)"} }}
                     onMouseOver={(e) => this.handleMOver(index,e)} 
                     onMouseOut={(e) => this.handleMOut(index,e)} 
