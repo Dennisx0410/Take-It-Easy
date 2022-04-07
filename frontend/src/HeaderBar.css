@@ -30,12 +30,14 @@ a.header-title {
 .headerpadding{
     padding: 8px 2px;
 }
+
 a.header-title:link{
     display: inline;
     color:#ffffff;
     text-decoration:none;
     text-align: center;
 }
+
 a.header-title:hover{
     display: inline;
     color:#ffffff;

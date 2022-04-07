@@ -1,16 +1,19 @@
-.Customer{
+/* .Customer{
     background-color: rgb(250, 240, 229);
     color: rgb(138, 5, 94);
     min-height: 100vh;
-}
+} */
 
-.userContent {
-    background-color: rgb(250, 240, 229);
-    color: rgb(138, 5, 94);
-    min-height: 100vh;
-}
+/* .page-styling{
+    background-color: #faf0e5;
+} */
 
-.content-header {
+/* .content-header {
     padding: 1vh 0 0 0;
     color: #ba1851;
 }
+
+.content-subheader {
+    padding: 1vh 0 0 0;
+    color: rgb(138, 5, 94);
+} */

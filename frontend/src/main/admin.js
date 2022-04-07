@@ -1,28 +1,22 @@
 import './admin.css';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes} from 'react-router-dom';
-import {Link} from 'react-router-dom';
-import {useMatch, useParams, useLocation} from 'react-router-dom';
-import { Badge } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Alert, Avatar, Badge, Grid, Stack } from '@mui/material';
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from '@mui/material/CardMedia';
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from '@mui/material/Box';
 import {Buffer} from 'buffer';
 
 const NOIMG = "";
 
-function ResetCustomerPassword(props){    
+function ResetPassword(props, usertype){    
     const PREFIX='http://localhost:5000';
     var targetUsername = null, newPassword = null;
-    const [CPstatus, setCPstatus] = useState("");
+    const [CPstatus, setCPstatus] = useState({});
     const [mask, setMask] = useState(true);
     function handleSubmit(e) {
         e.preventDefault();
@@ -32,110 +26,9 @@ function ResetCustomerPassword(props){
         let newpwd = formData.get('newpwd');
         let REnewpwd = formData.get('REnewpwd');
         if (username == "" || newpwd == "" || REnewpwd == ""){
-            console.log("Empty");
-            setCPstatus("Please fill in all the fields.");
+            setCPstatus({name: "EmptyPw", message: "Please fill in all the fields."});
         }
         else if(newpwd != REnewpwd){
-            console.log(newpwd);
-            console.log(REnewpwd);
-            setCPstatus({"message":"The new password you typed does not match the re-entered new password. Please try again."});
-        }
-        else{
-            targetUsername = username;
-            newPassword = newpwd;
-            console.log(targetUsername);
-            console.log(newPassword);
-            // setCPstatus("Valid New password");
-            const url_d = PREFIX+'/admin/customer/resetPw';
-            const attempt = async () => {
-                try {
-                    const response = await fetch(
-                        url_d, {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': 'Bearer '+ props.token,
-                                'Content-type' : 'application/json'
-                            },
-                            body: JSON.stringify({
-                                'username' : targetUsername,
-                                'passwordNew' : newPassword
-                            })
-                        }
-                        
-                    );
-                    const attempt_result = await response.json();
-                    setCPstatus(attempt_result);
-                    console.log(attempt_result);
-
-                } catch (error) {
-                    console.log("error", error);
-                }
-            };
-            attempt();
-        }
-        loginForm.reset();
-        
-    }
-
-    return(
-        <>
-            <hr/>
-            <h3>Reset password:</h3>
-            
-            <form onSubmit={(e)=>{handleSubmit(e)}}>
-                <label>
-                    <h5>Target customer account username: </h5>
-                    
-                    <input name="username" type="text" required/>
-                    
-                </label>
-                <br/>
-                <label>
-                    <h5>New password: 
-                        <span style={{fontSize:"15px"}}>
-                            <button type="button" onClick={() => setMask(!mask)} 
-                                style={{ backgroundColor: '#faf0e5', border: "none", textAlign: "center", color: "#333333"}} >
-                                {/* <MaterialIcon icon={mask ? "visibility_off" : "visibility"} color='#8a055e'/> */}
-                                {mask ? "Show new password" : "Hide new password"}
-                            </button>
-                        </span>
-                    </h5>
-                    <input name="newpwd" type={mask ? "password" : "text"}  required/>
-                </label>
-                <br/>
-                <label>
-                    <h5>Please re-enter your new password: </h5>
-                
-                    <input name="REnewpwd" type={mask ? "password" : "text"} required/>
-                </label>
-                <br/>
-                <input type="submit" value="Submit" style={{color: "#8a055e" }}/>
-            </form>
-            <span style={{color: "red"}}>{CPstatus.message}</span>
-        </>
-    );
-    
-}
-
-function ResetRestaurantPassword(props){    
-    const PREFIX='http://localhost:5000';
-    var targetUsername = null, newPassword = null;
-    const [CPstatus, setCPstatus] = useState("");
-    const [mask, setMask] = useState(true);
-    function handleSubmit(e) {
-        e.preventDefault();
-        let loginForm = e.target;
-        let formData = new FormData(loginForm);
-        let username = formData.get('username');
-        let newpwd = formData.get('newpwd');
-        let REnewpwd = formData.get('REnewpwd');
-        if (username == "" || newpwd == "" || REnewpwd == ""){
-            console.log("Empty");
-            setCPstatus({name: "EmptyPw", message:"Please fill in all the fields."});
-        }
-        else if(newpwd != REnewpwd){
-            console.log(newpwd);
-            console.log(REnewpwd);
             setCPstatus({name: "NewPwMismatched", message:"The new password you typed does not match the re-entered new password. Please try again."});
         }
         else{
@@ -143,8 +36,7 @@ function ResetRestaurantPassword(props){
             newPassword = newpwd;
             console.log(targetUsername);
             console.log(newPassword);
-            // setCPstatus("Valid New password");
-            const url_d = PREFIX+'/admin/restaurant/resetPw';
+            const url_d = PREFIX+`/admin/${usertype}/resetPw`;
             const attempt = async () => {
                 try {
                     const response = await fetch(
@@ -172,50 +64,55 @@ function ResetRestaurantPassword(props){
             attempt();
         }
         loginForm.reset();
-        
     }
 
     return(
         <>
-            <hr/>
-            <h3>Reset password:</h3>
-            
+            <h2><i className="material-icons">password</i>Change password:</h2>
+
             <form onSubmit={(e)=>{handleSubmit(e)}}>
-                <label>
-                <h5>Target restaurant account username: </h5>
-                    
-                    <input name="username" type="text" required/>
-                    
+                <label htmlFor="password" className="form-label">
+                    <h6>Target customer account username: </h6>
                 </label>
-                <br/>
-                <label>
-                    <h5>New password: 
-                        <span style={{fontSize:"15px"}}>
-                            <button type="button" onClick={() => setMask(!mask)} 
-                                style={{ backgroundColor: '#faf0e5', border: "none", textAlign: "center", color: "#333333"}} >
-                                {/* <MaterialIcon icon={mask ? "visibility_off" : "visibility"} color='#8a055e'/> */}
-                                {mask ? "Show new password" : "Hide new password"}
-                            </button>
-                        </span>
-                    </h5>
-                    <input name="newpwd" type={mask ? "password" : "text"}  required/>
+                <div className="input-group mb-2" style={{width: "250px"}}>
+                    <input type="text" className="form-control" name="username" required/>
+                </div>
+                <label htmlFor="password" className="form-label">
+                    <h6>New password:</h6>
                 </label>
-                <br/>
-                <label>
-                    <h5>Please re-enter your new password: </h5>
-                
-                    <input name="REnewpwd" type={mask ? "password" : "text"} required/>
+                <div className="input-group mb-2" style={{width: "250px"}}>
+                    <input type={mask ? "text" : "password"} className="form-control" name="newpwd" required/>
+                    <button type="button" className="material-icons input-group-text" onClick={() => setMask(!mask)}>{mask ? "visibility_off" : "visibility"}</button>
+                </div>
+                <label htmlFor="password" className="form-label">
+                    <h6>Please re-enter your new password</h6>
                 </label>
-                <br/>
-                <input type="submit" value="Submit" style={{color: "#8a055e" }}/>
+                <div className="input-group mb-2" style={{width: "250px"}}>
+                    <input type={mask ? "text" : "password"} className="form-control" name="REnewpwd" required/>
+                    <button type="button" className="material-icons input-group-text" onClick={() => setMask(!mask)}>{mask ? "visibility_off" : "visibility"}</button>
+                </div>
+                <button type="submit" className="btn">Submit</button>
             </form>
-            <span style={{color: "red"}}>{CPstatus.message}</span>
+            { !CPstatus.name ? <></> : 
+             CPstatus.name === "SuccessfullyChangedPassword" ? 
+                <Alert severity="success">
+                    {CPstatus.message}
+                </Alert> : 
+                <Alert severity="error">
+                    {CPstatus.message}
+                </Alert> }
         </>
     );
     
 }
 
-//
+function ResetCustomerPassword(props) {
+    return ResetPassword('customer');
+}
+
+function ResetRestaurantPassword(props) {
+    return ResetPassword('restaurant');
+}
 
 function Order(props) {
     console.log(props);
@@ -288,9 +185,8 @@ function OrderHistory(props) {
     return (
         <>
             <div className='row'>
-                
                 <div className='col-10'>
-                    <h2 className="content-header" style={{fontSize: "40px"}}>List of orders: </h2>
+                    <h2>List of orders: </h2>
                     <hr/>
                     {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
                 </div>
@@ -299,7 +195,6 @@ function OrderHistory(props) {
         </>
     );
 }
-//
 
 const useStyles = makeStyles({
     root: {
@@ -338,40 +233,39 @@ function CustomerCard(props){
         <div  style={{padding: "5px 0"}}>
             <Card sx={{ display: 'flex' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography variant="h5"  component="div">
-                        <span style={customer.online? {color: "green"}: {color: "red"}}>◉</span>
-                        Username:&nbsp;{customer.username}&nbsp;(Customer ID: {customer._id})
-                    </Typography>
-                    <span style={customer.activated? {color: "green", paddingLeft:"1%"}: {color: "red", paddingLeft:"1%"}}>
-                            {customer.activated? "Activated" : "Not activated"}
-                    </span>
-                    
-                    <br/>
-                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                            {customer.online? 
-                                <Badge sx={{"& .MuiBadge-badge": {backgroundColor: "green"}}} badgeContent=" ">
-                                    <CardMedia
-                                        display="flex"
-                                        component="img"
-                                        sx={{ width: 151 }}
-                                        image={`data:image/jpg; base64, ${ImgUrl}`}
-                                        alt="Live from space album cover"
-                                    />
-                                </Badge> 
-                                :
-                                <Badge sx={{"& .MuiBadge-badge": {backgroundColor: "red"}}} badgeContent=" ">
-                                    <CardMedia
-                                        display="flex"
-                                        component="img"
-                                        sx={{ width: 151 }}
-                                        image={`data:image/jpg; base64, ${ImgUrl}`}
-                                        alt="Live from space album cover"
-                                    />
-                                </Badge>
-                            }
+                    <Box sx={{ display: 'flex', flexDirection: 'row', px: 1, m: 1}}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={10}>
+                                <Typography variant="h5" component="div">
+                                    <b>{customer.username}</b>
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <b style={customer.activated ? {color: "green"}: {color: "red"}}>
+                                        {customer.activated ? "Activated" : "Not activated"}
+                                </b>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <h6 style={{color: "grey"}}>ID: {customer._id}</h6>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', px: 1, m: 1}}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', px: 1, m: 1}}>
+                            <Stack
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                                spacing={2}
+                                height="100%"
+                            >
+                                <div style={{position: "relative"}}>
+                                    <Avatar alt="picture" src={`data:image/jpeg; base64, ${ImgUrl}`} sx={{ width: 150, height: "auto", maxWidth: "100%" }}/>
+                                    <div class='online-status' style={{backgroundColor: customer.online ? "green" : "red"}}></div>
+                                </div>
+                            </Stack>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', px: 1, m: 1}}>
                             <Typography component="div" variant="body1">
                                 E-mail: {customer.email}<br/>
                                 Phone Number: {customer.phoneNum}<br/>
@@ -420,19 +314,11 @@ function CustomerList(props){
             console.log("CB");
     },[]);
     return(
-        <>
-            <h2 style={{ padding: "0 0 0 0", color: "#ba1851" }}>List of Customers:</h2>
-            
-            {/* <div className='row'>
-                <div className='col-1'></div> */}
-                {/* <div className='col-10'>
-                </div> */}
-                <div>
-                    {CustomerList.map( (customer,i) => <CustomerCard customer={customer} i={i} key={i} /> )}
-                </div>
-                {/* <div className='col-1'></div>
-                
-            </div> */}
+        <> 
+            <h2><i className="material-icons">password</i>List of customers:</h2>
+            <div>
+                {CustomerList.map( (customer,i) => <CustomerCard customer={customer} i={i} key={i} /> )}
+            </div>
 
         </>
     );
@@ -526,41 +412,39 @@ function RestaurantCard(props){
         <div style={{padding: "5px 0"}}>
             <Card sx={{ display: 'flex' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography variant="h5" color="text.secondary" component="div">
-                        <span style={restaurant.online? {color: "green"}: {color: "red"}}>◉</span>
-                        {restaurant.restaurantName}&nbsp;(Restaurant ID: {restaurant._id})
-                    </Typography>
-                    
-                    <span style={restaurant.approved? {color: "green", paddingLeft:"1%"}: {color: "red", paddingLeft:"1%"}}>
-                        {restaurant.approved? "Approved" : "Not approved"}
-                    </span>
-                    <br/>
-                    
-                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                            {restaurant.online? 
-                                <Badge sx={{"& .MuiBadge-badge": {backgroundColor: "green"}}} badgeContent=" ">
-                                    <CardMedia
-                                        display="flex"
-                                        component="img"
-                                        sx={{ width: 151 }}
-                                        image={`data:image/jpg; base64, ${ImgUrl}`}
-                                        alt="Restaurant Profile Picture"
-                                    />
-                                </Badge> 
-                                :
-                                <Badge sx={{"& .MuiBadge-badge": {backgroundColor: "red"}}} badgeContent=" ">
-                                    <CardMedia
-                                        display="flex"
-                                        component="img"
-                                        sx={{ width: 151 }}
-                                        image={`data:image/jpg; base64, ${ImgUrl}`}
-                                        alt="Restaurant Profile Picture"
-                                    />
-                                </Badge>
-                            }
+                    <Box sx={{ display: 'flex', flexDirection: 'row', px: 1, m: 1}}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={10}>
+                                <Typography variant="h5" component="div">
+                                    <b>{restaurant.username}</b>
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <b style={restaurant.approved ? {color: "green"}: {color: "red"}}>
+                                        {restaurant.approved ? "Approved" : "Not approved"}
+                                </b>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <h6 style={{color: "grey"}}>ID: {restaurant._id}</h6>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', px: 1, m: 1}}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', px: 1, m: 1}}>
+                            <Stack
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                                spacing={2}
+                                height="100%"
+                            >
+                                <div style={{position: "relative"}}>
+                                    <Avatar alt="picture" src={`data:image/jpeg; base64, ${ImgUrl}`} sx={{ width: 150, height: "auto", maxWidth: "100%" }}/>
+                                    <div class='online-status' style={{backgroundColor: restaurant.online ? "green" : "red"}}></div>
+                                </div>
+                            </Stack>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1}}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', px: 1, m: 1}}>
                             <Typography component="div" variant="body1">
                                 Address: {restaurant.address}<br/>
                                 Username: {restaurant.username}<br/>
@@ -635,7 +519,7 @@ function RestaurantList(props){
     },[]);
     return(
         <>
-            <h2 style={{ padding: "0 0 0 0", color: "#ba1851" }}>List of Restaurants:</h2>
+            <h2><i className="material-icons">list</i>List of restaurants:</h2>
             <div>
                 {RestaurantList.map( (restaurant,i) => <RestaurantCard restaurant={restaurant} i={i} key={i} setReload={setReload}  /> )}
             </div>
@@ -655,62 +539,43 @@ class Admin extends React.Component{
             return(
                 <div className='page-styling'>
                     <div className='row'>
-                        <div className='col-1'>
-                        
-                        </div>
+                        <div className='col-1'></div>
                         <div className='col-10' style={{margin: "1vh"}}>
                             <OrderHistory token={this.props.token}/>
-                            <hr/>
                         </div>
-                        <div className='col-1'>
-                        
-                        </div>
+                        <div className='col-1'></div>
                     </div>
-                    
                 </div>
-                
             );
         }
         else if (this.props.page ==  "ULCustomer"){
-            return(
+            return (
                 <div className='page-styling'>  
                     <div className='row'>
-                        <div className='col-1'>
-                        
-                        </div>
+                        <div className='col-1'></div>
                         <div className='col-10'>
                             <ResetCustomerPassword token={this.props.token}/>
                             <hr/>
                             <CustomerList token={this.props.token}/>
                         </div>
-                        <div className='col-1'>
-                        
-                        </div>
+                        <div className='col-1'></div>
                     </div>
-                    
                 </div>
-                
             );
         }
         else if (this.props.page ==  "ULRestaurant"){
-            return(
+            return (
                 <div className='page-styling'>
                     <div className='row'>
-                        <div className='col-1'>
-                        
-                        </div>
+                        <div className='col-1'></div>
                         <div className='col-10'>
                             <ResetRestaurantPassword token={this.props.token}/>
                             <hr/> 
                             <RestaurantList token={this.props.token}/>
                         </div>
-                        <div className='col-1'>
-                        
-                        </div>
+                        <div className='col-1'></div>
                     </div>
-                    
                 </div>
-                
             );
         }
     }

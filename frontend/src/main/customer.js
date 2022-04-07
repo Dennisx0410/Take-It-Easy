@@ -67,7 +67,6 @@ function ChangePassword(){
 
     return(
         <>
-            {/* <h3>Change password:</h3> */}
             <h4><i className="material-icons">password</i>Change password:</h4>
             
             <form onSubmit={(e)=>{handleSubmit(e)}}>
@@ -92,35 +91,7 @@ function ChangePassword(){
                     <input type={mask ? "text" : "password"} className="form-control" name="REnewpwd" required/>
                     <button type="button" className="material-icons input-group-text" onClick={() => setMask(!mask)}>{mask ? "visibility_off" : "visibility"}</button>
                 </div>
-{/* pattern="^.{8,}$" title="length should be longer than 8 characters"  */}
-                {/* <label>
-                    <h5>Old password: </h5>
-                    
-                    <input name="oldpwd" type="password" required/>
-                    
-                </label>
-                <br/>
-                <label>
-                    <h5>New password: 
-                        <span style={{fontSize:"15px"}}>
-                            <button type="button" onClick={() => setMask(!mask)} 
-                                style={{ backgroundColor: '#faf0e5', border: "none", textAlign: "center", color: "#333333"}} > */}
-                                {/* <MaterialIcon icon={mask ? "visibility_off" : "visibility"} color='#8a055e'/> */}
-                                {/* {mask ? "Show new password" : "Hide new password"} */}
-                            {/* </button>
-                        </span>
-                    </h5>
-                    <input name="newpwd" type={mask ? "password" : "text"}  required/>
-                </label>
-                <br/>
-                <label>
-                    <h5>Please re-enter your new password: </h5>
-                   
-                    <input name="REnewpwd" type={mask ? "password" : "text"} required/>
-                </label>
-                <br/> */}
                 <button type="submit" className="btn">Submit</button>
-                {/* <input type="submit" value="Submit" style={{color: "#8a055e" }}/> */}
             </form>
             { !CPstatus.name ? <></> : 
              CPstatus.name === "SuccessfullyChangedPassword" ? 
@@ -130,7 +101,6 @@ function ChangePassword(){
                 <Alert severity="error">
                     {CPstatus.message}
                 </Alert> }
-            {/* <span style={{color: "red"}}>{CPstatus.message}</span> */}
         </>
     );
 }
@@ -186,13 +156,10 @@ function AccountInfo() {
 
     return(
         <>
-            {/* <div className="ProfileHeader">
-                <h2 style={{ padding: "1vh 3vw 0 3vw", color: "#ba1851" }}>Welcome!</h2>
-            </div> */}
             <div className='row'>
                 <div className='col-1'></div>
                 <div className='col-10'>
-                    <h2 className="content-header">Glad to meet you, {customerInfo.username}!</h2>
+                    <h2>Glad to meet you, {customerInfo.username}!</h2>
                     <h4><i className="material-icons">badge</i>Your information:</h4>
                     <div className='row'>
                         {/* profilePic */}
@@ -227,11 +194,6 @@ function AccountInfo() {
                             </TableContainer>
                         </div>
                     </div>
-                    {/* User ID: <span style={{color: "black"}}>{customerInfo.userID}</span><br/>
-                    Username: <span style={{color: "black"}}>{customerInfo.username}</span><br/>
-                    Phone Number: <span style={{color: "black"}}>{customerInfo.phoneNum}</span><br/>
-                    E-mail: <span style={{color: "black"}}>{customerInfo.email}</span><br/>
-                    Points: <span style={{color: "black"}}>{customerInfo.points? customerInfo.points:0}</span><br/> */}
                     <hr></hr>
                     <ChangePassword/>
                 </div>
@@ -322,7 +284,7 @@ function OrderHistory() {
             <div className='row'>
                 <div className='col-1'></div>
                 <div className='col-10'>
-                    <h2 className="content-header">Your Order History: </h2>
+                    <h2><i className="material-icons">receipt_long</i>Your order history:</h2>
                     {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
                 </div>
                 <div className='col-1'></div>
@@ -340,7 +302,7 @@ class Customer extends React.Component{
         if (this.props.action == "profile"){
             return (
                 <>  
-                    <div className='userContent'>
+                    <div className='page-styling'>
                         <AccountInfo/>
                     </div>
                 </>
@@ -349,7 +311,7 @@ class Customer extends React.Component{
         else if (this.props.action == "history") {
             return (
                 <>
-                    <div className='userContent'>
+                    <div className='page-styling'>
                         <OrderHistory/>
                     </div>
                 </>
@@ -358,29 +320,12 @@ class Customer extends React.Component{
         else {
             return (
                 <>
-                    <AccountInfo/>
+                    <div className='page-styling'>
+                        <AccountInfo/>
+                    </div>
                 </>
             );
         }
     }
 }
 export default Customer;
-
-// if (orderHistory.length == 0){
-    //     console.log("Hi");
-    //     return(
-    //         <>
-    //             <div className='row'>
-    //                 <div className='col-1'></div>
-    //                 <div className='col-10'>
-    //                     <h2 style={{ padding: "1vh 0 0 0", color: "#ba1851" }}>Your Order History: </h2>
-    //                     You havent make any order yet. 
-    //                 </div>
-    //                 <div className='col-1'></div>
-    //             </div>
-    //         </>
-            
-    //     );
-    // }
-    // else{
-    // }

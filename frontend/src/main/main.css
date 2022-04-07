@@ -1,8 +1,8 @@
-.Main{
+.Main {
     background-color: #faf0e5;
-    color: #8a055e;
     min-height: 100vh;
 }
+
 .custom-container-width {
     justify-content: center;
     text-align: justify;
@@ -10,17 +10,16 @@
     align-items: center;
 }
 
-.custom-card{
-    
+.custom-card {
     text-align: justify;
     padding: 0;
 }
 
-.suggestionMargin{
+.suggestionMargin {
     margin: 10px;
 }
 
-.lowestZ{
+.lowestZ {
     z-index: 0;
     text-decoration:none;
 }
