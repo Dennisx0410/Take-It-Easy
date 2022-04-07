@@ -69,6 +69,7 @@ export default function Login(props) {
     const handleUsertypeChange = async e => {
       let loginForm = document.getElementById('login-form');
 
+      setLoginStatus('');
       loginForm.reset();
 
       // reset choice after reset form
