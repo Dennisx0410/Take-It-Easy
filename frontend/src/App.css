@@ -36,8 +36,12 @@ h4, .content-subheader {
     color: rgb(138, 5, 94);
 }
 
-.slide-in-l {
+.slide-in-t {
   animation: 2s slide-in-from-top;
+}
+
+.slide-in-l {
+  animation: 2s slide-in-from-left;
 }
 
 @keyframes slide-in-from-left {

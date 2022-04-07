@@ -1,9 +1,8 @@
 import './restaurant.css';
 import React from 'react';
 import { useState, useEffect  } from 'react';
-import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import {Link} from 'react-router-dom';
-import {useMatch, useParams, useLocation} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -15,7 +14,7 @@ import SlidingPane from "react-sliding-pane";
 import {Buffer} from 'buffer';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import MaterialIcon, {colorPalette} from 'material-icons-react';
+import MaterialIcon from 'material-icons-react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 

@@ -45,7 +45,7 @@ class Suggestion extends React.Component {
                     <div className="col-1"></div>
                     <div className="col-10 align-self-start">
                         <h4>Recommended for you:</h4>
-                        <div className='lowestZ slide-in-l'>
+                        <div className='lowestZ slide-in-t'>
                             <Box sx={{ display: 'flex', pt:1, pb:1}}>
                                 {this.props.suggestion.map((suggestion,i)=>
                                     <SuggestionCard suggestion={suggestion} i={i} key={i}  />
