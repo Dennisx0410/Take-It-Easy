@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {useMatch, useParams, useLocation} from 'react-router-dom';
+import { Badge } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -349,13 +350,27 @@ function CustomerCard(props){
                     <br/>
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                            <CardMedia
-                                display="flex"
-                                component="img"
-                                sx={{ width: 151 }}
-                                image={`data:image/jpg; base64, ${ImgUrl}`}
-                                alt="Live from space album cover"
-                            />
+                            {customer.online? 
+                                <Badge sx={{"& .MuiBadge-badge": {backgroundColor: "green"}}} badgeContent=" ">
+                                    <CardMedia
+                                        display="flex"
+                                        component="img"
+                                        sx={{ width: 151 }}
+                                        image={`data:image/jpg; base64, ${ImgUrl}`}
+                                        alt="Live from space album cover"
+                                    />
+                                </Badge> 
+                                :
+                                <Badge sx={{"& .MuiBadge-badge": {backgroundColor: "red"}}} badgeContent=" ">
+                                    <CardMedia
+                                        display="flex"
+                                        component="img"
+                                        sx={{ width: 151 }}
+                                        image={`data:image/jpg; base64, ${ImgUrl}`}
+                                        alt="Live from space album cover"
+                                    />
+                                </Badge>
+                            }
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                             <Typography component="div" variant="subtitle2">
@@ -525,13 +540,27 @@ function RestaurantCard(props){
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                            <CardMedia
-                                display="flex"
-                                component="img"
-                                sx={{ width: 151 }}
-                                image={`data:image/jpg; base64, ${ImgUrl}`}
-                                alt="Live from space album cover"
-                            />
+                            {restaurant.online? 
+                                <Badge sx={{"& .MuiBadge-badge": {backgroundColor: "green"}}} badgeContent=" ">
+                                    <CardMedia
+                                        display="flex"
+                                        component="img"
+                                        sx={{ width: 151 }}
+                                        image={`data:image/jpg; base64, ${ImgUrl}`}
+                                        alt="Restaurant Profile Picture"
+                                    />
+                                </Badge> 
+                                :
+                                <Badge sx={{"& .MuiBadge-badge": {backgroundColor: "red"}}} badgeContent=" ">
+                                    <CardMedia
+                                        display="flex"
+                                        component="img"
+                                        sx={{ width: 151 }}
+                                        image={`data:image/jpg; base64, ${ImgUrl}`}
+                                        alt="Restaurant Profile Picture"
+                                    />
+                                </Badge>
+                            }
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1}}>
                             <Typography component="div" variant="body1">
