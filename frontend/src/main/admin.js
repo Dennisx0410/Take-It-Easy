@@ -516,8 +516,8 @@ function RestaurantCard(props){
         // let index = props.i;
         if (!skip){
             let profilePic = restaurant.profilePic;
-            // let img = Buffer.from(profilePic.data).toString('base64');
-            let img = Buffer.from(profilePic);
+            let img = Buffer.from(profilePic.data).toString('base64');
+            // let img = Buffer.from(profilePic);
             setSkip(true);
             setImgUrl(img);
         }
@@ -637,7 +637,7 @@ function RestaurantList(props){
     },[]);
     return(
         <>
-            <h2>List of Restaurants:</h2>
+            <h2 style={{ padding: "0 0 0 0", color: "#ba1851" }}>List of Restaurants:</h2>
             <div>
                 {RestaurantList.map( (restaurant,i) => <RestaurantCard restaurant={restaurant} i={i} key={i} setReload={setReload}  /> )}
             </div>
