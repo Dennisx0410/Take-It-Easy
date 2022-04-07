@@ -13,13 +13,14 @@ import {Buffer} from 'buffer';
 
 const NOIMG = "";
 
-function ResetPassword(props, usertype){    
+function ResetPassword(props){    
     const PREFIX='http://localhost:5000';
     var targetUsername = null, newPassword = null;
     const [CPstatus, setCPstatus] = useState({});
     const [mask, setMask] = useState(true);
     function handleSubmit(e) {
         e.preventDefault();
+        console.log(props);
         let loginForm = e.target;
         let formData = new FormData(loginForm);
         let username = formData.get('username');
@@ -36,7 +37,7 @@ function ResetPassword(props, usertype){
             newPassword = newpwd;
             console.log(targetUsername);
             console.log(newPassword);
-            const url_d = PREFIX+`/admin/${usertype}/resetPw`;
+            const url_d = PREFIX+`/admin/${props.usertype}/resetPw`;
             const attempt = async () => {
                 try {
                     const response = await fetch(
@@ -72,7 +73,7 @@ function ResetPassword(props, usertype){
 
             <form onSubmit={(e)=>{handleSubmit(e)}}>
                 <label htmlFor="password" className="form-label">
-                    <h6>Target customer account username: </h6>
+                    <h6>Target {props.usertype} account username: </h6>
                 </label>
                 <div className="input-group mb-2" style={{width: "250px"}}>
                     <input type="text" className="form-control" name="username" required/>
@@ -106,13 +107,13 @@ function ResetPassword(props, usertype){
     
 }
 
-function ResetCustomerPassword(props) {
-    return ResetPassword('customer');
-}
+// function ResetCustomerPassword(props) {
+//     return ResetPassword('customer');
+// }
 
-function ResetRestaurantPassword(props) {
-    return ResetPassword('restaurant');
-}
+// function ResetRestaurantPassword(props) {
+//     return ResetPassword('restaurant');
+// }
 
 function Order(props) {
     console.log(props);
@@ -181,12 +182,14 @@ function OrderHistory(props) {
             fetchOrder();
         }
     }, []);
-
+    function handleReload(){
+        window.location.reload();
+    }
     return (
         <>
             <div className='row'>
                 <div className='col-10'>
-                    <h2>List of orders: </h2>
+                    <h2>List of orders: <span style={{cursor:"pointer"}} onClick={()=>handleReload()}><i className="material-icons">sync</i></span></h2> 
                     <hr/>
                     {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
                 </div>
@@ -315,7 +318,7 @@ function CustomerList(props){
     },[]);
     return (
         <> 
-            <h2><i className="material-icons">password</i>List of customers:</h2>
+            <h2><i className="material-icons">list</i>List of customers:</h2>
             <div>
                 {CustomerList.map( (customer,i) => <CustomerCard customer={customer} i={i} key={i} /> )}
             </div>
@@ -358,6 +361,8 @@ function RestaurantCard(props){
             console.log("CB");
         }
         else if (action == "Reject"){
+            console.log(username);
+
             const url = PREFIX+'/admin/restaurant/reject';
             console.log("CA");
             async function reject() {
@@ -393,7 +398,7 @@ function RestaurantCard(props){
     console.log(props);
     const [ImgUrl,setImgUrl] = useState();
     const [skip,setSkip] = useState(false);
-    const classes = useStyles();
+    
     let restaurant = props.restaurant;
     // console.log(customer);
         // let index = props.i;
@@ -520,7 +525,7 @@ function RestaurantList(props){
         <>
             <h2><i className="material-icons">list</i>List of restaurants:</h2>
             <div>
-                {RestaurantList.map( (restaurant,i) => <RestaurantCard restaurant={restaurant} i={i} key={i} setReload={setReload}  /> )}
+                {RestaurantList.map( (restaurant,i) => <RestaurantCard restaurant={restaurant} i={i} key={i} setReload={setReload} token={props.token} /> )}
             </div>
         </>
     );
@@ -553,7 +558,7 @@ class Admin extends React.Component{
                     <div className='row'>
                         <div className='col-1'></div>
                         <div className='col-10'>
-                            <ResetCustomerPassword token={this.props.token}/>
+                            <ResetPassword token={this.props.token} usertype="customer"/>
                             <hr/>
                             <CustomerList token={this.props.token}/>
                         </div>
@@ -568,7 +573,7 @@ class Admin extends React.Component{
                     <div className='row'>
                         <div className='col-1'></div>
                         <div className='col-10'>
-                            <ResetRestaurantPassword token={this.props.token}/>
+                            <ResetPassword token={this.props.token} usertype="restaurant"/>
                             <hr/> 
                             <RestaurantList token={this.props.token}/>
                         </div>

@@ -1,6 +1,11 @@
 import React from 'react';
+
 import { useState, useEffect } from 'react';
-import {Buffer} from 'buffer';
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import { Buffer } from 'buffer';
 import { Alert, Avatar, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
 function ChangePassword(){
@@ -250,19 +255,97 @@ function ChangeMenu(){
     );
 }
 
-function OrderHistory(){
+const useStyles = makeStyles({
+    root: {
+      width: "100%",
+      margin: "15px 0"
+    }
+  });
+
+function Order(props) {
+    console.log("In order");
+    // console.log(props);
+    const classes = useStyles();
+    var createDate = props.order.createdAt;
+    var updateDate = props.order.createdAt;
+    var restaurantName = props.order.restaurantID.restaurantName;
+    var restaurantID = props.order.restaurantID._id;
+    var orderNo = props.order.orderNo;
     return(
         <>
-            Order history:
+            <Card className={classes.root} >
+                <CardContent>
+                    <Typography gutterBottom variant="h4" component="h4">
+                        <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="h5">
+                        <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span>
+                        <br/>
+                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantID}</span>
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        Order created at: {createDate} <br/>
+                        Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
+                        Status: 
+                        <span style={props.order.status? {color: "green"} : {color: "red"}}>
+                            {props.order.status? "Completed":"Not completed" }<br/>
+                        </span>
+                    </Typography>
+                </CardContent>
+            </Card>
+            {/* {props.i} */}
+            {/* {props.order} */}
+            
         </>
+        
     );
 }
 
+// /order/fetchByCustomer
+function OrderHistory() {
+    const [orderHistory, setOrderHistory] = useState([]);
+    
+    const PREFIX='http://localhost:5000';
+    useEffect(() => {
+        const url_d = PREFIX+'/order/fetchByRestaurant';
+        const fetchOrder= async () => {
+          try {
+            const response = await fetch(
+                url_d, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                }}
+            );
+            const order_history = await response.json();
+            setOrderHistory(order_history);
+            console.log(order_history);
+
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+        fetchOrder();
+    }, []);
+
+    return (
+        <>
+            <div className='row'>
+                <div className='col-1'></div>
+                <div className='col-10'>
+                    <h2><i className="material-icons">receipt_long</i>Your order history:</h2>
+                    {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
+                </div>
+                <div className='col-1'></div>
+            </div>
+        </>
+    );
+}
 function UserRestaurant(props) {
     console.log(props.page);
     if (props.page == "menu"){
         return(
-            <div className='userContent'>
+            <div style={{backgroundColor: "#faf0e5"}}>
                 <ChangeMenu/>
             </div>
 
@@ -270,14 +353,14 @@ function UserRestaurant(props) {
     }
     else if (props.page ==  "history"){
         return(
-            <div className='userContent'>
+            <div style={{backgroundColor: "#faf0e5"}}>
                 <OrderHistory/>
             </div>
         );
     }
     else{
         return(
-            <div className='userContent'>
+            <div style={{backgroundColor: "#faf0e5"}}>
                 <AccountInfo/>
             </div>
         );

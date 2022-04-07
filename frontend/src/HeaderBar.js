@@ -228,7 +228,7 @@ function HeaderBar(props){
                                     <Dropdown.Item href="/r/profile">Profile</Dropdown.Item>
                                     <Dropdown.Item href="/r/history">Order History</Dropdown.Item>
                                         <Dropdown.Divider />
-                                    <Dropdown.Item onClick={()=>{props.setToken(undefined);sessionStorage.clear();props.socket.disconnect(); window.removeEventListener("beforeunload", closeHandler)}} >Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=>{navigate('/'); props.setToken(undefined); sessionStorage.clear(); props.socket.disconnect(); window.removeEventListener("beforeunload", closeHandler)}} >Logout</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>
