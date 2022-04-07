@@ -18,7 +18,7 @@ import {Buffer} from 'buffer';
 
 const NOIMG = "";
 
-function ResetCustomerPassword(){    
+function ResetCustomerPassword(props){    
     const PREFIX='http://localhost:5000';
     var targetUsername = null, newPassword = null;
     const [CPstatus, setCPstatus] = useState("");
@@ -52,7 +52,7 @@ function ResetCustomerPassword(){
                         url_d, {
                             method: 'POST',
                             headers: {
-                                'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                                'Authorization': 'Bearer '+ props.token,
                                 'Content-type' : 'application/json'
                             },
                             body: JSON.stringify({
@@ -116,7 +116,7 @@ function ResetCustomerPassword(){
     
 }
 
-function ResetRestaurantPassword(){    
+function ResetRestaurantPassword(props){    
     const PREFIX='http://localhost:5000';
     var targetUsername = null, newPassword = null;
     const [CPstatus, setCPstatus] = useState("");
@@ -150,7 +150,7 @@ function ResetRestaurantPassword(){
                         url_d, {
                             method: 'POST',
                             headers: {
-                                'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                                'Authorization': 'Bearer '+ props.token,
                                 'Content-type' : 'application/json'
                             },
                             body: JSON.stringify({
@@ -256,7 +256,7 @@ function Order(props) {
     );
 }
 
-function OrderHistory() {
+function OrderHistory(props) {
     const [orderHistory, setOrderHistory] = useState([]);
     const [reload, setReload] = useState(true);
     // window.location.reload();
@@ -269,7 +269,7 @@ function OrderHistory() {
                 url_d, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    'Authorization': 'Bearer '+ props.token
                 }}
             );
             const order_history = await response.json();
@@ -376,7 +376,7 @@ function CustomerCard(props){
 
 
 
-function CustomerList(){
+function CustomerList(props){
     const PREFIX='http://localhost:5000';
     const [reload, setReload] = useState(true);
     const [CustomerList, setCustomerList] = useState([]);
@@ -389,7 +389,7 @@ function CustomerList(){
                         url, {
                         method: 'GET',
                         headers: {
-                            'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                            'Authorization': 'Bearer '+ props.token
                         }}
                     );
                     const customerDetails = await response.json();
@@ -441,7 +441,7 @@ function RestaurantCard(props){
                         url, {
                             method: 'POST',
                             headers: {
-                                'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                                'Authorization': 'Bearer '+ props.token,
                                 'Content-type' : 'application/json'
                             },
                             body: JSON.stringify({
@@ -468,7 +468,7 @@ function RestaurantCard(props){
                         url, {
                             method: 'POST',
                             headers: {
-                                'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                                'Authorization': 'Bearer '+props.token,
                                 'Content-type' : 'application/json'
                             },
                             body: JSON.stringify({
@@ -577,7 +577,7 @@ function RestaurantCard(props){
         </div>
     );
 }
-function RestaurantList(){
+function RestaurantList(props){
     const PREFIX='http://localhost:5000';
     const [reload, setReload] = useState(true);
     const [RestaurantList, setRestaurantList] = useState([]);
@@ -590,7 +590,7 @@ function RestaurantList(){
                         url, {
                         method: 'GET',
                         headers: {
-                            'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                            'Authorization': 'Bearer '+ props.token
                         }}
                     );
                     const restaurantDetails = await response.json();
@@ -632,7 +632,7 @@ class Admin extends React.Component{
                         
                         </div>
                         <div className='col-10' style={{margin: "1vh"}}>
-                            <OrderHistory/>
+                            <OrderHistory token={this.props.token}/>
                             <hr/>
                         </div>
                         <div className='col-1'>
@@ -652,9 +652,9 @@ class Admin extends React.Component{
                         
                         </div>
                         <div className='col-10'>
-                            <ResetCustomerPassword/>
+                            <ResetCustomerPassword token={this.props.token}/>
                             <hr/>
-                            <CustomerList/>
+                            <CustomerList token={this.props.token}/>
                         </div>
                         <div className='col-1'>
                         
@@ -673,9 +673,9 @@ class Admin extends React.Component{
                         
                         </div>
                         <div className='col-10'>
-                            <ResetRestaurantPassword/>
+                            <ResetRestaurantPassword token={this.props.token}/>
                             <hr/> 
-                            <RestaurantList/>
+                            <RestaurantList token={this.props.token}/>
                         </div>
                         <div className='col-1'>
                         
