@@ -517,7 +517,7 @@ function RestaurantCard(props){
         if (!skip){
             let profilePic = restaurant.profilePic;
             let img = Buffer.from(profilePic.data).toString('base64');
-            // let img = Buffer.from(profilePic);
+            
             setSkip(true);
             setImgUrl(img);
         }
