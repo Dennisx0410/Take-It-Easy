@@ -74,8 +74,6 @@ module.exports = {
     getRestaurantByUsername: getRestaurantByUsername,
 
     getRestaurantData: async (req, res) => {
-        console.log('> get restaurant data');
-        console.log(req.restaurant)
         try {
             // fetch restaurant by username
             const data = await Restaurants.findOne({_id:req.restaurant._id}).populate('menu')
@@ -88,7 +86,6 @@ module.exports = {
     },
 
     getNotApprovedRestaurant: async (req, res) => {
-        console.log("> fetching not approved restaurants");
         try {
             let list = await Restaurants.find({approved: false}).populate('menu');
 
@@ -101,10 +98,8 @@ module.exports = {
     },
 
     getApprovedRestaurant: async (req, res) => {
-        console.log("> fetching approved restaurants");
         try {
             let list = await Restaurants.find({approved:true}).populate('menu')
-            console.log(">>>>>>>>>>>>>>>>", list[0].profilePic.data)
             res.status(200).send(list);
         }
         catch (err) {
@@ -114,8 +109,6 @@ module.exports = {
     },
 
     getAllRestaurantData: async (req, res) => {
-        // TODO: get all restaurant
-        console.log("> fetching all restaurants");
         try {
             let data = await Restaurants.find().populate('menu');
             res.status(200).send(data);
@@ -128,9 +121,6 @@ module.exports = {
 
     // middleware for new user login
     addRestaurant: async (req, res, next) => {
-        // TODO : Add restaurant to database (Register) by credentials
-        console.log('> register new accout');
-        console.log('req.body:', req.body); // username, pw.. etc
         try {
             let restaurant = await Restaurants.findOne({username: req.body.username});
 
@@ -140,7 +130,6 @@ module.exports = {
 
             // create restaurant account
             restaurant = await Restaurants.create(req.body);
-            // console.log(restaurant)
 
             req.restaurant = restaurant;
 

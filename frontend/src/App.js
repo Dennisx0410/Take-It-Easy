@@ -15,7 +15,6 @@ import { io } from "socket.io-client"
 
 function NoMatch() {
     let location = useLocation();
-    console.log(location.pathname);
     // navigate('/', { replace: true })
     return (
       <div>
@@ -53,8 +52,6 @@ function App(){
         console.log(`Client Connect to the Server with ID ${socket.id}`)})
     },[socket])
 
-
-    console.log(userInfo)
     if (token == null) {
         if (!['customer', 'restaurant', 'admin'].includes(userInfo.usertype)) {
             return (
@@ -104,7 +101,6 @@ function App(){
         let usertype = userInfo.usertype;
         // console.log("::::::"+userInfo.usertype);
         if (usertype == "restaurant"){
-            console.log("::::::"+usertype);
             return (
                 <>
                     <div>
@@ -123,7 +119,6 @@ function App(){
             );
         }
         else if (usertype == "customer"){
-            console.log("::::::"+usertype);
             return (
                 <>
                     <div>
@@ -145,7 +140,6 @@ function App(){
             );
         }
         else if (usertype == "admin"){
-            console.log("::::::"+usertype);
             return (
                 <>
                     <div>

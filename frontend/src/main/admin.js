@@ -218,7 +218,6 @@ function ResetRestaurantPassword(props){
 //
 
 function Order(props) {
-    console.log("In order");
     console.log(props);
     var createDate = props.order.createdAt;
     var updateDate = props.order.updatedAt;
@@ -310,7 +309,6 @@ const useStyles = makeStyles({
 });
 
 function CustomerCard(props){
-    console.log("In CC");
     console.log(props);
     const [ImgUrl,setImgUrl] = useState();
     const [skip,setSkip] = useState(false);
@@ -443,7 +441,6 @@ function CustomerList(props){
 //Restaurant
 function RestaurantCard(props){
     const PREFIX='http://localhost:5000';
-    console.log("In RC");
     const [update,setUpdate] = useState(true);
     function handleClick(action,username){
         setUpdate(false);
