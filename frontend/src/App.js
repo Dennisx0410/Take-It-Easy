@@ -154,8 +154,8 @@ function App(){
                             <HeaderBar usertype={usertype} setToken={setToken} token={token}/>
                             <Routes>
                                 <Route path="/" element={<Admin page="orders" token={token}/>} />  
-                                <Route path="/userlist/customers" element={<Admin page="ULCustomer"/>} />  
-                                <Route path="/userlist/restaurants" element={<Admin page="ULRestaurant"/>} />  
+                                <Route path="/userlist/customers" element={<Admin page="ULCustomer" token={token}/>} />  
+                                <Route path="/userlist/restaurants" element={<Admin page="ULRestaurant" token={token}/>} />  
                                 <Route path="*" element={<NoMatch/>} />
                             </Routes>
                         </BrowserRouter>
