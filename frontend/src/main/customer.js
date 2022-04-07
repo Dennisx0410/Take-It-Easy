@@ -21,19 +21,19 @@ function ChangePassword(){
         let newpwd = formData.get('newpwd');
         let REnewpwd = formData.get('REnewpwd');
         if (oldpwd == "" || newpwd == "" || REnewpwd == ""){
-            console.log("Empty");
+            // console.log("Empty");
             setCPstatus({name: "EmptyPw", message: "Please fill in all the fields."});
         }
         else if (newpwd != REnewpwd) {
-            console.log(newpwd);
-            console.log(REnewpwd);
+            // console.log(newpwd);
+            // console.log(REnewpwd);
             setCPstatus({name: "NewPwMismatched", message:"The new password you typed does not match the re-entered new password. Please try again."});
         }
         else{
             oldPassowrd = oldpwd;
             newPassword = newpwd;
-            console.log(oldPassowrd);
-            console.log(newPassword);
+            // console.log(oldPassowrd);
+            // console.log(newPassword);
             // setCPstatus("Valid New password");
             const url_d = PREFIX+'/customer/changePw';
             const attempt = async () => {
@@ -168,7 +168,7 @@ function AccountInfo() {
     if (customerInfo.profilePic != undefined){
         if (!skip){
             let profilePic = customerInfo.profilePic;
-            console.log(profilePic);
+            // console.log(profilePic);
             let img = Buffer.from(profilePic.data).toString('base64');
             setSkip(true);
             setImgUrl(img);
@@ -254,7 +254,7 @@ const useStyles = makeStyles({
 
 function Order(props) {
     console.log("In order");
-    console.log(props);
+    // console.log(props);
     const classes = useStyles();
     var createDate = props.order.createdAt;
     var updateDate = props.order.createdAt;
