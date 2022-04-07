@@ -334,6 +334,7 @@ function OrderHistory() {
                 <div className='col-1'></div>
                 <div className='col-10'>
                     <h2><i className="material-icons">receipt_long</i>Your order history:</h2>
+                    <hr/>
                     {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
                 </div>
                 <div className='col-1'></div>
@@ -353,7 +354,7 @@ function UserRestaurant(props) {
     }
     else if (props.page ==  "history"){
         return(
-            <div style={{backgroundColor: "#faf0e5"}}>
+            <div style={{backgroundColor: "#faf0e5", height:"100%"}}>
                 <OrderHistory/>
             </div>
         );

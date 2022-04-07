@@ -231,6 +231,7 @@ function HeaderBar(props){
                                     <Dropdown.Item href="/r/history">Order History</Dropdown.Item>
                                         <Dropdown.Divider />
                                     <Dropdown.Item onClick={async (e) => {
+                                        navigate('/',{ replace: true }); 
                                         await closeHandler(e);
                                         props.socket.disconnect(); 
                                         props.setToken(undefined);
@@ -307,11 +308,12 @@ function HeaderBar(props){
                                     <Dropdown.Item onClick={() => navigate('/customer/history', { replace: true })}>Order History</Dropdown.Item>
                                         <Dropdown.Divider />
                                     <Dropdown.Item onClick={async (e) => {
+                                        navigate('/',{ replace: true }); 
                                         await closeHandler(e);
                                         props.socket.disconnect(); 
                                         props.setToken(undefined); 
                                         sessionStorage.clear(); 
-                                        navigate('/'); 
+                                        
                                         }} >Logout</Dropdown.Item>
                                     {/* onClick={handleLogout(props.setToken)} */}
                                     </Dropdown.Menu>
@@ -353,11 +355,12 @@ function HeaderBar(props){
                                     <Dropdown.Item onClick={() => navigate("/userlist/restaurants", { replace: true })} >Restaurants' List</Dropdown.Item>
                                         <Dropdown.Divider />
                                     <Dropdown.Item onClick={async (e) => {
+                                        navigate('/',{ replace: true }); 
                                         await closeHandler(e);
                                         props.socket.disconnect()
                                         props.setToken(undefined); 
                                         sessionStorage.clear(); 
-                                        navigate('/');
+                                        
                                         }} >Logout</Dropdown.Item>
                                     {/* onClick={handleLogout(props.setToken)} */}
                                     </Dropdown.Menu>

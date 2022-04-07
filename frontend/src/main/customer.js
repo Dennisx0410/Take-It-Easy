@@ -301,7 +301,7 @@ class Customer extends React.Component{
         if (this.props.action == "profile"){
             return (
                 <>  
-                    <div className='page-styling'>
+                    <div className='page-styling' >
                         <AccountInfo/>
                     </div>
                 </>
@@ -310,7 +310,7 @@ class Customer extends React.Component{
         else if (this.props.action == "history") {
             return (
                 <>
-                    <div className='page-styling'>
+                    <div className='page-styling' style={{minHeight: "100vh"}}>
                         <OrderHistory/>
                     </div>
                 </>
