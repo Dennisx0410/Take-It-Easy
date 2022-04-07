@@ -342,9 +342,10 @@ function CustomerCard(props){
                         <span style={customer.online? {color: "green"}: {color: "red"}}>◉</span>
                         Username:&nbsp;{customer.username}&nbsp;(Customer ID: {customer._id})
                     </Typography>
-                    <span style={customer.activated? {color: "green"}: {color: "red"}}>
+                    <span style={customer.activated? {color: "green", paddingLeft:"1%"}: {color: "red", paddingLeft:"1%"}}>
                             {customer.activated? "Activated" : "Not activated"}
                     </span>
+                    
                     <br/>
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
@@ -371,7 +372,7 @@ function CustomerCard(props){
                             }
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                            <Typography component="div" variant="subtitle2">
+                            <Typography component="div" variant="body1">
                                 E-mail: {customer.email}<br/>
                                 Phone Number: {customer.phoneNum}<br/>
                                 Points: {customer.points}<br/>
@@ -529,12 +530,12 @@ function RestaurantCard(props){
                         <span style={restaurant.online? {color: "green"}: {color: "red"}}>◉</span>
                         {restaurant.restaurantName}&nbsp;(Restaurant ID: {restaurant._id})
                     </Typography>
-                    <Typography variant="h6" component="h6">
-                        <span style={restaurant.approved? {color: "green", paddingLeft:"1%"}: {color: "red", paddingLeft:"1%"}}>
-                            {restaurant.approved? "Approved" : "Not approved"}
-                        </span>
-                        <br/>
-                    </Typography>
+                    
+                    <span style={restaurant.approved? {color: "green", paddingLeft:"1%"}: {color: "red", paddingLeft:"1%"}}>
+                        {restaurant.approved? "Approved" : "Not approved"}
+                    </span>
+                    <br/>
+                    
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                             {restaurant.online? 
@@ -559,7 +560,7 @@ function RestaurantCard(props){
                                 </Badge>
                             }
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1}}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1}}>
                             <Typography component="div" variant="body1">
                                 Address: {restaurant.address}<br/>
                                 Username: {restaurant.username}<br/>
