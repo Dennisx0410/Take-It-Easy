@@ -256,7 +256,7 @@ function Order(props) {
     );
 }
 
-function OrderHistory() {
+function OrderHistory(props) {
     const [orderHistory, setOrderHistory] = useState([]);
     const [reload, setReload] = useState(true);
     // window.location.reload();
@@ -269,7 +269,7 @@ function OrderHistory() {
                 url_d, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    'Authorization': 'Bearer '+props.token
                 }}
             );
             const order_history = await response.json();
@@ -632,7 +632,7 @@ class Admin extends React.Component{
                         
                         </div>
                         <div className='col-10' style={{margin: "1vh"}}>
-                            <OrderHistory/>
+                            <OrderHistory token={this.props.token}/>
                             <hr/>
                         </div>
                         <div className='col-1'>
