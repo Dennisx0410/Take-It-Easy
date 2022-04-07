@@ -35,9 +35,6 @@ export default function Login(props) {
     let password = formData.get('password');
     let usertype = formData.get('usertype');
 
-    console.log(username);
-    console.log(usertype);
-    console.log(props.setToken);
     props.setUserInfo({
         username: formData.get('username'),
         usertype: formData.get('usertype')
@@ -54,7 +51,6 @@ export default function Login(props) {
       sessionStorage.setItem("token", res.token)       //Storing Token in Session Storage
       sessionStorage.setItem("username", username)
       sessionStorage.setItem("usertype", usertype)
-      console.log(usertype);
     }
     else {
       console.log(res);

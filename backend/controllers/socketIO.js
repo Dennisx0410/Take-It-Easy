@@ -52,8 +52,6 @@ const findSocketIdWithRestaurantUsername = (username) =>{
 
 
 io.on("connection", socket =>{
-    console.log("> Socket.IO: Recieved Connection from client with ID", socket.id, " With username", socket.handshake.query.token)
-
     let token = socket.handshake.query.token
     let data = jwt.verify(token, process.env.SECRET)
     if (data.usertype == 'customer'){

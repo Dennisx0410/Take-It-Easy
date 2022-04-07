@@ -153,7 +153,6 @@ function AccountInfo() {
             );
             const customer_info = await response.json();
             setCustomerInfo(customer_info);
-            console.log(customer_info);
 
           } catch (error) {
             console.log("error", error);

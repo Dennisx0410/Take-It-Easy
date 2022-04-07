@@ -39,8 +39,6 @@ class Suggestion extends React.Component {
         super(props);
     }
     render() {
-        console.log("In suggestion");
-        // console.log(this.props.suggestion);
         return (
             <main>
                 <div className="row" >
@@ -188,14 +186,11 @@ class FileCard extends React.Component{
 
         let index = this.props.i;
         let restaurant = this.props.restaurant;
-        // console.log(restaurant);
-        // console.log(restaurant.profilePic);
 
         if (restaurant.profilePic != undefined){
             // if (!this.state.skip){
                 if (this.props.RErender == true){
                     let profilePic = restaurant.profilePic;
-                    // console.log(profilePic);
                     let img = Buffer.from(profilePic.data).toString('base64');
                     this.props.setRErender(false);
                     this.setState( ()=>
@@ -330,7 +325,6 @@ function Main(){
     useEffect(() => {
             // const url = PREFIX+'/restaurant/all';
             const url = PREFIX+'/restaurant/approved';
-            // console.log("A");
             async function fetchData () {
                 try {
                     const response = await fetch(
@@ -341,8 +335,6 @@ function Main(){
                         }}
                     );
                     const restaurantDetails = await response.json();
-                    // console.log("Restaurants:")
-                    // console.log(restaurantDetails);
 
                     const availableR = restaurantDetails.filter((restaurants) => {
                         // const available = true;
@@ -357,16 +349,13 @@ function Main(){
                 }
             };
             fetchData();
-            // console.log("B");
     },[]);
     
     const [searchQ, setSearchQ] = useState();
     const [RErender, setRErender] = useState(true);
     var filteredRestaurants = filterRestaurant(REALrestaurantData, searchQ);
     function filterRestaurant(restaurant_list, query){
-        console.log("in filterRestaurant");
         if (!query) {
-            console.log("No query");
             return restaurant_list;
         }
         return restaurant_list.filter((restaurants) => {

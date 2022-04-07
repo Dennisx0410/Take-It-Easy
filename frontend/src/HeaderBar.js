@@ -83,7 +83,6 @@ function HeaderBar(props){
                 }
             });
             const notis = await data.json(); //Converting data to jason
-            console.log(props.token)
             setNotifications(notis) //Set State with fetched result
         }
     }
