@@ -12,6 +12,7 @@ import { CardActionArea } from '@mui/material';
 import Box from '@mui/material/Box';
 import MaterialIcon from 'material-icons-react';
 
+const PREFIX = 'http://localhost:5000';
 
 // import { useNavigate } from 'react-router-dom';
 // let navigate = useNavigate();
@@ -321,16 +322,15 @@ class FileCard extends React.Component{
 // }
 
 function Main(){
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
 
     const [REALrestaurantData, setREALRD] = useState([]);
     useEffect(() => {
-            // const url = PREFIX+'/restaurant/all';
-            const url = PREFIX+'/restaurant/approved';
+            const URL = PREFIX + '/restaurant/approved';
             async function fetchData () {
                 try {
                     const response = await fetch(
-                        url, {
+                        URL, {
                         method: 'GET',
                         headers: {
                             'Authorization': 'Bearer '+sessionStorage.getItem("token")
