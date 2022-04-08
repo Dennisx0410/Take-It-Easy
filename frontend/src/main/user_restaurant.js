@@ -11,8 +11,9 @@ import { Buffer } from 'buffer';
 import { Alert, Avatar, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
 const PREFIX='http://localhost:5000';
+
 function ChangePassword(){
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     var oldPassowrd = null, newPassword = null;
     const [CPstatus, setCPstatus] = useState({});
     const [mask, setMask] = useState(false);
@@ -38,11 +39,11 @@ function ChangePassword(){
             console.log(oldPassowrd);
             console.log(newPassword);
             // setCPstatus("Valid New password");
-            const url_d = PREFIX+'/restaurant/changePw';
+            const URL = PREFIX + '/restaurant/changePw';
             const attempt = async () => {
                 try {
                     const response = await fetch(
-                        url_d, {
+                        URL, {
                             method: 'POST',
                             headers: {
                                 'Authorization': 'Bearer '+ sessionStorage.getItem("token"),
@@ -141,17 +142,17 @@ function ChangePassword(){
 function AccountInfo(){
     const [restaurantInfo, setRestaurantInfo] = useState({});
     
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     
     useEffect(() => {
-        const url_d = PREFIX+'/restaurant/data';
+        const URL = PREFIX + '/restaurant/data';
         const fetchData = async () => {
           try {
             const response = await fetch(
-                url_d, {
+                URL, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    'Authorization': 'Bearer ' + sessionStorage.getItem("token")
                 }}
             );
             const restaurant_info = await response.json();
@@ -280,12 +281,12 @@ function Order(props) {
         let s_orderID = orderID.toString();
         // console.log(orderID);
         // console.log(s_orderID);
-        const url = PREFIX+'/order/done';
+        const URL = PREFIX +'/order/done';
         console.log("OA");
         async function done() {
             try {
                 const response = await fetch(
-                    url, {
+                    URL, {
                         method: 'POST',
                         headers: {
                             'Authorization': 'Bearer '+ sessionStorage.getItem("token"),
@@ -353,13 +354,13 @@ function Order(props) {
 function OrderHistory() {
     const [orderHistory, setOrderHistory] = useState([]);
     
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     useEffect(() => {
-        const url_d = PREFIX+'/order/fetchByRestaurant';
+        const URL = PREFIX + '/order/fetchByRestaurant';
         const fetchOrder= async () => {
           try {
             const response = await fetch(
-                url_d, {
+                URL, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer '+sessionStorage.getItem("token")

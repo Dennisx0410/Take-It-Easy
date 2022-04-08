@@ -8,6 +8,8 @@ import { Badge, IconButton, Snackbar, Alert} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
+const PREFIX = 'http://localhost:5000';
+
 // function Points(){
 //     const [skipTriggerFetch, setskipTF] = useState(false);
 //     const [customerInfo, setCustomerInfo] = useState([]);
@@ -162,15 +164,15 @@ function HeaderBar(props){
     // }
     // console.log(props.setToken);
     const [customerInfo, setCustomerInfo] = useState({});
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     
     const [skip, setSkip] = useState(false);
     const fetchData = async () => {
         if (props.usertype=="customer"){
             try {
-                const url_d = PREFIX+'/customer/data';
+                const URL = PREFIX + '/customer/data';
                 const response = await fetch(
-                    url_d, {
+                    URL, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer '+sessionStorage.getItem("token")

@@ -7,8 +7,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Buffer } from 'buffer';
 import { Alert, Avatar, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
+const PREFIX = 'http://localhost:5000';
+
 function ChangePassword(){
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     var oldPassowrd = null, newPassword = null;
     const [CPstatus, setCPstatus] = useState({});
     const [mask, setMask] = useState(false);
@@ -34,11 +36,11 @@ function ChangePassword(){
             // console.log(oldPassowrd);
             // console.log(newPassword);
             // setCPstatus("Valid New password");
-            const url_d = PREFIX+'/customer/changePw';
+            const URL = PREFIX + '/customer/changePw';
             const attempt = async () => {
                 try {
                     const response = await fetch(
-                        url_d, {
+                        URL, {
                             method: 'POST',
                             headers: {
                                 'Authorization': 'Bearer '+sessionStorage.getItem("token"),
@@ -107,14 +109,14 @@ function ChangePassword(){
 function AccountInfo() {
     const [customerInfo, setCustomerInfo] = useState({});
     
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     
     useEffect(() => {
-        const url_d = PREFIX+'/customer/data';
+        const URL = PREFIX + '/customer/data';
         const fetchData = async () => {
           try {
             const response = await fetch(
-                url_d, {
+                URL, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer '+sessionStorage.getItem("token")
@@ -254,13 +256,13 @@ function Order(props) {
 function OrderHistory() {
     const [orderHistory, setOrderHistory] = useState([]);
     
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     useEffect(() => {
-        const url_d = PREFIX+'/order/fetchByCustomer';
+        const URL = PREFIX + '/order/fetchByCustomer';
         const fetchOrder= async () => {
           try {
             const response = await fetch(
-                url_d, {
+                URL, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer '+sessionStorage.getItem("token")

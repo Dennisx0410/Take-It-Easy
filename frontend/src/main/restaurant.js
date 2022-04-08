@@ -18,6 +18,8 @@ import MaterialIcon from 'material-icons-react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+const PREFIX='http://localhost:5000';
+
 function Restaurant() {
     const theme = createTheme({
       palette: {
@@ -31,7 +33,6 @@ function Restaurant() {
     let { rid } = useParams();
     const [foodFilter, setFoodFilter] = useState("Chinese");
     const [restaurants, setRestaurants] = useState(null);
-    const PREFIX='http://localhost:5000';
     
   const [state, setState] = useState({
     isPaneOpen: false,
@@ -54,12 +55,12 @@ function Restaurant() {
     };
     
     useEffect(() => {
-        const url = PREFIX+'/restaurant/approved';
+        const URL = PREFIX + '/restaurant/approved';
 
         const fetchData = async () => {
           try {
             const response = await fetch(
-                url, {
+                URL, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer '+sessionStorage.token

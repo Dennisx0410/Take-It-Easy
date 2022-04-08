@@ -12,9 +12,10 @@ import Box from '@mui/material/Box';
 import {Buffer} from 'buffer';
 
 const NOIMG = "";
+const PREFIX='http://localhost:5000';
 
 function ResetPassword(props){    
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     var targetUsername = null, newPassword = null;
     const [CPstatus, setCPstatus] = useState({});
     const [mask, setMask] = useState(false);
@@ -29,19 +30,19 @@ function ResetPassword(props){
         if (username == "" || newpwd == "" || REnewpwd == ""){
             setCPstatus({name: "EmptyPw", message: "Please fill in all the fields."});
         }
-        else if(newpwd != REnewpwd){
-            setCPstatus({name: "NewPwMismatched", message:"The new password you typed does not match the re-entered new password. Please try again."});
+        else if (newpwd != REnewpwd) {
+            setCPstatus({name: "NewPwMismatched", message: "The new password you typed does not match the re-entered new password. Please try again."});
         }
-        else{
+        else {
             targetUsername = username;
             newPassword = newpwd;
             console.log(targetUsername);
             console.log(newPassword);
-            const url_d = PREFIX+`/admin/${props.usertype}/resetPw`;
+            const URL = PREFIX + `/admin/${props.usertype}/resetPw`;
             const attempt = async () => {
                 try {
                     const response = await fetch(
-                        url_d, {
+                        URL, {
                             method: 'POST',
                             headers: {
                                 'Authorization': 'Bearer '+ props.token,
@@ -58,8 +59,8 @@ function ResetPassword(props){
                     setCPstatus(attempt_result);
                     console.log(attempt_result);
 
-                } catch (error) {
-                    console.log("error", error);
+                } catch (err) {
+                    console.log("error", err);
                 }
             };
             attempt();
@@ -160,13 +161,13 @@ function OrderHistory(props) {
     const [orderHistory, setOrderHistory] = useState([]);
     const [reload, setReload] = useState(true);
     // window.location.reload();
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     useEffect(() => {
-        const url_d = PREFIX+'/admin/order/all';
+        const URL = PREFIX+'/admin/order/all';
         const fetchOrder= async () => {
           try {
             const response = await fetch(
-                url_d, {
+                URL, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer '+ props.token
@@ -294,16 +295,16 @@ function CustomerCard(props){
 
 
 function CustomerList(props){
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     const [reload, setReload] = useState(true);
     const [CustomerList, setCustomerList] = useState([]);
     useEffect(() => {
-            const url = PREFIX+'/admin/customer/all';
+            const URL = PREFIX + '/admin/customer/all';
             console.log("CA");
             async function fetchData () {
                 try {
                     const response = await fetch(
-                        url, {
+                        URL, {
                         method: 'GET',
                         headers: {
                             'Authorization': 'Bearer '+ props.token
@@ -339,17 +340,17 @@ function CustomerList(props){
 //
 //Restaurant
 function RestaurantCard(props){
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     const [update,setUpdate] = useState(true);
     function handleClick(action,username){
         setUpdate(false);
-        if (action == "Approve"){
-            const url = PREFIX+'/admin/restaurant/approve';
+        if (action == "Approve") {
+            const URL = PREFIX + '/admin/restaurant/approve';
             console.log("CA");
             async function approve() {
                 try {
                     const response = await fetch(
-                        url, {
+                        URL, {
                             method: 'POST',
                             headers: {
                                 'Authorization': 'Bearer '+ props.token,
@@ -373,12 +374,12 @@ function RestaurantCard(props){
         else if (action == "Reject"){
             console.log(username);
 
-            const url = PREFIX+'/admin/restaurant/reject';
+            const URL = PREFIX+'/admin/restaurant/reject';
             console.log("CA");
             async function reject() {
                 try {
                     const response = await fetch(
-                        url, {
+                        URL, {
                             method: 'POST',
                             headers: {
                                 'Authorization': 'Bearer '+props.token,
@@ -503,16 +504,16 @@ function RestaurantCard(props){
     );
 }
 function RestaurantList(props){
-    const PREFIX='http://localhost:5000';
+    // const PREFIX='http://localhost:5000';
     const [reload, setReload] = useState(true);
     const [RestaurantList, setRestaurantList] = useState([]);
     useEffect(() => {
-            const url = PREFIX+'/admin/restaurant/all';
+            const URL = PREFIX + '/admin/restaurant/all';
             console.log("CA");
             async function fetchData () {
                 try {
                     const response = await fetch(
-                        url, {
+                        URL, {
                         method: 'GET',
                         headers: {
                             'Authorization': 'Bearer '+ props.token
