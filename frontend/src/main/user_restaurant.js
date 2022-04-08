@@ -279,8 +279,6 @@ function Order(props) {
     
     function handleClick(orderID){
         let s_orderID = orderID.toString();
-        // console.log(orderID);
-        // console.log(s_orderID);
         const URL = PREFIX +'/order/done';
         console.log("OA");
         async function done() {
