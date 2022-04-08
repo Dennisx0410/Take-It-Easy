@@ -45,26 +45,27 @@ module.exports = {
         }
     },
 
-    targetedNoti: async (req,res) =>{
+    targetedNoti: async (req, res) => {
         try {
             let noti = {};
             let targettype = "";
-            noti.reciever = req.body.targetUser
-            if (req.restaurant != undefined){
-                noti.sender = req.restaurant.username
-                targettype = "customer"
-            }else{
-                noti.sender = req.customer.username
-                targettype = "restaurant"
+            noti.reciever = req.body.targetUser;
+            if (req.restaurant != undefined) {
+                noti.sender = req.restaurant.username;
+                targettype = "customer";
+            } 
+            else {
+                noti.sender = req.customer.username;
+                targettype = "restaurant";
             }
-            noti.message = req.body.message
-            noti = await Notification.create(noti)
-            console.log("> Created new targeted noti to ",noti.reciever)
-            socketio.notifySingle(noti.reciever, targettype, noti)
-            res.status(201).send(noti)
+            noti.message = req.body.message;
+            noti = await Notification.create(noti);
+            console.log("> Created new targeted noti to",noti.reciever);
+            socketio.notifySingle(noti.reciever, targettype, noti);
+            res.status(201).send(noti);
         } catch (err) {
-            console.log(err)
-            res.status(400).send(err)
+            console.log(err);
+            res.status(400).send(err);
         }
     },
     dismissNotification: async (req,res)=>{

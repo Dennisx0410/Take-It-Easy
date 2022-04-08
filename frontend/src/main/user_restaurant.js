@@ -45,7 +45,7 @@ function ChangePassword(){
                         url_d, {
                             method: 'POST',
                             headers: {
-                                'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                                'Authorization': 'Bearer '+ sessionStorage.getItem("token"),
                                 'Content-type' : 'application/json'
                             },
                             body: JSON.stringify({
@@ -288,12 +288,13 @@ function Order(props) {
                     url, {
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer '+ sessionStorage.getItem("token")
+                            'Authorization': 'Bearer '+ sessionStorage.getItem("token"),
+                            'Content-type' : 'application/json'
                         },
                         body: 
                         JSON.stringify(
                             {
-                            'orderId' : s_orderID
+                                orderNo: s_orderID
                             }   
                         )
                     }
