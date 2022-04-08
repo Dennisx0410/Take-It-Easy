@@ -279,7 +279,7 @@ function Order(props) {
     function handleClick(orderID){
         let s_orderID = orderID.toString();
         // console.log(orderID);
-        // console.log(s_orderID);
+        console.log( sessionStorage.getItem("token"));
         const url = PREFIX+'/order/done';
         console.log("OA");
         async function done() {
