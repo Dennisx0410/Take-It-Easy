@@ -229,9 +229,8 @@ function Order(props) {
                             <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
                         </Typography>
                         <Typography gutterBottom variant="h5" component="h5">
-                            <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span>
-                            <br/>
-                            <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantID}</span>
+                            Restaurant Name: {restaurantName}<br/>
+                            <span style={{color: "#999999", fontSize:"15px"}}>(ID: {restaurantID})</span>
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             Order created at: {createDate} <br/>

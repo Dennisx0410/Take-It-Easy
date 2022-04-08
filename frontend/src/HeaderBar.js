@@ -237,7 +237,7 @@ function HeaderBar(props){
                                         props.setToken(undefined);
                                         sessionStorage.clear();
                                         navigate('/');
-                                        }} >Logout</Dropdown.Item>
+                                        }} >Logout and offline</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>

@@ -135,7 +135,9 @@ class Gallery extends React.Component {
                     <div className="row">
                         <div className="col-1"></div>
                         <div className="col-10 align-self-start">
-                            <h4>Restaurants: </h4>
+                            <h4>Restaurants: 
+                            <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
+                            </h4>
                             {   bufferFR.map(
                                 (restaurant,i) => <FileCard restaurant={restaurant} i={i} key={i} 
                                                     RErender={this.props.RErender} setRErender={this.props.setRErender}/>

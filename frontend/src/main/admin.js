@@ -123,6 +123,8 @@ function Order(props) {
     var restaurantID = props.order.restaurantID._id;
     var customerID = props.order.customerID._id;
     var orderNo = props.order.orderNo;
+    var customerName = props.order.customerID.username;
+    var restaurantName = props.order.restaurantID.username;
     return(
         <div style={{ marginTop: "10px" }}>
             <Card>
@@ -132,9 +134,9 @@ function Order(props) {
                     </Typography>
                     <Typography gutterBottom variant="h5" component="h5">
                         {/* <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span> */}
-                        <span style={{color: "#aaaaaa"}}>Customer ID: {customerID}</span>
+                        Customer: {customerName}<span style={{color: "#aaaaaa", fontSize:"15px"}}>&nbsp;(ID: {customerID})</span>
                         <br/>
-                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantID}</span>
+                        Restaurant: {restaurantName}<span style={{color: "#aaaaaa", fontSize:"15px"}}>&nbsp;(ID: {restaurantID})</span>
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         Order created at: {createDate} <br/>
@@ -191,8 +193,12 @@ function OrderHistory(props) {
                 <div className='col-10'>
                     <h2>List of orders: <span style={{cursor:"pointer"}} onClick={()=>handleReload()}><i className="material-icons">sync</i></span></h2> 
                     <hr/>
-                    {orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )}
-                </div>
+                    { orderHistory.length == 0 ? 
+                        <h3>You haven't made any orders yet.</h3>
+                        : 
+                        orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )
+                    }
+                    </div>
                 <div className='col-2'></div>
             </div>
         </>
@@ -318,7 +324,11 @@ function CustomerList(props){
     },[]);
     return (
         <> 
-            <h2><i className="material-icons">list</i>List of customers:</h2>
+            <h2>
+                <i className="material-icons">list</i>
+                List of customers:
+                <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
+            </h2>
             <div>
                 {CustomerList.map( (customer,i) => <CustomerCard customer={customer} i={i} key={i} /> )}
             </div>
@@ -523,7 +533,11 @@ function RestaurantList(props){
     },[]);
     return(
         <>
-            <h2><i className="material-icons">list</i>List of restaurants:</h2>
+            <h2>
+                <i className="material-icons">list</i>
+                List of restaurants:
+                <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
+            </h2>
             <div>
                 {RestaurantList.map( (restaurant,i) => <RestaurantCard restaurant={restaurant} i={i} key={i} setReload={setReload} token={props.token} /> )}
             </div>

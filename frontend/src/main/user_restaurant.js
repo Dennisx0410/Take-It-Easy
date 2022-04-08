@@ -2,12 +2,15 @@ import React from 'react';
 
 import { useState, useEffect } from 'react';
 import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Buffer } from 'buffer';
 import { Alert, Avatar, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
+const PREFIX='http://localhost:5000';
 function ChangePassword(){
     const PREFIX='http://localhost:5000';
     var oldPassowrd = null, newPassword = null;
@@ -268,9 +271,38 @@ function Order(props) {
     const classes = useStyles();
     var createDate = props.order.createdAt;
     var updateDate = props.order.createdAt;
-    var restaurantName = props.order.restaurantID.restaurantName;
-    var restaurantID = props.order.restaurantID._id;
+    var customerName = props.order.customerID.restaurantName;
+    var customerID = props.order.customerID._id;
+    var customerPhonenum = props.order.customerID.phoneNum;
     var orderNo = props.order.orderNo;
+    function handleClick(orderID){
+        let s_orderID = orderID.toString();
+        const url = PREFIX+'/order/done';
+        console.log("OA");
+        async function done() {
+            try {
+                const response = await fetch(
+                    url, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer '+ sessionStorage.getItem("token"),
+                        },
+                        body: JSON.stringify({
+                            'orderId' : s_orderID
+                        })
+                    }
+                );
+                const approve_result = await response.json();
+                console.log(approve_result);
+            } catch (error) {
+                console.log("error", error);
+            }
+        };
+        done();
+        console.log("OB");
+        window.location.reload();
+        console.log("setting reload");
+    }
     return(
         <>
             <Card className={classes.root} >
@@ -279,9 +311,12 @@ function Order(props) {
                         <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
                     </Typography>
                     <Typography gutterBottom variant="h5" component="h5">
-                        <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span>
+                        Customer Username: {customerName}&nbsp;<span style={{color: "#444444", fontSize:"20px"}}>(ID: {customerID})</span>
                         <br/>
-                        <span style={{color: "#aaaaaa"}}>Restaurant ID: {restaurantID}</span>
+                        <span style={{color: "#444444", fontSize:"20px"}}>
+                            <i className="material-icons">phone</i>Phone: {customerPhonenum}
+                        </span>
+                        
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         Order created at: {createDate} <br/>
@@ -292,16 +327,21 @@ function Order(props) {
                         </span>
                     </Typography>
                 </CardContent>
+                {props.order.status? 
+                        ""
+                        :
+                        <CardActions>
+                                <Button size="small" color="primary" onClick={() =>{handleClick(orderNo)}}>
+                                    Finish order
+                                </Button>
+                        </CardActions>
+                }
             </Card>
-            {/* {props.i} */}
-            {/* {props.order} */}
-            
         </>
         
     );
 }
 
-// /order/fetchByCustomer
 function OrderHistory() {
     const [orderHistory, setOrderHistory] = useState([]);
     
@@ -327,6 +367,7 @@ function OrderHistory() {
         };
         fetchOrder();
     }, []);
+    
 
     return (
         <>
@@ -346,6 +387,7 @@ function OrderHistory() {
         </>
     );
 }
+
 function UserRestaurant(props) {
     console.log(props.page);
     if (props.page == "menu"){
