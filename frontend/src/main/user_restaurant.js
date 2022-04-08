@@ -355,9 +355,9 @@ function Order(props) {
 function OrderHistory(props) {
     const [orderHistory, setOrderHistory] = useState([]);
     const [orderListDisplay, setOrderDisplay] = useState();
-    setInterval(() => {
-        window.location.reload();
-    }, REFRESH_RATE);
+    // setInterval(() => {
+    //     window.location.reload();
+    // }, REFRESH_RATE);
     // const PREFIX='http://localhost:5000';
     useEffect(() => {
         const URL = PREFIX + '/order/fetchByRestaurant';
