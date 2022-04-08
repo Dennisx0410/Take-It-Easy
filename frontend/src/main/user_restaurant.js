@@ -255,6 +255,16 @@ const useStyles = makeStyles({
     }
   });
 
+function FoodItem(props){
+    let foodItem = props.food;
+    console.log(foodItem);
+    return(
+        <>
+            <span style={{fontSize:"15px"}}>• {foodItem.name}</span><br/>
+        </>
+    );
+}
+
 function Order(props) {
     console.log("In order");
     console.log(props);
@@ -303,16 +313,20 @@ function Order(props) {
         <>
             <Card className={classes.root} >
                 <CardContent>
-                    <Typography gutterBottom variant="h4" component="h4">
+                    <Typography variant="h4" component="h4">
                         <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
                     </Typography>
+                    <Typography  variant="h5" component="h5">
+                        Customer Username: {customerName}<br/><span style={{color: "#aaaaaa", fontSize:"15px"}}>(ID: {customerID})</span>
+                        <br/>Ordered Items: 
+                    </Typography>
+                    <Typography variant="body1" component="body1">
+                        {props.order.items.map( (food,i) => <FoodItem food={food} key={i}/>)}
+                    </Typography>
                     <Typography gutterBottom variant="h5" component="h5">
-                        Customer Username: {customerName}&nbsp;<span style={{color: "#444444", fontSize:"20px"}}>(ID: {customerID})</span>
-                        <br/>
                         <span style={{color: "#444444", fontSize:"20px"}}>
-                            <i className="material-icons">phone</i>Phone: {customerPhonenum}
+                            Phone<i className="material-icons">phone</i>: {customerPhonenum}
                         </span>
-                        
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         Order created at: {createDate} <br/>
@@ -327,7 +341,7 @@ function Order(props) {
                         ""
                         :
                         <CardActions>
-                                <Button size="small" style={{backgroundColor:"#8a055e"}}  onClick={() => {handleClick(orderNo)}}>
+                                <Button size="small" style={{backgroundColor:"#8a055e", marginLeft:"5px", marginBottom:"5px"}}  onClick={() => {handleClick(orderNo)}}>
                                     <span style={{color: "white", padding:"2px"}}>Finish order</span>
                                 </Button>
                         </CardActions>

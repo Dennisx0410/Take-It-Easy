@@ -212,6 +212,16 @@ const useStyles = makeStyles({
     }
   });
 
+function FoodItem(props){
+    let foodItem = props.food;
+    console.log(foodItem);
+    return(
+        <>
+            <span style={{fontSize:"15px"}}>• {foodItem.name}</span><br/>
+        </>
+    );
+}
+
 function Order(props) {
     console.log("In order");
     // console.log(props);
@@ -225,12 +235,16 @@ function Order(props) {
             <>
                 <Card className={classes.root} >
                     <CardContent>
-                        <Typography gutterBottom variant="h4" component="h4">
+                        <Typography  variant="h4" component="h4">
                             <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
                         </Typography>
-                        <Typography gutterBottom variant="h5" component="h5">
+                        <Typography  variant="h5" component="h5">
                             Restaurant Name: {restaurantName}<br/>
                             <span style={{color: "#999999", fontSize:"15px"}}>(ID: {restaurantID})</span>
+                            <br/>Ordered Items: 
+                        </Typography>
+                        <Typography variant="body1" component="body1">
+                            {props.order.items.map( (food,i) => <FoodItem food={food} key={i}/>)}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             Order created at: {createDate} <br/>
@@ -295,7 +309,7 @@ function OrderHistory() {
                     <h2><i className="material-icons">receipt_long</i>Your order history:
                         <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
                     </h2>
-                    <h6>(refresh on every 30s)</h6>
+                    {/* <h6>(refresh on every 30s)</h6> */}
                     <hr/>
                     { orderHistory.length == 0? 
                         <h3>You haven't made any orders yet.</h3>
