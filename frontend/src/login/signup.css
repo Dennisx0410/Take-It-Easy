@@ -18,21 +18,7 @@ hr.header {
     border: 1px solid darkslategrey;
 }
 
-.preview {
-    border: 3px dashed grey;
-    padding: 10px;
-    border-radius: 10px;
-    height: 8vw;
-    background-color: whitesmoke;
-    text-align: center;
-}
-
 i {
-    margin: auto 3px;
-    vertical-align: middle;
-}
-
-label {
     margin: auto 3px;
     vertical-align: middle;
 }

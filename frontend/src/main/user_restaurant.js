@@ -416,6 +416,7 @@ function OrderHistory(props) {
                     <h2><i className="material-icons">receipt_long</i>Your order history:
                         <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
                     </h2>
+                    <h6>(Auto refresh)</h6>
                     <hr/>
                     { orderListDisplay}
                 </div>

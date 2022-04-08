@@ -363,6 +363,7 @@ function CustomerList(props){
                 <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
             </h2>
             <h6>(refresh on every 30s)</h6>
+            <h6>Number of customers: {CustomerList.length}</h6>
             <div>
                 {CustomerList.map( (customer,i) => <CustomerCard customer={customer} i={i} key={i} /> )}
             </div>
@@ -584,6 +585,7 @@ function RestaurantList(props){
                 <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
             </h2>
             <h6>(refresh on every 30s)</h6>
+            <h6>Number of restaurants: {RestaurantList.length}</h6>
             <div>
                 {RestaurantList.map( (restaurant,i) => <RestaurantCard restaurant={restaurant} i={i} key={i} setReload={setReload} token={props.token} /> )}
             </div>

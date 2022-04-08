@@ -7,6 +7,12 @@
   background-color: rgb(250, 240, 229);
   width: 100%;
   height: 100%;
+  color: black;
+}
+
+label {
+    margin: auto 3px;
+    vertical-align: middle;
 }
 
 #bgd {
@@ -23,7 +29,7 @@
 }
 
 .page-styling{
-    background-color: #faf0e5;
+  background-color: #faf0e5;
 }
 
 h2, .content-header {
