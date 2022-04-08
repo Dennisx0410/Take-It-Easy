@@ -174,6 +174,11 @@ function OrderHistory(props) {
                 }}
             );
             const order_history = await response.json();
+            if (order_history.length >= 0){
+                order_history.sort(function (a, b) {
+                    return  b.orderNo - a.orderNo;
+                });
+            }
             setOrderHistory(order_history);
             console.log(order_history);
 
@@ -520,6 +525,11 @@ function RestaurantList(props){
                         }}
                     );
                     const restaurantDetails = await response.json();
+                    if (restaurantDetails.length >= 0){
+                        restaurantDetails.sort(function (a, b) {
+                            return (a.approved === b.approved)? 0 : a.approved? 1 : -1;
+                        });
+                    }
                     setRestaurantList(restaurantDetails);
                     setReload(false);
                     
