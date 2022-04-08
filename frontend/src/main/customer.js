@@ -256,9 +256,9 @@ function OrderHistory() {
     
     // const PREFIX='http://localhost:5000';
 
-    setInterval(() => {
-        window.location.reload();
-    }, REFRESH_RATE);
+    // setInterval(() => {
+    //     window.location.reload();
+    // }, REFRESH_RATE);
 
     useEffect(() => {
         const URL = PREFIX + '/order/fetchByCustomer';

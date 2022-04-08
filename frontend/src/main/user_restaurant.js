@@ -287,8 +287,8 @@ function Order(props) {
                         )
                     }
                 );
-                const approve_result = await response.json();
-                console.log(approve_result);
+                const done_result = await response.json();
+                console.log(done_result);
             } catch (error) {
                 console.log("error", error);
             }
