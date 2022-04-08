@@ -327,8 +327,8 @@ function Order(props) {
                         ""
                         :
                         <CardActions>
-                                <Button size="small" color="primary" onClick={() => {handleClick(orderNo)}}>
-                                    Finish order
+                                <Button size="small" style={{backgroundColor:"#8a055e"}}  onClick={() => {handleClick(orderNo)}}>
+                                    <span style={{color: "white", padding:"2px"}}>Finish order</span>
                                 </Button>
                         </CardActions>
                 }

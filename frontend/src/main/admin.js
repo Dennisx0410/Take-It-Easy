@@ -490,11 +490,11 @@ function RestaurantCard(props){
                         :
                         <CardActions>
                                 
-                                <Button size="small" color="primary" onClick={() =>{handleClick("Approve",restaurant.username)}}>
-                                    Approve
+                                <Button size="small" style={{backgroundColor:"green"}}  onClick={() =>{handleClick("Approve",restaurant.username)}}>
+                                    <span style={{color: "white", padding:"2px"}}>Approve</span>
                                 </Button>
-                                <Button size="small" color="secondary" onClick={() =>{handleClick("Reject",restaurant.username)}}>
-                                    Reject
+                                <Button size="small" style={{backgroundColor:"red"}} onClick={() =>{handleClick("Reject",restaurant.username)}}>
+                                    <span style={{color: "white", padding:"2px"}}>Reject</span>
                                 </Button> 
                         </CardActions>
                     }
