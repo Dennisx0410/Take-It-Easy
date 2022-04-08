@@ -217,7 +217,7 @@ function FoodItem(props){
     console.log(foodItem);
     return(
         <>
-            <span style={{fontSize:"15px"}}>• {foodItem.name}</span><br/>
+            <span style={{fontSize:"18px"}}>• {foodItem.name}</span><br/>
         </>
     );
 }
@@ -243,9 +243,9 @@ function Order(props) {
                             <span style={{color: "#999999", fontSize:"15px"}}>(ID: {restaurantID})</span>
                             <br/>Ordered Items: 
                         </Typography>
-                        <Typography variant="body1" component="body1">
+                        <div>
                             {props.order.items.map( (food,i) => <FoodItem food={food} key={i}/>)}
-                        </Typography>
+                        </div>
                         <Typography variant="body2" color="textSecondary" component="p">
                             Order created at: {createDate} <br/>
                             Order finished at: {props.order.status? updateDate : "Not finished" }<br/>

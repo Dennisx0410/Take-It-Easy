@@ -121,7 +121,7 @@ function FoodItem(props){
     console.log(foodItem);
     return(
         <>
-            <span style={{fontSize:"15px"}}>• {foodItem.name}</span><br/>
+            <span style={{fontSize:"18px"}}>• {foodItem.name}</span><br/>
         </>
         
     );
@@ -152,9 +152,9 @@ function Order(props) {
                         <br/>
                         Ordered Items: 
                     </Typography>
-                    <Typography gutterBottom variant="body1" component="body1">
+                    <div>
                         {props.order.items.map( (food,i) => <FoodItem food={food} key={i}/>)}
-                    </Typography>
+                    </div>
 
                     <Typography variant="body2" color="textSecondary" component="p">
                         Order created at: {createDate} <br/>
@@ -177,7 +177,9 @@ function Order(props) {
 function OrderHistory(props) {
     const [orderHistory, setOrderHistory] = useState([]);
     const [reload, setReload] = useState(true);
-    // window.location.reload();
+    setInterval(() => {
+        window.location.reload();
+    }, REFRESH_RATE);
     // const PREFIX='http://localhost:5000';
     useEffect(() => {
         const URL = PREFIX+'/admin/order/all';
@@ -215,8 +217,8 @@ function OrderHistory(props) {
             <div className='row'>
                 <div className='col-10'>
                     <h2>List of orders: <span style={{cursor:"pointer"}} onClick={()=>handleReload()}><i className="material-icons">sync</i></span>
-                        <h6>(refresh on every 30s)</h6>
                     </h2>
+                    <h6>(refresh on every 30s)</h6>
                     <hr/>
                     { orderHistory.length == 0 ? 
                         <h3>You haven't made any orders yet.</h3>
@@ -295,7 +297,7 @@ function CustomerCard(props){
                             >
                                 <div style={{position: "relative"}}>
                                     <Avatar alt="picture" src={`data:image/jpeg; base64, ${ImgUrl}`} sx={{ width: 150, height: "auto", maxWidth: "100%" }}/>
-                                    <div class='online-status' style={{backgroundColor: customer.online ? "green" : "red"}}></div>
+                                    <div className='online-status' style={{backgroundColor: customer.online ? "green" : "red"}}></div>
                                 </div>
                             </Stack>
                         </Box>
@@ -359,8 +361,8 @@ function CustomerList(props){
                 <i className="material-icons">list</i>
                 List of customers:
                 <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
-                <h6>(refresh on every 30s)</h6>
             </h2>
+            <h6>(refresh on every 30s)</h6>
             <div>
                 {CustomerList.map( (customer,i) => <CustomerCard customer={customer} i={i} key={i} /> )}
             </div>
@@ -486,7 +488,7 @@ function RestaurantCard(props){
                             >
                                 <div style={{position: "relative"}}>
                                     <Avatar alt="picture" src={`data:image/jpeg; base64, ${ImgUrl}`} sx={{ width: 150, height: "auto", maxWidth: "100%" }}/>
-                                    <div class='online-status' style={{backgroundColor: restaurant.online ? "green" : "red"}}></div>
+                                    <div className='online-status' style={{backgroundColor: restaurant.online ? "green" : "red"}}></div>
                                 </div>
                             </Stack>
                         </Box>
@@ -580,8 +582,8 @@ function RestaurantList(props){
                 <i className="material-icons">list</i>
                 List of restaurants:
                 <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
-                <h6>(refresh on every 30s)</h6>
             </h2>
+            <h6>(refresh on every 30s)</h6>
             <div>
                 {RestaurantList.map( (restaurant,i) => <RestaurantCard restaurant={restaurant} i={i} key={i} setReload={setReload} token={props.token} /> )}
             </div>

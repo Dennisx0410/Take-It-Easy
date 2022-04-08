@@ -260,7 +260,7 @@ function FoodItem(props){
     console.log(foodItem);
     return(
         <>
-            <span style={{fontSize:"15px"}}>• {foodItem.name}</span><br/>
+            <span style={{fontSize:"18px"}}>• {foodItem.name}</span><br/>
         </>
     );
 }
@@ -320,9 +320,9 @@ function Order(props) {
                         Customer Username: {customerName}<br/><span style={{color: "#aaaaaa", fontSize:"15px"}}>(ID: {customerID})</span>
                         <br/>Ordered Items: 
                     </Typography>
-                    <Typography variant="body1" component="body1">
+                    <div>
                         {props.order.items.map( (food,i) => <FoodItem food={food} key={i}/>)}
-                    </Typography>
+                    </div>
                     <Typography gutterBottom variant="h5" component="h5">
                         <span style={{color: "#444444", fontSize:"20px"}}>
                             Phone<i className="material-icons">phone</i>: {customerPhonenum}
@@ -342,7 +342,7 @@ function Order(props) {
                         :
                         <CardActions>
                                 <Button size="small" style={{backgroundColor:"#8a055e", marginLeft:"5px", marginBottom:"5px"}}  onClick={() => {handleClick(orderNo)}}>
-                                    <span style={{color: "white", padding:"2px"}}>Finish order</span>
+                                    <span style={{color: "white", padding:"2px"}}>Complete order</span>
                                 </Button>
                         </CardActions>
                 }
@@ -355,7 +355,9 @@ function Order(props) {
 function OrderHistory(props) {
     const [orderHistory, setOrderHistory] = useState([]);
     const [orderListDisplay, setOrderDisplay] = useState();
-    
+    setInterval(() => {
+        window.location.reload();
+    }, REFRESH_RATE);
     // const PREFIX='http://localhost:5000';
     useEffect(() => {
         const URL = PREFIX + '/order/fetchByRestaurant';
