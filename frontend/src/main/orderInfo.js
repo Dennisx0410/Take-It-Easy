@@ -13,7 +13,7 @@ function OrderInfo(props){
     const fetchInfo = async () =>{
         const response = await fetch(PREFIX + `/order/${id}`,{
             headers:{
-                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjRiMmJhMDU1M2QyYzAzYmYzZjI1NTAiLCJ1c2VydHlwZSI6ImN1c3RvbWVyIiwiaWF0IjoxNjQ5NDMwNDk1LCJleHAiOjE2NTIwMjI0OTV9.6JZC672mt6W6NwDxvZwBwMQ4ok1L8ezC6_q71U21r20"
+                Authorization: "Bearer "+ props.token 
             }
         })
         const data = await response.json();
@@ -50,15 +50,16 @@ function OrderInfo(props){
                     </div>
                     <div className="foodTitle">List of Food:</div>
                     <div className="foodItem">
+                        <ul>
                         {orderInfo.items.map(item=>(
-                            <div className="morePadding">
-                                <span style={{"float":"left"}}>1x</span>
+                            <li className="morePadding">
                                 <span key={item._id}>
                                 {item.name}
                                 </span>
                                 <span className="price" style={{"float":"right"}}>${item.price}</span>
-                            </div>
+                            </li>
                         ))}
+                        </ul>
                     </div>
                     <div className="total"><span style={{"float":"left"}}>Total:</span> ${total}</div>
                     <div className="timeStamp">{new Date(orderInfo.createdAt).toLocaleString()}</div>

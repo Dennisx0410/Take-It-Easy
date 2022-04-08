@@ -132,7 +132,7 @@ function App(){
                                 <Route path="/restaurant/:rid" element={<Restaurant />} />
                                 <Route path="/customer/profile" element={<Customer action={"profile"} />} />
                                 <Route path="/customer/history" element={<Customer action={"history"} />} />
-                                <Route path="/order/:id" element={<OrderInfo/>} />  
+                                <Route path="/order/:id" element={<OrderInfo token={token}/>} />  
                                 {/* <Route path="/customer/fav" element={<Main action={"fav"} />} /> */}
                                 <Route path="*" element={<NoMatch/>} />
                             </Routes>
