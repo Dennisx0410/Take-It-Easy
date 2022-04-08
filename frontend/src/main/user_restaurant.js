@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { useState, useEffect } from 'react';
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -11,6 +10,7 @@ import { Buffer } from 'buffer';
 import { Alert, Avatar, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
 const PREFIX='http://localhost:5000';
+const REFRESH_RATE = 30 * 1000; // 30 sec
 
 function ChangePassword(){
     // const PREFIX='http://localhost:5000';
@@ -340,6 +340,10 @@ function Order(props) {
 
 function OrderHistory() {
     const [orderHistory, setOrderHistory] = useState([]);
+
+    setInterval(() => {
+        window.location.reload();
+    }, REFRESH_RATE);
     
     // const PREFIX='http://localhost:5000';
     useEffect(() => {
@@ -373,6 +377,7 @@ function OrderHistory() {
                     <h2><i className="material-icons">receipt_long</i>Your order history:
                         <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
                     </h2>
+                    <h6>(refresh on every 30s)</h6>
                     <hr/>
                     { orderHistory.length == 0? 
                         <h3>You haven't received any orders yet.</h3>

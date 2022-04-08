@@ -13,6 +13,7 @@ import {Buffer} from 'buffer';
 
 const NOIMG = "";
 const PREFIX='http://localhost:5000';
+const REFRESH_RATE = 30 * 1000; // 30 sec
 
 function ResetPassword(props){    
     // const PREFIX='http://localhost:5000';
@@ -193,6 +194,7 @@ function OrderHistory(props) {
             <div className='row'>
                 <div className='col-10'>
                     <h2>List of orders: <span style={{cursor:"pointer"}} onClick={()=>handleReload()}><i className="material-icons">sync</i></span></h2> 
+                    <h6>(refresh on every 30s)</h6>
                     <hr/>
                     { orderHistory.length == 0 ? 
                         <h3>You haven't made any orders yet.</h3>
@@ -298,6 +300,11 @@ function CustomerList(props){
     // const PREFIX='http://localhost:5000';
     const [reload, setReload] = useState(true);
     const [CustomerList, setCustomerList] = useState([]);
+
+    setInterval(() => {
+        window.location.reload();
+    }, REFRESH_RATE);
+
     useEffect(() => {
             const URL = PREFIX + '/admin/customer/all';
             console.log("CA");
@@ -323,12 +330,14 @@ function CustomerList(props){
             }
             console.log("CB");
     },[]);
+
     return (
         <> 
             <h2>
                 <i className="material-icons">list</i>
                 List of customers:
                 <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
+                <h6>(refresh on every 30s)</h6>
             </h2>
             <div>
                 {CustomerList.map( (customer,i) => <CustomerCard customer={customer} i={i} key={i} /> )}
@@ -507,6 +516,11 @@ function RestaurantList(props){
     // const PREFIX='http://localhost:5000';
     const [reload, setReload] = useState(true);
     const [RestaurantList, setRestaurantList] = useState([]);
+
+    setInterval(() => {
+        window.location.reload();
+    }, REFRESH_RATE);
+
     useEffect(() => {
             const URL = PREFIX + '/admin/restaurant/all';
             console.log("CA");
@@ -532,12 +546,14 @@ function RestaurantList(props){
             }
             console.log("CB");
     },[]);
+
     return(
         <>
             <h2>
                 <i className="material-icons">list</i>
                 List of restaurants:
                 <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
+                <h6>(refresh on every 30s)</h6>
             </h2>
             <div>
                 {RestaurantList.map( (restaurant,i) => <RestaurantCard restaurant={restaurant} i={i} key={i} setReload={setReload} token={props.token} /> )}

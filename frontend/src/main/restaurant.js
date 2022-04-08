@@ -1,7 +1,6 @@
 import './restaurant.css';
 import React from 'react';
 import { useState, useEffect  } from 'react';
-import {Link} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
