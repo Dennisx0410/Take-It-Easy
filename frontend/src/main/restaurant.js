@@ -16,6 +16,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import MaterialIcon from 'material-icons-react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import { TextField } from '@mui/material';
+import Button from '@mui/material/Button';
 
 const PREFIX='http://localhost:5000';
 
@@ -25,12 +29,13 @@ function Restaurant() {
         pur: {
           main: 'rgb(138, 5, 94)',
           dark: `rgb(${138*0.7}, ${5*0.7}, ${94*0.7})`,
+          contrastText: `rgb(${255}, ${255}, ${255})`,
         },
       },
     });
-    
+    const STYLES=["All", "Japanese", "Thai", "Chinese", "Italian", "Indian", "Mexican", "Halal","Vegetarian", "Dessert", "Beverages"];
     let { rid } = useParams();
-    const [foodFilter, setFoodFilter] = useState("Chinese");
+    const [foodFilter, setFoodFilter] = useState(STYLES[0]);
     const [restaurants, setRestaurants] = useState(null);
     
   const [state, setState] = useState({
@@ -39,6 +44,8 @@ function Restaurant() {
   
   const [pic,setPic] = useState(null);
   const [loading,setLoading]=useState(true);
+  const [qtys,setQtys]=useState([]);
+  const BA="base64";
     
     document.body.style.backgroundColor = "rgb(250, 240, 229)"
     document.body.style.color = "rgb(138, 5, 94)"
@@ -71,6 +78,11 @@ function Restaurant() {
             let img = Buffer.from(target_restaurant.profilePic.data).toString('base64');
             setPic(img);
             setRestaurants(target_restaurant);
+            for(let i=0;i<target_restaurant.menu.length;i++){
+                let j=qtys;
+                j.push(0);
+                setQtys(j);
+            }
             setLoading(false);
           } catch (error) {
             console.log("error", error);
@@ -93,13 +105,37 @@ function Restaurant() {
             className="slide-pane"
             isOpen={state.isPaneOpen}
             onRequestClose={() => {
-              // triggered on "<" on left top click or on outside click
               setState({ isPaneOpen: false });
             }}
             hideHeader
-            width={window.innerWidth < 600 ? "100%" : "650px"}
-          ><Box sx={{mt:"7%"}}>
-            abc
+            width={window.innerWidth < 600 ? "100%" : "32%"}
+          ><Box sx={{mt:"15%"}}>
+            <h2>Cart:</h2>
+            {restaurants.menu.map((x,y)=>qtys[y]>0? <Typography variant="body" display="block">
+                    {qtys[y]}× {x.name} &#8212; HK${x.price*qtys[y]}
+                </Typography>:<></>)}
+            {(()=>{
+                let tot=0;
+                for(let i=0;i<restaurants.menu.length;i++){
+                    tot+=restaurants.menu[i].price*qtys[i];
+                }
+                
+                return <Box sx={{mt:"40%"}}><h2>Total: HK${tot}</h2></Box>;
+            })()}
+            <ThemeProvider theme={theme}>
+            <Box sx={{mt:"5%"}}><Button onClick={
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                ()=>{}
+            } variant="contained" color="pur">Place Order!</Button></Box>
+            </ThemeProvider >
           </Box></SlidingPane>
           
           <Box sx={{width:"100vw",height:"40vh",
@@ -130,30 +166,74 @@ function Restaurant() {
                   </Fab>
                   </ThemeProvider>
                   
-                  
-                <Box sx={{ display: 'flex',mb:"1%" }}>
-                    {["Chinese","CUHK","Thai","HKU","Western"].map(x=>
-                        <Card sx={{ display: 'flex', width: 1/6, mr:"1%"  }}>
-                          <CardActionArea sx={{ display: 'flex'}} onClick={()=>{setFoodFilter(x)}}>
+                {STYLES.map((x,y)=><>{y%5==0?<Box sx={{ display: 'flex',mb:"1%" }}>
+                    {[0,1,2,3,4].map(z=>
+                        <>
+                        {y+z<STYLES.length?<Card sx={{ display: 'flex', width: 1/6, mr:"1%"  }}>
+                          <CardActionArea sx={{ display: 'flex'}} onClick={()=>{setFoodFilter(STYLES[y+z])}}>
                             <CardMedia
                               component="img"
                               height="100%"
                               image="/def.jpg"
-                              alt={x}
+                              alt={STYLES[y+z]}
                               sx={{ display: 'flex', width:1/2 }}
                             />
                             <CardContent sx={{display:'flex',width:1/2}}>
                               <Typography gutterBottom variant="body" component="div">
-                                {x+" Food"}
+                                {STYLES[y+z]}
                               </Typography>
                             </CardContent>
                           </CardActionArea>
-                        </Card>
-                    )}
-                </Box>
-                <div>{"rid: "+rid}</div>
-                <div>{"foodFilter: "+foodFilter}</div>
+                        </Card>:<></>}
+                    </>)}
+                </Box>:<></>}</>)}
                 {/*<div>{"/restaurant/getAll: "+( restaurants ? restaurants : "restaurant "+rid+" not found" )}</div>*/}
+                
+                
+                <h2>Menu:</h2>
+                <Box sx={{mb: "10%"}}>
+                    {restaurants.menu.map((x,y)=>foodFilter=="All"||x.style==foodFilter?<Box sx={{mt:"1%"}}>
+                        <Card sx={{ display: 'flex', width:"70%", height:"20vh"}}>
+                            <CardContent
+                                sx={{width:3/10, p:"0 0 0 0" }}
+                            >
+                                <img
+                                    style={{ height:"100%",width:"100%",objectFit: "contain" }}
+                                    src={`data:image/jpg; base64, ${Buffer.from(x.picture.data).toString(BA)}`}
+                                />
+                            </CardContent>
+                            <CardContent
+                                sx={{width:5.5/10 }}
+                            >
+                                <Typography variant="h6" component="div">
+                                    {x.name}
+                                </Typography>
+                                <Typography variant="body" component="div">
+                                    {x.style}
+                                </Typography>
+                            </CardContent>
+                            <CardContent sx={{width:1.5/10}}>
+                                <Typography variant="h6" component="div">
+                                    HK${x.price}
+                                </Typography>
+                                <TextField
+                                    type="number"
+                                    label="Qty"
+                                    inputProps={{ 
+                                        min: 0
+                                    , style: { textAlign: 'right' }}}
+                                    sx={{mt:"2vh"}}
+                                    onChange={e=>{
+                                        let t=qtys;
+                                        qtys[y]=Number(e.target.value);
+                                        setQtys(t);
+                                        console.log(qtys);
+                                    }}
+                                />
+                            </CardContent>
+                        </Card>
+                    </Box>:<></>)}
+                </Box>
             </Box>
         </>
     );
