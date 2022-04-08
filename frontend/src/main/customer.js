@@ -125,8 +125,8 @@ function AccountInfo() {
             const customer_info = await response.json();
             setCustomerInfo(customer_info);
 
-          } catch (error) {
-            console.log("error", error);
+          } catch (err) {
+            console.log("error", err);
           }
         };
         fetchData();
@@ -135,16 +135,13 @@ function AccountInfo() {
     //load profile pic
     const [ImgUrl, setImgUrl] = useState();
     const [skip , setSkip] = useState(false);
-    if (customerInfo.profilePic != undefined){
-        if (!skip){
+    if (customerInfo.profilePic != undefined) {
+        if (!skip) {
             let profilePic = customerInfo.profilePic;
-            // console.log(profilePic);
             let img = Buffer.from(profilePic.data).toString('base64');
             setSkip(true);
             setImgUrl(img);
-                
         }
-                
     }
 
     const rows = [
@@ -155,7 +152,7 @@ function AccountInfo() {
         {name: 'Points', data: customerInfo.points ? customerInfo.points : 0},
     ];
 
-    return(
+    return (
         <>
             <div className='row'>
                 <div className='col-1'></div>

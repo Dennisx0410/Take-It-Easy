@@ -159,8 +159,8 @@ function AccountInfo(){
             setRestaurantInfo(restaurant_info);
             console.log(restaurant_info);
 
-          } catch (error) {
-            console.log("error", error);
+          } catch (err) {
+            console.log("error", err);
           }
         };
         fetchData();
@@ -169,16 +169,13 @@ function AccountInfo(){
     //load profile pic
     const [ImgUrl, setImgUrl] = useState();
     const [skip , setSkip] = useState(false);
-    if (restaurantInfo.profilePic != undefined){
-        if (!skip){
+    if (restaurantInfo.profilePic != undefined) {
+        if (!skip) {
             let profilePic = restaurantInfo.profilePic;
-            console.log(profilePic);
             let img = Buffer.from(profilePic.data).toString('base64');
             setSkip(true);
             setImgUrl(img);
-                
         }
-                
     }
 
     const rows = [
@@ -191,15 +188,12 @@ function AccountInfo(){
         {name: 'Address', data: restaurantInfo.address}
     ];
 
-    return(
+    return (
         <>
-            <div className="ProfileHeader">
-                <h2 style={{ padding: "1vh 3vw 0 3vw", color: "#ba1851" }}>Welcome!</h2>
-            </div>
             <div className='row'>
                 <div className='col-1'></div>
                 <div className='col-10'>
-                    <h3>Glad to meet you, {restaurantInfo.username}!</h3>
+                    <h2>Glad to meet you, {restaurantInfo.username}!</h2>
                     <h4><i className="material-icons">badge</i>Your information:</h4>
                     <div className='row'>
                         {/* profilePic */}
@@ -234,11 +228,6 @@ function AccountInfo(){
                             </TableContainer>
                         </div>
                     </div>
-                    {/* User ID: <span style={{color: "black"}}>{restaurantInfo.userID}</span><br/>
-                    Username: <span style={{color: "black"}}>{restaurantInfo.username}</span><br/>
-                    Phone Number: <span style={{color: "black"}}>{restaurantInfo.phoneNum}</span><br/>
-                    E-mail: <span style={{color: "black"}}>{restaurantInfo.email}</span><br/>
-                    Points: <span style={{color: "black"}}>{restaurantInfo.points? restaurantInfo.points:0}</span><br/> */}
                     <hr/>
                     <ChangePassword/>
                 </div>
