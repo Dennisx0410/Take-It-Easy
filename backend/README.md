@@ -464,6 +464,7 @@ POST /order/add
 ```
 #### Header
 - `Authorization: Bearer <token>`
+- `Content-type: application/json`
 #### Body
 - restaurantID : String
 - items : Array of String
@@ -477,7 +478,13 @@ POST /order/done
 ```
 #### Header
 - `Authorization: Bearer <token>`
+- `Content-type: application/json`
 #### Body
-- orderId : String
+- orderNo : String
 #### Return
-`Order Status Updated`
+<!-- `Order Status Updated` -->
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `OrderAlreadyFinished`
+- ??? (when success)
