@@ -108,6 +108,25 @@ function ResetPassword(props){
     
 }
 
+// function ResetCustomerPassword(props) {
+//     return ResetPassword('customer');
+// }
+
+// function ResetRestaurantPassword(props) {
+//     return ResetPassword('restaurant');
+// }
+
+function FoodItem(props){
+    let foodItem = props.food;
+    console.log(foodItem);
+    return(
+        <>
+            <span style={{fontSize:"15px"}}>• {foodItem.name}</span><br/>
+        </>
+        
+    );
+}
+
 function Order(props) {
     console.log(props);
     var createDate = props.order.createdAt;
@@ -122,15 +141,21 @@ function Order(props) {
         <div style={{ marginTop: "10px" }}>
             <Card>
                 <CardContent>
-                    <Typography gutterBottom variant="h4" component="h4">
+                    <Typography  variant="h4" component="h4">
                         <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
                     </Typography>
-                    <Typography gutterBottom variant="h5" component="h5">
+                    <Typography variant="h5" component="h5">
                         {/* <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span> */}
                         Customer: {customerName}<span style={{color: "#aaaaaa", fontSize:"15px"}}>&nbsp;(ID: {customerID})</span>
                         <br/>
                         Restaurant: {restaurantName}<span style={{color: "#aaaaaa", fontSize:"15px"}}>&nbsp;(ID: {restaurantID})</span>
+                        <br/>
+                        Ordered Items: 
                     </Typography>
+                    <Typography gutterBottom variant="body1" component="body1">
+                        {props.order.items.map( (food,i) => <FoodItem food={food} key={i}/>)}
+                    </Typography>
+
                     <Typography variant="body2" color="textSecondary" component="p">
                         Order created at: {createDate} <br/>
                         Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
