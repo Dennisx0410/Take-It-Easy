@@ -307,7 +307,7 @@ function Order(props) {
         };
         done();
         console.log("OB");
-        // window.location.reload();
+        window.location.reload();
         console.log("setting reload");
     }
 
