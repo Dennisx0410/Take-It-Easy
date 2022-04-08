@@ -370,7 +370,9 @@ function OrderHistory() {
             <div className='row'>
                 <div className='col-1'></div>
                 <div className='col-10'>
-                    <h2><i className="material-icons">receipt_long</i>Your order history:</h2>
+                    <h2><i className="material-icons">receipt_long</i>Your order history:
+                        <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
+                    </h2>
                     <hr/>
                     { orderHistory.length == 0? 
                         <h3>You haven't received any orders yet.</h3>
