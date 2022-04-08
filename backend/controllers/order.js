@@ -96,7 +96,7 @@ module.exports = {
           noti.reciever = orders.customerID.username;
           noti.sender = req.restaurant.username;
           targettype = "customer";
-          noti.message = `Your order placed at ${req.restaurant.restaurantName} is ready for pick up!`;
+          noti.message = `Your order #${orders.orderNo} placed at ${req.restaurant.restaurantName} is ready for pick up!`;
           let notiDoc = await Notification.create(noti);
           console.log("> Created new targeted noti to",noti.reciever);
           socketio.notifySingle(noti.reciever, targettype, notiDoc);
