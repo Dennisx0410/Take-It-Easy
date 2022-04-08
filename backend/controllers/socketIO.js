@@ -114,5 +114,14 @@ module.exports = {
                 io.to(onlineRestaurant[index].socketId).emit('notification', doc)
             }
         }
+    },
+
+    sendOrder: (username, doc) =>{
+        let index = -1
+        index = findSocketIdWithRestaurantUsername(username)
+        if (index != -1){
+            console.log(`Sent order to Restaurant ${username} with socket ID ${onlineRestaurant[index].socketId}`)
+            io.to(onlineRestaurant[index].socketId).emit('recieveOrder', doc)
+        }
     }
 }

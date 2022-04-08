@@ -108,9 +108,9 @@ function App(){
                             {/* Header Bar */}
                             <HeaderBar usertype={usertype} setToken={setToken} setUserInfo={setUserInfo} socket={socket} token={token}/>
                             <Routes> 
-                                <Route path="/" element={<UserRestaurant page="menu" />} />
-                                <Route path="/r/profile" element={<UserRestaurant page="profile" />} />
-                                <Route path="/r/history" element={<UserRestaurant page="history" />} />
+                                <Route path="/" element={<UserRestaurant page="menu" socket={socket}/>} />
+                                <Route path="/r/profile" element={<UserRestaurant page="profile" socket={socket}/>} />
+                                <Route path="/r/history" element={<UserRestaurant page="history" socket={socket}/>} />
                                 <Route path="*" element={<NoMatch/>} />
                             </Routes>
                         </BrowserRouter>
