@@ -217,7 +217,7 @@ function Order(props) {
     // console.log(props);
     const classes = useStyles();
     var createDate = props.order.createdAt;
-    var updateDate = props.order.createdAt;
+    var updateDate = props.order.updatedAt;
     var restaurantName = props.order.restaurantID.restaurantName;
     var restaurantID = props.order.restaurantID._id;
     var orderNo = props.order.orderNo;

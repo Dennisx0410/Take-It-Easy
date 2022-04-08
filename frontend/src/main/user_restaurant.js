@@ -267,16 +267,19 @@ const useStyles = makeStyles({
 
 function Order(props) {
     console.log("In order");
-    // console.log(props);
+    console.log(props);
     const classes = useStyles();
     var createDate = props.order.createdAt;
-    var updateDate = props.order.createdAt;
-    var customerName = props.order.customerID.restaurantName;
+    var updateDate = props.order.updatedAt;
+    var customerName = props.order.customerID.username;
     var customerID = props.order.customerID._id;
     var customerPhonenum = props.order.customerID.phoneNum;
     var orderNo = props.order.orderNo;
+    
     function handleClick(orderID){
         let s_orderID = orderID.toString();
+        // console.log(orderID);
+        // console.log(s_orderID);
         const url = PREFIX+'/order/done';
         console.log("OA");
         async function done() {
@@ -285,11 +288,14 @@ function Order(props) {
                     url, {
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer '+ sessionStorage.getItem("token"),
+                            'Authorization': 'Bearer '+ sessionStorage.getItem("token")
                         },
-                        body: JSON.stringify({
+                        body: 
+                        JSON.stringify(
+                            {
                             'orderId' : s_orderID
-                        })
+                            }   
+                        )
                     }
                 );
                 const approve_result = await response.json();
@@ -300,9 +306,10 @@ function Order(props) {
         };
         done();
         console.log("OB");
-        window.location.reload();
+        // window.location.reload();
         console.log("setting reload");
     }
+
     return(
         <>
             <Card className={classes.root} >
@@ -323,7 +330,7 @@ function Order(props) {
                         Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
                         Status: 
                         <span style={props.order.status? {color: "green"} : {color: "red"}}>
-                            {props.order.status? "Completed":"Not completed" }<br/>
+                            {props.order.status? "Completed":"Not completed" }
                         </span>
                     </Typography>
                 </CardContent>
@@ -331,7 +338,7 @@ function Order(props) {
                         ""
                         :
                         <CardActions>
-                                <Button size="small" color="primary" onClick={() =>{handleClick(orderNo)}}>
+                                <Button size="small" color="primary" onClick={() => {handleClick(orderNo)}}>
                                     Finish order
                                 </Button>
                         </CardActions>
