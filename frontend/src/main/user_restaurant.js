@@ -358,6 +358,11 @@ function OrderHistory() {
                 }}
             );
             const order_history = await response.json();
+            if (order_history.length >= 0){
+                order_history.sort(function (a, b) {
+                    return  b.orderNo - a.orderNo;
+                });
+            }
             setOrderHistory(order_history);
             console.log(order_history);
 
