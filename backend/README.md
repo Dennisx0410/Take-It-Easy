@@ -455,7 +455,7 @@ GET /order/fetchByCustomer
 #### Body
 - N/A
 #### Return
--`List of orders, for which items is aggregate with food item to provide more detail`
+-`List of orders, for which items is populate with food item to provide more detail`
 
 ## Create new order
 #### URL
@@ -466,8 +466,8 @@ POST /order/add
 - `Authorization: Bearer <token>`
 - `Content-type: application/json`
 #### Body
-- restaurantID : String
-- items : Array of String
+- restaurantID : Restaurant ObjectId
+- items : Array of food Item ObjectId
 #### Return
 -`The order document`
 
@@ -482,9 +482,8 @@ POST /order/done
 #### Body
 - orderNo : String
 #### Return
-<!-- `Order Status Updated` -->
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
 - `OrderAlreadyFinished`
-- ??? (when success)
+- `Order (Order_id) status have been updated`
