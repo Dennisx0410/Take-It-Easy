@@ -352,12 +352,9 @@ function Order(props) {
     );
 }
 
-function OrderHistory() {
+function OrderHistory(props) {
     const [orderHistory, setOrderHistory] = useState([]);
-
-    setInterval(() => {
-        window.location.reload();
-    }, REFRESH_RATE);
+    const [orderListDisplay, setOrderDisplay] = useState();
     
     // const PREFIX='http://localhost:5000';
     useEffect(() => {
@@ -387,6 +384,27 @@ function OrderHistory() {
         fetchOrder();
     }, []);
     
+    useEffect(()=>{
+        let list = (orderHistory.length == 0? 
+        <h3>You haven't received any orders yet.</h3>
+        : 
+        orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> ))
+        setOrderDisplay(list)
+    },[orderHistory])
+
+    useEffect(()=>{
+        //Listen to order update
+        props.socket?.on('recieveOrder', doc =>{
+            setOrderHistory(prev=>[doc, ...prev])
+            //setSnackOpen(true)
+            //setSnackMsg(doc.message)
+        })
+
+        return() =>{
+            //Off listener when dismount component
+            props.socket?.off('recieveOrder')
+        }
+    },[props.socket])
 
     return (
         <>
@@ -398,11 +416,7 @@ function OrderHistory() {
                     </h2>
                     <h6>(refresh on every 30s)</h6>
                     <hr/>
-                    { orderHistory.length == 0? 
-                        <h3>You haven't received any orders yet.</h3>
-                        : 
-                        orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )
-                    }
+                    { orderListDisplay}
                 </div>
                 <div className='col-1'></div>
             </div>
@@ -423,7 +437,7 @@ function UserRestaurant(props) {
     else if (props.page ==  "history"){
         return(
             <div style={{backgroundColor: "#faf0e5", height:"100%"}}>
-                <OrderHistory/>
+                <OrderHistory socket={props.socket}/>
             </div>
         );
     }

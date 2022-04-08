@@ -6,6 +6,8 @@ const foodItem = require("../models/food_item.js")
 const restCtrler = require("../controllers/restaurant");
 const { default: mongoose } = require("mongoose")
 const { getRestaurantById } = require("./restaurant")
+const socketio = require('./socketIO')
+const Notification = require("../models/notification")
 
 module.exports = {
     getOrderByRestaurant : async (req, res) => {
@@ -57,8 +59,8 @@ module.exports = {
         }
         orderDoc.items = req.body.items
         orderDoc = await Order.create(req.body)
-        console.log("Created order Document as follow")
-        console.log(orderDoc)
+        orderDoc = await Order.findById(orderDoc._id).populate("customerID").populate("restaurantID").populate("items")
+        socketio.sendOrder(restaurant.username, orderDoc)
         res.status(201).send(orderDoc)
       }
       catch (err) {
@@ -71,7 +73,6 @@ module.exports = {
       // TODO: complete an order
       console.log('> finish order');
         try {
-          console.log('restaurant:', req.restaurant);
           //The Request sender is not a restaurant
           // this part can be ignored because it is catched by verifyToken
           // if (req.restaurant == undefined) {
@@ -88,12 +89,20 @@ module.exports = {
           await doc.save();
 
           //TODO: Add function to SOCKET.IO to alert user
-          const orders = await Order.findOne({orderNo: req.body.orderNo}).populate('customerID')
-          req.body.targetUser = orders.customerID.username;
-          req.body.message = `Your order placed at ${req.restaurant.restaurantName} is ready for pick up!`;
+          const orders = await Order.findOne({orderNo: req.body.orderNo}).populate('customerID').populate('restaurantID').populate('items')
+
+          let noti = {};
+          let targettype = "";
+          noti.reciever = orders.customerID.username;
+          noti.sender = req.restaurant.username;
+          targettype = "customer";
+          noti.message = `Your order placed at ${req.restaurant.restaurantName} is ready for pick up!`;
+          let notiDoc = await Notification.create(noti);
+          console.log("> Created new targeted noti to",noti.reciever);
+          socketio.notifySingle(noti.reciever, targettype, notiDoc);
 
           // continue to notify target customer
-          next();
+          res.status(200).send({message:`Order ${doc._id} status have been updated`})
         } catch (err) {
             console.log(err)
             res.send(err)
