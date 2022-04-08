@@ -43,6 +43,16 @@ module.exports = {
       }
     },
 
+    getOrderByIDParams: async (req, res) =>{
+      try {
+        const order = await Order.findOne({_id: req.params.id}).populate('items').populate('restaurantID').populate('customerID')
+        res.send(order)
+      } catch (err) {
+        console.log(err)
+        res.send(err)
+      }
+    },
+
     addOrder : async (req, res) => {
       // TODO : Add order to database
       try {

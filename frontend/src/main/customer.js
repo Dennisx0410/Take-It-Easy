@@ -231,12 +231,13 @@ function Order(props) {
     var restaurantName = props.order.restaurantID.restaurantName;
     var restaurantID = props.order.restaurantID._id;
     var orderNo = props.order.orderNo;
+    var hyperLink = `http://localhost:3000/order/${props.order._id}`
         return(
             <>
                 <Card className={classes.root} >
                     <CardContent>
                         <Typography  variant="h4" component="h4">
-                            <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
+                            <a href={hyperLink}><span style={{color: "#8a055e"}}>Order #{orderNo}</span></a>
                         </Typography>
                         <Typography  variant="h5" component="h5">
                             Restaurant Name: {restaurantName}<br/>

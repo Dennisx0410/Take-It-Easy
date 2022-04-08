@@ -11,6 +11,7 @@ import HeaderBar from './HeaderBar';
 import Customer from './main/customer';
 import UserRestaurant from './main/user_restaurant';
 import Admin from './main/admin';
+import OrderInfo from './main/orderInfo'
 import { io } from "socket.io-client"
 
 function NoMatch() {
@@ -131,6 +132,7 @@ function App(){
                                 <Route path="/restaurant/:rid" element={<Restaurant />} />
                                 <Route path="/customer/profile" element={<Customer action={"profile"} />} />
                                 <Route path="/customer/history" element={<Customer action={"history"} />} />
+                                <Route path="/order/:id" element={<OrderInfo/>} />  
                                 {/* <Route path="/customer/fav" element={<Main action={"fav"} />} /> */}
                                 <Route path="*" element={<NoMatch/>} />
                             </Routes>
