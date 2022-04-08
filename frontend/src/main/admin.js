@@ -1,7 +1,7 @@
 import './admin.css';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Alert, Avatar, Badge, Grid, Stack } from '@mui/material';
+import { Alert, Avatar, Grid, Stack } from '@mui/material';
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -16,7 +16,6 @@ const PREFIX='http://localhost:5000';
 const REFRESH_RATE = 30 * 1000; // 30 sec
 
 function ResetPassword(props){    
-    // const PREFIX='http://localhost:5000';
     var targetUsername = null, newPassword = null;
     const [CPstatus, setCPstatus] = useState({});
     const [mask, setMask] = useState(false);
@@ -109,14 +108,6 @@ function ResetPassword(props){
     
 }
 
-// function ResetCustomerPassword(props) {
-//     return ResetPassword('customer');
-// }
-
-// function ResetRestaurantPassword(props) {
-//     return ResetPassword('restaurant');
-// }
-
 function Order(props) {
     console.log(props);
     var createDate = props.order.createdAt;
@@ -198,8 +189,9 @@ function OrderHistory(props) {
         <>
             <div className='row'>
                 <div className='col-10'>
-                    <h2>List of orders: <span style={{cursor:"pointer"}} onClick={()=>handleReload()}><i className="material-icons">sync</i></span></h2> 
-                    <h6>(refresh on every 30s)</h6>
+                    <h2>List of orders: <span style={{cursor:"pointer"}} onClick={()=>handleReload()}><i className="material-icons">sync</i></span>
+                        <h6>(refresh on every 30s)</h6>
+                    </h2>
                     <hr/>
                     { orderHistory.length == 0 ? 
                         <h3>You haven't made any orders yet.</h3>
