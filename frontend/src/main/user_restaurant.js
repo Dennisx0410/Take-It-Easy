@@ -1,13 +1,46 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import { Buffer } from 'buffer';
+import {Link} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
+import {Buffer} from 'buffer';
 import { Alert, Avatar, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
+import Box from '@mui/material/Box';
+import Fab from '@mui/material/Fab';
+import SlidingPane from "react-sliding-pane";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import MaterialIcon from 'material-icons-react';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import { TextField } from '@mui/material';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
+import { makeStyles } from "@material-ui/core/styles";
+import CardActions from "@material-ui/core/CardActions";
 
 const PREFIX='http://localhost:5000';
 const REFRESH_RATE = 30 * 1000; // 30 sec
@@ -241,19 +274,255 @@ function AccountInfo(){
 }
 
 function ChangeMenu(){
+    
+
+    // preview after choosing profile picture
+      const [fff, setFFF] = React.useState(null);
+    const showPreview = async e => {
+        e.preventDefault();
+
+        let files = e.target.files;
+        
+        console.log(files[0],typeof(files[0]));
+        setFFF(files[0]);
+        
+
+        if (files.length === 0) { // no file 
+            setImgUrl('');
+        }
+        else if (files[0].type !== 'image/jpeg' && files[0].type !== 'image/png') {
+            setImgUrl('');
+            setSignupStatus("FileExtensionError");
+        }
+        else { // have file
+            let objURL = URL.createObjectURL(e.target.files[0]);
+            setImgUrl(objURL);
+            setSignupStatus('');
+        }
+    }
+    
+    
+    const [restaurantInfo, setRestaurantInfo] = useState({});
+    const [imgUrl, setImgUrl] = useState('');
+    const [signupStatus, setSignupStatus] = useState('');
+    
+    const PREFIX='http://localhost:5000';
+    
+      const handleClickOpen = () => {
+        setOpen(true);
+      };const [loading,setLoading]=useState(true);
+    useEffect(() => {
+        const URL = PREFIX+'/restaurant/data';
+        const fetchData = async () => {
+          try {
+            const response = await fetch(
+                URL, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                }}
+            );
+            const restaurant_info = await response.json();
+            setRestaurantInfo(restaurant_info);
+            console.log(restaurant_info);
+setLoading(false);
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+        fetchData();
+    }, []);
+    
+    document.body.style.backgroundColor = "rgb(250, 240, 229)"
+    document.body.style.color = "rgb(138, 5, 94)"
+
+      const [open, setOpen] = React.useState(false);
+      const [name, setName] = React.useState("");
+      const [style, setStyle] = React.useState("");
+      const [price, setPrice] = React.useState(0);
+const STYLES=[ "Japanese", "Thai", "Chinese", "Italian", "Indian", "Mexican", "Halal","Vegetarian", "Dessert", "Beverages"];
+    const theme = createTheme({
+      palette: {
+        pur: {
+          main: 'rgb(138, 5, 94)',
+          dark: `rgb(${138*0.7}, ${5*0.7}, ${94*0.7})`,
+          contrastText: `rgb(${255}, ${255}, ${255})`,
+        },
+      },
+    });
+
+      const handleClose = () => {
+        setOpen(false);
+      };
     return(
-        <>
-            Change Menu:
-        </>
+        <><ThemeProvider theme={theme}><Box sx={{mt:"1%",ml:"3%"}}>
+
+           <h2>Change Menu:</h2>
+                <Box sx={{mb: "1%"}}>
+          <Button variant="contained" color="pur" onClick={handleClickOpen}>
+            Add a New Food Item
+          </Button>
+          </Box>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            maxWidth="999"
+          >
+          
+          
+          {loading?
+          <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        :
+          <>
+          <div style={{backgroundColor:"rgb(250, 240, 229)", width:"70vw"}}><Box sx={{m:"4vw"}}>
+            <h2>Add a New Food Item:</h2>
+            <Box sx={{mt:"1.5vw"}}>
+                <TextField
+                    required
+                    label="Name"
+                    onChange={e=>{
+                        setName(e.target.value);
+                    }}
+                    sx={{width:"100%"}}
+                />
+            </Box>
+            <Box sx={{mt:"1.5vw"}}>
+                <TextField
+                    type="number"
+                    label="Price"
+                    onChange={e=>{
+                        setPrice(Number(e.target.value));
+                    }}
+                    sx={{width:"100%"}}
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">HK$</InputAdornment>,
+                      }}
+                />
+            </Box>
+            <Box sx={{mt:"1.5vw"}}>
+            <label htmlFor="profile" className="form-label">
+                                <i className="material-icons">add_photo_alternate</i>Picture *
+                            </label>
+            
+                <div className="row mb-2">
+                    <section className="col-8">
+                        <input type="file" className="form-control" id="profile" name="profile" accept="image/jpeg, image/png" onChange={showPreview} placeholder="jpg/jepg/jfif/png" required/>
+                    </section>
+                    <section className="col-4">
+                        <Stack
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                            spacing={1}
+                            height="100%"
+                        >
+                        {imgUrl?
+                                <img
+                                    style={{ height:"100%",width:"100%",objectFit: "contain" }}
+                                    src={imgUrl}
+                        />:<></>}
+                        </Stack>
+                    </section>
+                </div>
+                { signupStatus === "FileExtensionError" ? 
+                    <Alert severity="error">
+                        Please upload again with jpg/jepg/jfif/png format
+                    </Alert> : <></> }
+            
+            
+            
+            </Box>
+            
+            <Box sx={{mt:"1.5vw"}}>
+                
+                <FormControl>
+                  <FormLabel >Style</FormLabel>
+                  <RadioGroup
+                    defaultValue="none"
+                    name="radio-buttons-group"
+                    onChange={e=>{setStyle(e.target.value)}}
+                  >
+                    <FormControlLabel value="none" control={<Radio />} label="None" />
+                    {STYLES.map(x=><FormControlLabel value={x} control={<Radio />} label={x} />)}
+                  </RadioGroup>
+                </FormControl>
+            </Box>
+            
+            <Box sx={{mt:"2.5vw"}}>
+                {name!="" && signupStatus != "FileExtensionError" && imgUrl?<Button variant="contained" color="pur" onClick={async()=>{
+                    const toBase64 = file => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = error => reject(error);
+                    });
+                    
+                    
+                    console.log(name,typeof(name));
+                    console.log(price,typeof(price));
+                    console.log(imgUrl,typeof(imgUrl));
+                    let imgFile=await toBase64(fff);
+                    console.log(imgFile, typeof(imgFile));
+                    let imgBuffer=Buffer.from(imgFile, 'base64');
+                    console.log(style,typeof(style));
+                    
+
+                    const url = PREFIX+'/restaurant/food';
+                    console.log(fff);
+                    let fd=new FormData();
+                    fd.append("foodPic",fff);
+                    fd.append("name",name);
+                    fd.append("price",price);
+                    fd.append("style",style);
+                    const fetchData = async () => {
+                      try {
+                        setLoading(true);
+                        const response = await fetch(
+                            url, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': 'Bearer '+sessionStorage.token
+                            },
+                            body: fd
+                          }
+                        );
+                        const json = await response.json();
+                        console.log(json);
+                        setLoading(false);
+                        //window.location.reload(false);
+                      } catch (error) {
+                        console.log("error", error);
+                      }
+                    };
+
+                    fetchData();
+                    
+                }}>
+                    Add
+                </Button>:
+                <Button variant="contained" color="pur" disabled>
+                    Submit
+                </Button>
+                
+                }
+            </Box>
+            
+          </Box></div>
+          </>
+          }
+          
+          </Dialog>
+        
+       </Box></ThemeProvider > </>
     );
 }
 
-const useStyles = makeStyles({
-    root: {
-      width: "100%",
-      margin: "15px 0"
-    }
-  });
+
 
 function FoodItem(props){
     let foodItem = props.food;
@@ -268,6 +537,12 @@ function FoodItem(props){
 function Order(props) {
     console.log("In order");
     console.log(props);
+const useStyles = makeStyles({
+    root: {
+      width: "100%",
+      margin: "15px 0"
+    }
+  });
     const classes = useStyles();
     var createDate = props.order.createdAt;
     var updateDate = props.order.updatedAt;
@@ -430,7 +705,7 @@ function UserRestaurant(props) {
     console.log(props.page);
     if (props.page == "menu"){
         return(
-            <div style={{backgroundColor: "#faf0e5"}}>
+            <div className='userContent'>
                 <ChangeMenu/>
             </div>
 
