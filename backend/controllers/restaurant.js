@@ -460,12 +460,18 @@ module.exports = {
         console.log("Remove Food Item with ID", req.body.foodId)
         try {
             
-            req.restaurant.menu.remove(req.body.foodId)
-            await req.restaurant.save()
+            let idx = req.restaurant.menu.indexOf(req.body.foodId);
+            if (idx == -1) {
+                throw {name: "FoodNotFound", message: "food is not exist in menu"};
+            }
+            req.restaurant.menu.splice(idx, 1);
+            console.log(req.restaurant.menu);
+            await req.restaurant.save();
 
-            await foodItem.remove({_id:req.body.foodId})
-            console.log("Removed Food Item Successfully")
-            res.send("Removed Food Item Successfully");
+            console.log(req.restaurant.menu);
+            await foodItem.deleteOne({_id:req.body.foodId});
+            console.log('Removed Food Item Successfully');
+            res.send({name: 'RemoveFoodItemSuccessfully', message: 'Removed food item successfully'});
         }
         catch (err) {
             console.log(err);
