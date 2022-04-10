@@ -232,7 +232,7 @@ function OrderHistory(props) {
                         : 
                         orderHistory.map( (order,i) => <Order order={order} i={i} key={i} /> )
                     }
-                    </div>
+                </div>
                 <div className='col-2'></div>
             </div>
         </>
