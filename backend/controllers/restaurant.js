@@ -442,6 +442,7 @@ module.exports = {
             doc.picture = resizedBuf;
             doc.name = req.body.name;
             doc.price = req.body.price;
+            doc.style = req.body.style;
 
             doc = await foodItem.create(doc);
 
