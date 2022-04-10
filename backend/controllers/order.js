@@ -65,11 +65,11 @@ module.exports = {
         }
 
         // check if enough points for coupon
-        if (customer.points > req.body.couponUsed) {
+        if (customer.points < req.body.couponUsed) {
           throw {name: 'NotEnoughPointsForCoupon', message: 'Not enough points for coupon'};
         }
         orderDoc.items = req.body.items;
-        orderDoc = await Order.create(req.body)
+        orderDoc = await Order.create(orderDoc);
         orderDoc = await Order.findById(orderDoc._id).populate("customerID").populate("restaurantID").populate("items")
 
         // calculate total amount
@@ -80,7 +80,7 @@ module.exports = {
         })
 
         // check if matched total amount
-        console.log("total", total, req.body.total)
+        console.log('total(calc)', total, 'total(from req)', req.body.total);
         if (total != req.body.total) {
           await Order.deleteOne(orderDoc._id);
           throw {name: 'AmountMismatchedAndRejectOrder', message: 'The sent amount is not matched with calculated total, order rejected'};
@@ -91,6 +91,9 @@ module.exports = {
         orderDoc.couponUsed = req.body.couponUsed;
         orderDoc.netTotal = netTotal;
         customer.points -= req.body.couponUsed;
+
+        console.log('total:', total, 'coupon used:', req.body.couponUsed, 'netTotal:', netTotal);
+        console.log('points earned:', Math.floor(netTotal / 5));
 
         // update customer points
         customer.points += Math.floor(netTotal / 5);

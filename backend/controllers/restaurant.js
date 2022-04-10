@@ -449,7 +449,7 @@ module.exports = {
             req.restaurant.menu.push(doc._id);
             await req.restaurant.save();
             console.log("Added Food item to db with _id", doc._id);
-            res.send({message: 'Successfully added new food item'});
+            res.send({name: 'AddedFoodItemSuccessfully', message: 'Added food item successfully'});
         }
         catch (err) {
             console.log(err);
@@ -472,7 +472,7 @@ module.exports = {
             console.log(req.restaurant.menu);
             await foodItem.deleteOne({_id:req.body.foodId});
             console.log('Removed Food Item Successfully');
-            res.send({name: 'RemoveFoodItemSuccessfully', message: 'Removed food item successfully'});
+            res.send({name: 'RemovedFoodItemSuccessfully', message: 'Removed food item successfully'});
         }
         catch (err) {
             console.log(err);

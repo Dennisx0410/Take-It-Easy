@@ -444,7 +444,7 @@ POST /restaurant/food
 - `price` : Number,
 - `style` : String
 #### Return
-- `message` : "Successfully added new food item"
+- `AddedFoodItemSuccessfully`
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
@@ -460,11 +460,11 @@ DELETE /restaurant/food
 #### Body
 - `foodId` : ObjectId of food item
 #### Return
-- `message` : "Removed food item successfully"
-- `Food is not exist in menu`
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
+- `FoodNotFound`
+- `RemovedFoodItemSuccessfully`
 
 # Documentation (Order)
 [Return to top](#backend)
