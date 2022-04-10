@@ -442,6 +442,7 @@ POST /restaurant/food
 - `foodPic` : File (jpg/jpeg/jfif/png),
 - `name` : String,
 - `price` : Number,
+- `style` : String
 #### Return
 - `message` : "Successfully added new food item"
 - `VerifyError`
