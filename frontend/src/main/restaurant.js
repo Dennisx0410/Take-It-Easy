@@ -180,7 +180,10 @@ function Restaurant() {
                     
                     //while(1);
                     
-                    navigate('/customer/history');
+                        
+                    window.location = PREFIX+'/customer/history';
+
+//                     navigate('/customer/history');
                     
                   } catch (error) {
                     console.log("error", error);
