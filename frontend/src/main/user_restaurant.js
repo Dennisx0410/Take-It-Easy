@@ -315,17 +315,28 @@ const [loading,setLoading]=useState(true);
         const URL = PREFIX+'/restaurant/data';
         const fetchData = async () => {
           try {
-            const response = await fetch(
+            let response = await fetch(
                 URL, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                    //'Content-type':'application/json'
                 }}
             );
-            const restaurant_info = await response.json();
+            let restaurant_info = await response.json();
+            response = await fetch(
+                URL, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                    //'Content-type':'application/json'
+                }}
+            );
+            restaurant_info = await response.json();
             setRestaurantInfo(restaurant_info);
             console.log(restaurant_info);
-setLoading(false);
+            setLoading(false);
+
           } catch (error) {
             console.log("error", error);
           }
@@ -412,13 +423,15 @@ const STYLES=[ "Japanese", "Thai", "Chinese", "Italian", "Indian", "Mexican", "H
                             url, {
                             method: 'DELETE',
                             headers: {
-                                'Authorization': 'Bearer '+sessionStorage.token
+                                'Authorization': 'Bearer '+sessionStorage.getItem("token"),
+                                'Content-type':'application/json'
                             },
                             body: JSON.stringify({'foodId':x._id})
                           }
                         );
                         const json = await response.json();
                         console.log(json);
+                        
                         window.location.reload(false);
                       } catch (error) {
                         console.log("error", error);
@@ -554,7 +567,7 @@ const STYLES=[ "Japanese", "Thai", "Chinese", "Italian", "Indian", "Mexican", "H
             </Box>
             
             <Box sx={{mt:"2.5vw"}}>
-                {name!="" && signupStatus != "FileExtensionError" && imgUrl?<Button variant="contained" color="pur" onClick={async()=>{
+                {name!="" && signupStatus != "FileExtensionError" && imgUrl&&price>=0?<Button variant="contained" color="pur" onClick={async()=>{
                     const toBase64 = file => new Promise((resolve, reject) => {
                         const reader = new FileReader();
                         reader.readAsDataURL(file);
@@ -586,7 +599,7 @@ const STYLES=[ "Japanese", "Thai", "Chinese", "Italian", "Indian", "Mexican", "H
                             url, {
                             method: 'POST',
                             headers: {
-                                'Authorization': 'Bearer '+sessionStorage.token
+                                'Authorization': 'Bearer '+sessionStorage.getItem("token")
                             },
                             body: fd
                           }
@@ -605,7 +618,7 @@ const STYLES=[ "Japanese", "Thai", "Chinese", "Italian", "Indian", "Mexican", "H
                     Add
                 </Button>:
                 <Button variant="contained" color="pur" disabled>
-                    Submit
+                    ADd
                 </Button>
                 
                 }

@@ -232,7 +232,7 @@ function Restaurant() {
                             <CardMedia
                               component="img"
                               height="100%"
-                              image="/def.jpg"
+                              image={"/"+STYLES[y+z]+".jpg"}
                               alt={STYLES[y+z]}
                               sx={{ display: 'flex', width:1/2 }}
                             />
