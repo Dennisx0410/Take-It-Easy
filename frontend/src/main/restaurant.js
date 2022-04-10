@@ -181,9 +181,10 @@ function Restaurant() {
                     //while(1);
                     
                         
-                    window.location = PREFIX+'/customer/history';
-
-//                     navigate('/customer/history');
+                    // window.location = PREFIX+'/customer/history';
+                    
+                    navigate('/customer/history',{ replace: true });
+                    window.location.reload();
                     
                   } catch (error) {
                     console.log("error", error);
