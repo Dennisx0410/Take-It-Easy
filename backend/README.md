@@ -430,6 +430,41 @@ GET /restaurant/profilePic
 - `TokenExpiredError`
 - `InactiveUserRequest`
 
+## Add an item to menu
+#### URL
+```
+POST /restaurant/food
+```
+#### Header
+- `Content-type: application/json`
+- `Authorization: Bearer <token>`
+#### Body
+- `foodPic` : File (jpg/jpeg/jfif/png),
+- `name` : String,
+- `price` : Number,
+#### Return
+- `message` : "Successfully added new food item"
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+
+## Remove an item from menu
+#### URL
+```
+DELETE /restaurant/food
+```
+#### Header
+- `Content-type: application/json`
+- `Authorization: Bearer <token>`
+#### Body
+- `foodId` : ObjectId of food item
+#### Return
+- `message` : "Removed food item successfully"
+- `Food is not exist in menu`
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+
 # Documentation (Order)
 [Return to top](#backend)
 
