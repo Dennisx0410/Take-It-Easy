@@ -493,8 +493,7 @@ const STYLES=[ "Japanese", "Thai", "Chinese", "Italian", "Indian", "Mexican", "H
                         );
                         const json = await response.json();
                         console.log(json);
-                        setLoading(false);
-                        //window.location.reload(false);
+                        window.location.reload(false);
                       } catch (error) {
                         console.log("error", error);
                       }
