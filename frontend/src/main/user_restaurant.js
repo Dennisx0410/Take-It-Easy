@@ -588,39 +588,43 @@ const useStyles = makeStyles({
         <>
             <Card className={classes.root} >
                 <CardContent>
-                    <Typography variant="h4" component="h4">
-                        <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
-                    </Typography>
-                    <Typography  variant="h5" component="h5">
-                        Customer Username: {customerName}<br/><span style={{color: "#aaaaaa", fontSize:"15px"}}>(ID: {customerID})</span>
-                        <br/>Ordered Items: 
-                    </Typography>
-                    <div>
-                        {props.order.items.map( (food,i) => <FoodItem food={food} key={i}/>)}
-                    </div>
-                    <Typography gutterBottom variant="h5" component="h5">
-                        <span style={{color: "#444444", fontSize:"20px"}}>
-                            Phone<i className="material-icons">phone</i>: {customerPhonenum}
-                        </span>
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Order created at: {createDate} <br/>
-                        Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
-                        Status: 
-                        <span style={props.order.status? {color: "green"} : {color: "red"}}>
-                            {props.order.status? "Completed":"Not completed" }
-                        </span>
-                    </Typography>
+                    <Box sx={{ px: 1 }}>
+                        <Typography variant="h4" component="h4">
+                            <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
+                        </Typography>
+                        <Typography  variant="h5" component="h5">
+                            Customer Username: {customerName}<br/><span style={{color: "#aaaaaa", fontSize:"15px"}}>(ID: {customerID})</span>
+                            <br/>Ordered Items: 
+                        </Typography>
+                        <div>
+                            {props.order.items.map( (food,i) => <FoodItem food={food} key={i}/>)}
+                        </div>
+                        <Typography gutterBottom variant="h5" component="h5">
+                            <span style={{color: "#444444", fontSize:"20px"}}>
+                                Phone<i className="material-icons">phone</i>: {customerPhonenum}
+                            </span>
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            Order created at: {createDate} <br/>
+                            Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
+                            Status: 
+                            <span style={props.order.status? {color: "green"} : {color: "red"}}>
+                                {props.order.status? "Completed":"Not completed" }
+                            </span>
+                        </Typography>
+                    </Box>
                 </CardContent>
-                {props.order.status? 
-                        ""
-                        :
-                        <CardActions>
-                                <Button size="small" style={{backgroundColor:"#8a055e", marginLeft:"5px", marginBottom:"5px"}}  onClick={() => {handleClick(orderNo)}}>
-                                    <span style={{color: "white", padding:"2px"}}>Complete order</span>
-                                </Button>
-                        </CardActions>
-                }
+                <Box sx={{ px: 1 }}>
+                    {props.order.status? 
+                            ""
+                            :
+                            <CardActions>
+                                    <Button size="small" style={{backgroundColor:"#8a055e", marginLeft:"5px", marginBottom:"5px"}}  onClick={() => {handleClick(orderNo)}}>
+                                        <span style={{color: "white", padding:"2px"}}>Complete order</span>
+                                    </Button>
+                            </CardActions>
+                    }
+                </Box>
             </Card>
         </>
         
@@ -688,8 +692,12 @@ function OrderHistory(props) {
             <div className='row'>
                 <div className='col-1'></div>
                 <div className='col-10'>
-                    <h2><i className="material-icons">receipt_long</i>Your order history:
-                        <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}><i className="material-icons">sync</i></span>
+                    <h2>
+                        <i className="material-icons">receipt_long</i>
+                        Your order history:
+                        <span style={{cursor:"pointer"}} onClick={()=>{window.location.reload();}}>
+                            <i className="material-icons">sync</i>
+                        </span>
                     </h2>
                     <h6>(Auto refresh)</h6>
                     <hr/>

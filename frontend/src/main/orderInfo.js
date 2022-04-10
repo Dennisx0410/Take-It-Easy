@@ -45,8 +45,10 @@ function OrderInfo(props){
                         <b>{orderInfo.restaurantID.restaurantName}</b>
                     </div>
                     <div className="orderStatus">
-                    Order Status:<br></br>
-                        <b>{orderInfo.status?"Done":"Preparing"}</b>
+                        Order Status:<br></br>
+                        <b style={orderInfo.status? {color: "green"} : {color: "red"}}>
+                            {orderInfo.status? "Completed" : "Not completed" }<br/>
+                        </b>
                     </div>
                     <div className="foodTitle">List of Food:</div>
                     <div className="foodItem">

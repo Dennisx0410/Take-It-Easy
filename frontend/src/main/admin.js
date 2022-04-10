@@ -141,29 +141,31 @@ function Order(props) {
         <div style={{ marginTop: "10px" }}>
             <Card>
                 <CardContent>
-                    <Typography  variant="h4" component="h4">
-                        <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
-                    </Typography>
-                    <Typography variant="h5" component="h5">
-                        {/* <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span> */}
-                        Customer: {customerName}<span style={{color: "#aaaaaa", fontSize:"15px"}}>&nbsp;(ID: {customerID})</span>
-                        <br/>
-                        Restaurant: {restaurantName}<span style={{color: "#aaaaaa", fontSize:"15px"}}>&nbsp;(ID: {restaurantID})</span>
-                        <br/>
-                        Ordered Items: 
-                    </Typography>
-                    <div>
-                        {props.order.items.map( (food,i) => <FoodItem food={food} key={i}/>)}
-                    </div>
+                    <Box sx={{ px: 1 }}>
+                        <Typography  variant="h4" component="h4">
+                            <span style={{color: "#8a055e"}}>Order #{orderNo}</span>
+                        </Typography>
+                        <Typography variant="h5" component="h5">
+                            {/* <span style={{color: "#aaaaaa"}}>Restaurant Name: {restaurantName}</span> */}
+                            Customer: {customerName}<span style={{color: "#aaaaaa", fontSize:"15px"}}>&nbsp;(ID: {customerID})</span>
+                            <br/>
+                            Restaurant: {restaurantName}<span style={{color: "#aaaaaa", fontSize:"15px"}}>&nbsp;(ID: {restaurantID})</span>
+                            <br/>
+                            Ordered Items: 
+                        </Typography>
+                        <div>
+                            {props.order.items.map( (food,i) => <FoodItem food={food} key={i}/>)}
+                        </div>
 
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Order created at: {createDate} <br/>
-                        Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
-                        Status: 
-                        <span style={props.order.status? {color: "green"} : {color: "red"}}>
-                            {props.order.status ? " Completed" : " Not completed" }<br/>
-                        </span>
-                    </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            Order created at: {createDate} <br/>
+                            Order finished at: {props.order.status? updateDate : "Not finished" }<br/>
+                            Status: 
+                            <span style={props.order.status? {color: "green"} : {color: "red"}}>
+                                {props.order.status ? " Completed" : " Not completed" }<br/>
+                            </span>
+                        </Typography>
+                    </Box>
                 </CardContent>
             </Card>
             {/* {props.i} */}
@@ -216,7 +218,12 @@ function OrderHistory(props) {
         <>
             <div className='row'>
                 <div className='col-10'>
-                    <h2>List of orders: <span style={{cursor:"pointer"}} onClick={()=>handleReload()}><i className="material-icons">sync</i></span>
+                    <h2>
+                        <i className="material-icons">receipt_long</i>
+                        List of orders: 
+                        <span style={{cursor:"pointer"}} onClick={()=>handleReload()}>
+                            <i className="material-icons">sync</i>
+                        </span>
                     </h2>
                     <h6>(refresh on every 30s)</h6>
                     <hr/>
@@ -266,7 +273,7 @@ function CustomerCard(props){
         // skip = true;
                         
     return(
-        <div  style={{padding: "5px 0"}}>
+        <div style={{padding: "5px 0"}}>
             <Card sx={{ display: 'flex' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'row', px: 1, m: 1}}>
