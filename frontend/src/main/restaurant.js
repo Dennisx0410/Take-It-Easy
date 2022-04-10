@@ -20,6 +20,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
+import { Link, useNavigate } from 'react-router-dom';
 
 const PREFIX='http://localhost:5000';
 
@@ -45,6 +46,7 @@ function Restaurant() {
   const [pic,setPic] = useState(null);
   const [loading,setLoading]=useState(true);
   const [qtys,setQtys]=useState([]);
+    const [pay,setPay]=useState(0);
   const BA="base64";
     
     document.body.style.backgroundColor = "rgb(250, 240, 229)"
@@ -60,6 +62,7 @@ function Restaurant() {
       return res;
     };
     
+        const [customerInfo, setCustomerInfo] = useState({});
     useEffect(() => {
         const URL = PREFIX + '/restaurant/approved';
 
@@ -83,6 +86,21 @@ function Restaurant() {
                 j.push(0);
                 setQtys(j);
             }
+            
+            
+                const URL2 = PREFIX + '/customer/data';
+                const response2 = await fetch(
+                    URL2, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer '+sessionStorage.getItem("token")
+                    }}
+                );
+                const customer_info = await response2.json();
+                setCustomerInfo(customer_info);
+                console.log(customer_info.points);
+            
+            
             setLoading(false);
           } catch (error) {
             console.log("error", error);
@@ -90,7 +108,10 @@ function Restaurant() {
         };
 
         fetchData();
+        
+        
     }, []);
+    const navigate = useNavigate();
     
     return (
         loading?
@@ -114,27 +135,64 @@ function Restaurant() {
             {restaurants.menu.map((x,y)=>qtys[y]>0? <Typography variant="body" display="block">
                     {qtys[y]}× {x.name} &#8212; HK${x.price*qtys[y]}
                 </Typography>:<></>)}
+             <Typography variant="body" display="block">
+                    {Math.min(parseInt(String(customerInfo.points)),pay)}× Points &#8212; HK$ –{Math.min(parseInt(String(customerInfo.points)),pay)}
+                </Typography>
             {(()=>{
-                let tot=0;
-                for(let i=0;i<restaurants.menu.length;i++){
-                    tot+=restaurants.menu[i].price*qtys[i];
-                }
-                
-                return <Box sx={{mt:"40%"}}><h2>Total: HK${tot}</h2></Box>;
+                return <Box sx={{mt:"40%"}}><h2>Total: HK${Math.max(0,pay-parseInt(String(customerInfo.points)))}</h2></Box>;
             })()}
             <ThemeProvider theme={theme}>
-            <Box sx={{mt:"5%"}}><Button onClick={
+            <Box sx={{mt:"5%"}}><Button onClick={async()=>{
                 
                 
+                const fetchData = async () => {
+                  try {setLoading(true);
+                  
+                    let ids=[];
+                    for (let j=0;j<restaurants.menu.length;j++){
+                        for (let k=0;k<qtys[j];k++){
+                            ids.push(restaurants.menu[j]._id);
+                        }
+                    }
+                    console.log(ids);
+                    let body={
+                        //'customerID':sessionStorage.token,
+                            'restaurantID': rid,
+                            'items':ids,
+                            'total':pay,
+                            'couponUsed':Math.min(parseInt(String(customerInfo.points)),pay),
+                            'netTotal':Math.max(0,pay-parseInt(String(customerInfo.points)))
+                    }
+                    console.log(body);
+                    console.log(JSON.stringify(body));
+                    const URL = PREFIX + '/order/add';
+                    const response = await fetch(
+                        URL, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer '+sessionStorage.token,
+                            'Content-type':'application/json'
+                        },
+                        body:JSON.stringify(body)
+                        }
+                    );
+                    const json = await response.json();
+                    
+                    //while(1);
+                    
+                    navigate('/customer/history');
+                    
+                  } catch (error) {
+                    console.log("error", error);
+                  }
+                };
+                
+                fetchData();
+                
+                //window.location.reload(false);
                 
                 
-                
-                
-                
-                
-                
-                ()=>{}
-            } variant="contained" color="pur">Place Order!</Button></Box>
+} }variant="contained" color="pur">Place Order!</Button></Box>
             </ThemeProvider >
           </Box></SlidingPane>
           
@@ -228,6 +286,12 @@ function Restaurant() {
                                         qtys[y]=Number(e.target.value);
                                         setQtys(t);
                                         console.log(qtys);
+                                        
+                                        let tot=0;
+                                        for(let i=0;i<restaurants.menu.length;i++){
+                                            tot+=restaurants.menu[i].price*qtys[i];
+                                        }
+                                        setPay(tot);
                                     }}
                                 />
                             </CardContent>

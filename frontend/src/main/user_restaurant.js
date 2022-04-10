@@ -275,7 +275,7 @@ function AccountInfo(){
 
 function ChangeMenu(){
     
-
+const [loading,setLoading]=useState(true);
     // preview after choosing profile picture
       const [fff, setFFF] = React.useState(null);
     const showPreview = async e => {
@@ -310,7 +310,7 @@ function ChangeMenu(){
     
       const handleClickOpen = () => {
         setOpen(true);
-      };const [loading,setLoading]=useState(true);
+      };
     useEffect(() => {
         const URL = PREFIX+'/restaurant/data';
         const fetchData = async () => {
@@ -356,13 +356,113 @@ const STYLES=[ "Japanese", "Thai", "Chinese", "Italian", "Indian", "Mexican", "H
       };
     return(
         <><ThemeProvider theme={theme}><Box sx={{mt:"1%",ml:"3%"}}>
-
+ {loading?
+          <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        :<>
            <h2>Change Menu:</h2>
                 <Box sx={{mb: "1%"}}>
           <Button variant="contained" color="pur" onClick={handleClickOpen}>
             Add a New Food Item
           </Button>
+          
+          
+          
+          
+          
+                <Box sx={{mt:"3%",mb: "10%"}}>
+                    {restaurantInfo.menu.map((x,y)=>true?<Box sx={{mt:"1%"}}>
+                        <Card sx={{ display: 'flex', width:"95%", height:"20vh"}}>
+                            <CardContent
+                                sx={{width:3/10, p:"0 0 0 0" }}
+                            >
+                                <img
+                                    style={{ height:"100%",width:"100%",objectFit: "contain" }}
+                                    src={`data:image/jpg; base64, ${Buffer.from(x.picture.data).toString("base64")}`}
+                                />
+                            </CardContent>
+                            <CardContent
+                                sx={{width:5.5/10 }}
+                            >
+                                <Typography variant="h6" component="div">
+                                    {x.name}
+                                </Typography>
+                                <Typography variant="body" component="div">
+                                    {x.style}
+                                </Typography>
+                            </CardContent>
+                            <CardContent sx={{width:1.5/10}}>
+                                <Typography variant="h6" component="div">
+                                    HK${x.price}
+                                </Typography>
+                                                           
+                                              
+          <Button variant="contained" color="pur" onClick={
+              async()=>{
+                  
+                  const url = PREFIX+'/restaurant/food';
+                    const fetchData = async () => {
+                      try {
+                        setLoading(true);
+                        const response = await fetch(
+                            url, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': 'Bearer '+sessionStorage.token
+                            },
+                            body: JSON.stringify({'foodId':x._id})
+                          }
+                        );
+                        const json = await response.json();
+                        console.log(json);
+                        window.location.reload(false);
+                      } catch (error) {
+                        console.log("error", error);
+                        window.location.reload(false);
+                      }
+                    };
+
+                    fetchData();
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+              }
+              
+              
+          }>
+            remove
+          </Button>             
+                                                           
+                                                           
+                            </CardContent>
+                        </Card>
+                    </Box>:<></>)}
+                </Box>
+          
+          
+          
+          
           </Box>
+          
+          
+          
+          
+          
+          
+ </>}
+          
+          
+          
           <Dialog
             open={open}
             onClose={handleClose}
