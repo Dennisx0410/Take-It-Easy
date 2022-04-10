@@ -478,6 +478,7 @@ POST /order/add
 - `InactiveUserRequest`
 - `UserNotExist`
 - `EmptyOrderError`
+- `NotEnoughPointsForCoupon`
 - `AmountMismatchedAndRejectOrder`
 - The order document
 

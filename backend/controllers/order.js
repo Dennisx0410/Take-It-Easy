@@ -59,8 +59,14 @@ module.exports = {
         orderDoc.restaurantID = req.body.restaurantID;
         let restaurant = await restCtrler.getRestaurantById(orderDoc.restaurantID);
         
+        // check if empty order
         if (req.body.items.length < 1){
           throw {name: 'EmtpyOrderError', message: "Can't place empty order"};
+        }
+
+        // check if enough points for coupon
+        if (customer.points > req.body.couponUsed) {
+          throw {name: 'NotEnoughPointsForCoupon', message: 'Not enough points for coupon'};
         }
         orderDoc.items = req.body.items;
         orderDoc = await Order.create(req.body)
@@ -84,6 +90,7 @@ module.exports = {
         orderDoc.total = total;
         orderDoc.couponUsed = req.body.couponUsed;
         orderDoc.netTotal = netTotal;
+        customer.points -= req.body.couponUsed;
 
         // update customer points
         customer.points += Math.floor(netTotal / 5);
