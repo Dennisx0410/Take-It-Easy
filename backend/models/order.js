@@ -8,7 +8,9 @@ const orderSchema = new Schema({
     customerID : {type : mongoose.Types.ObjectId, required : true, ref:'Customers'},
     restaurantID : {type : mongoose.Types.ObjectId, required : true, ref:'Restaurants'},
     items : [{type:mongoose.Types.ObjectId, ref:'FoodItems'}],
-    total : Number,
+    total : mongoose.Decimal128,
+    netTotal : mongoose.Decimal128,
+    couponUsed : Number,
     status : {type : Boolean, default : false}
 }, {timestamps: true});
 

@@ -1,11 +1,7 @@
 // packages
-const Customer = require("../models/customer")
-const Restaurant = require("../models/restaurant")
 const Order = require("../models/order")
-const foodItem = require("../models/food_item.js")
+const custCtrler = require("../controllers/customer");
 const restCtrler = require("../controllers/restaurant");
-const { default: mongoose } = require("mongoose")
-const { getRestaurantById } = require("./restaurant")
 const socketio = require('./socketIO')
 const Notification = require("../models/notification")
 
@@ -55,21 +51,48 @@ module.exports = {
 
     addOrder : async (req, res) => {
       // TODO : Add order to database
+      console.log('> add order');
       try {
-        let restaurant = await restCtrler.getRestaurantById(req.body.restaurantID);
-        // let restaurant = await Restaurant.findOne({_id:req.body.restaurantID})
-        // if (restaurant == undefined){
-        //   throw "No such restaurant to place order"
-        // }
-        let orderDoc = {}
-        orderDoc.customerID = req.customer._id
-        orderDoc.restaurantID = req.body.restaurantID
+        let orderDoc = {};
+        orderDoc.customerID = req.customer._id;
+        orderDoc.restaurantID = req.body.restaurantID;
+        let restaurant = await restCtrler.getRestaurantById(orderDoc.restaurantID);
+        let customer = await custCtrler.getCustomerById(orderDoc.customerID);
+        
         if (req.body.items.length < 1){
-          throw "Can't place empty order"
+          throw {name: 'EmtpyOrderError', message: "Can't place empty order"};
         }
-        orderDoc.items = req.body.items
+        orderDoc.items = req.body.items;
         orderDoc = await Order.create(req.body)
         orderDoc = await Order.findById(orderDoc._id).populate("customerID").populate("restaurantID").populate("items")
+
+        // calculate total amount
+        let total = 0;
+        orderDoc.items.forEach((food) => {
+          total += food.price;
+          console.log('food: ', food.name, '$', food.price, 'cum. total:', total);
+        })
+
+        // check if matched total amount
+        console.log("total", total, req.body.total)
+        if (total != req.body.total) {
+          await Order.deleteOne(orderDoc._id);
+          throw {name: 'AmountMismatchedAndRejectOrder', message: 'The sent amount is not matched with calculated total, order rejected'};
+        }
+
+        let netTotal = total - req.body.couponUsed;
+        orderDoc.total = total;
+        orderDoc.couponUsed = req.body.couponUsed;
+        orderDoc.netTotal = netTotal;
+
+        // update customer points
+        customer.points += Math.floor(netTotal / 5);
+        await customer.save();
+        orderDoc.customerID.points = customer.points;
+        await orderDoc.save();
+
+        console.log('> Successfully placed order');
+
         socketio.sendOrder(restaurant.username, orderDoc)
         res.status(201).send(orderDoc)
       }

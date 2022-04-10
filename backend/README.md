@@ -457,7 +457,7 @@ GET /order/fetchByCustomer
 #### Return
 -`List of orders, for which items is populate with food item to provide more detail`
 
-## Create new order
+## Create new order and update customer points
 #### URL
 ```
 POST /order/add
@@ -466,10 +466,20 @@ POST /order/add
 - `Authorization: Bearer <token>`
 - `Content-type: application/json`
 #### Body
-- restaurantID : Restaurant ObjectId
-- items : Array of food Item ObjectId
+- restaurantID: Restaurant ObjectId (String)
+- items: Array of food Item ObjectId (String)
+- total: Real
+- couponUsed: Integer
+- netTotal: Real
 #### Return
--`The order document`
+- `VerifyError`
+- `JsonWebTokenError`
+- `TokenExpiredError`
+- `InactiveUserRequest`
+- `UserNotExist`
+- `EmptyOrderError`
+- `AmountMismatchedAndRejectOrder`
+- The order document
 
 ## Finished an Order
 #### URL
