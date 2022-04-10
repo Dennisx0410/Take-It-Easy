@@ -53,11 +53,11 @@ module.exports = {
       // TODO : Add order to database
       console.log('> add order');
       try {
+        let customer = req.customer;
         let orderDoc = {};
-        orderDoc.customerID = req.customer._id;
+        orderDoc.customerID = customer._id;
         orderDoc.restaurantID = req.body.restaurantID;
         let restaurant = await restCtrler.getRestaurantById(orderDoc.restaurantID);
-        let customer = await custCtrler.getCustomerById(orderDoc.customerID);
         
         if (req.body.items.length < 1){
           throw {name: 'EmtpyOrderError', message: "Can't place empty order"};
