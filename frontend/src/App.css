@@ -12,8 +12,8 @@
 }
 
 label {
-    margin: auto 3px;
-    vertical-align: middle;
+  margin: auto 3px;
+  vertical-align: middle;
 }
 
 #bgd {
@@ -26,23 +26,25 @@ label {
   position: sticky;
   top: 0;
   min-height: 100vh;
-  background-image: linear-gradient(to right, #567ace , #b9281d); 
+  background-image: linear-gradient(to right, #567ace, #b9281d);
 }
 
-.page-styling{
+.page-styling {
   background-color: #faf0e5;
   width: 100%;
   min-height: 100%;
 }
 
-h2, .content-header {
-    padding: 1vh 0 0 0;
-    color: #ba1851;
+h2,
+.content-header {
+  padding: 1vh 0 0 0;
+  color: #ba1851;
 }
 
-h4, .content-subheader {
-    padding: 1vh 0 0 0;
-    color: rgb(138, 5, 94);
+h4,
+.content-subheader {
+  padding: 1vh 0 0 0;
+  color: rgb(138, 5, 94);
 }
 
 .slide-in-t {
@@ -74,7 +76,8 @@ h4, .content-subheader {
   }
 }
 
-html, body {
+html,
+body {
   min-height: 100%;
 }
 
