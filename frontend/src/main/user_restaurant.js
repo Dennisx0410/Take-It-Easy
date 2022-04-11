@@ -256,6 +256,7 @@ function AccountInfo() {
   const rows = [
     { name: "User ID", data: restaurantInfo._id },
     { name: "Username", data: restaurantInfo.username },
+    { name: "Restaurant name", data: restaurantInfo.restaurantName },
     { name: "Phone number", data: restaurantInfo.phoneNum },
     { name: "Email", data: restaurantInfo.email },
     { name: "Address", data: restaurantInfo.address },

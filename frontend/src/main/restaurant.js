@@ -146,6 +146,9 @@ function Restaurant() {
               <></>
             )
           )}
+          {parseInt(
+              String(Math.min(parseInt(String(customerInfo.points)), pay))
+            ) > 0 ? 
           <Typography variant="body" display="block">
             {parseInt(
               String(Math.min(parseInt(String(customerInfo.points)), pay))
@@ -154,7 +157,7 @@ function Restaurant() {
             {parseInt(
               String(Math.min(parseInt(String(customerInfo.points)), pay))
             )}
-          </Typography>
+          </Typography> : <></>}
           {(() => {
             return (
               <Box sx={{ mt: "40%" }}>
