@@ -196,6 +196,7 @@ function HeaderBar(props) {
         });
         const customer_info = await response.json();
         setCustomerInfo(customer_info);
+        console.log('>>1', customer_info)
         setSkip(true);
         // console.log(customer_info);
       } catch (error) {
@@ -354,7 +355,7 @@ function HeaderBar(props) {
                 {/* Points */}
                 <MaterialIcon icon="savings" color="#FFFFFF" />
                 {/* <Points/> */}
-                {customerInfo.points ? customerInfo.points : -1}
+                {customerInfo.points >= 0 ? customerInfo.points : -1}
               </div>
               <div className="col-1 headerpadding bg-transparent btn-transparent">
                 <Dropdown
