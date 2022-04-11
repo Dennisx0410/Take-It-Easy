@@ -20,7 +20,7 @@ app.post("/changePw", verifyToken, custCtrler.changePw);
 
 // actions
 app.get("/data", verifyToken, custCtrler.getCustomerData);
-app.get("/fav", verifyToken, custCtrler.getFavoriteRestaurant);
+// app.get("/fav", verifyToken, custCtrler.getFavoriteRestaurant);
 app.post("/logout", verifyToken, custCtrler.logout);
 app.post(
   "/profilePic",

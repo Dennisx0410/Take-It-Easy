@@ -3,14 +3,17 @@ const Restaurants = require("../models/restaurant.js");
 const foodItem = require("../models/food_item.js");
 
 // package
-// const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const sharp = require("sharp");
 
+// const
+const MAX_RESIZE_PX = 2000; // 2000 pixel
+const MAX_FILESIZE = 5 * 1024 * 1024; // 5MB
+
 // handle for image upload
 const upload = multer({
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: MAX_FILESIZE }, // 5MB
   fileFilter(req, file, cb) {
     console.log("file info:", file);
     if (file.mimetype == "image/png" || file.mimetype == "image/jpeg") {
@@ -390,47 +393,7 @@ module.exports = {
     }
   },
 
-  // verifyToken: async (req, res, next) => {
-  //     // TODO: verify token by matching docs in db
-  //     console.log('> verify token');
-  //     try {
-  //         // extract token
-  //         let token = req.header('Authorization').replace('Bearer ', '');
-  //         console.log('token:', token);
-
-  //         // decode playload
-  //         console.log('ready to decode');
-  //         let data = jwt.verify(token, process.env.SECRET);
-  //         console.log('decoded with data:', data);
-
-  //         // check with db and pull out restaurant doc
-  //         let restaurant = await Restaurants.findOne({_id : data._id})
-  //         if (restaurant == null) {
-  //             console.log('verify error');
-  //             throw {name: 'VerifyError', message: 'unable to find user'};
-  //         }
-  //         // console.log('restaurant doc:', restaurant.username);
-
-  //         // check restaurant currently logging in
-  //         // if (!restaurant.online) {
-  //         //     console.log('restaurant request token verification but his is not logging in');
-  //         //     throw {name: 'InactiveUserRequest', message: 'restaurant request token verification but his is not logging in'};
-  //         // }
-
-  //         // pass to next middleware/function
-  //         req.token = token;
-  //         req.restaurant = restaurant;
-
-  //         console.log('> verify success')
-  //         next();
-  //     }
-  //     catch (err) {
-  //         console.log(err)
-  //         res.status(401).send(err); // 401: unauthorized
-  //     }
-  // },
-
-  //Food Related Function
+  // Food Related Function
   uploadFoodItemPic: async (req, res, next) => {
     // TODO: upload profile image with key = 'foodPic' to server
     console.log("> upload Food Item Pic");
@@ -460,11 +423,11 @@ module.exports = {
   addFoodItem: async (req, res) => {
     console.log("> add Food Item");
     try {
-      // resize Food Item pic to 200x200px before storing to db
+      // resize Food Item pic to MAX_RESIZE_PX before storing to db
       let resizedBuf = await sharp(req.file.buffer)
         .resize({
-          width: 200,
-          height: 200,
+          width: MAX_RESIZE_PX,
+          height: MAX_RESIZE_PX
         })
         .toBuffer();
       let doc = new foodItem();

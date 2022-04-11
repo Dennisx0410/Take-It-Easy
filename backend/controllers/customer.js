@@ -9,10 +9,12 @@ const sharp = require("sharp");
 
 // const
 const { MAX_TRIAL } = require("../models/otp");
+const MAX_RESIZE_PX = 2000; // 2000 pixel
+const MAX_FILESIZE = 5 * 1024 * 1024; // 5MB
 
 // handle for image upload
 const upload = multer({
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: MAX_FILESIZE }, 
   fileFilter(req, file, cb) {
     console.log("file info:", file);
     if (file.mimetype == "image/png" || file.mimetype == "image/jpeg") {
@@ -106,21 +108,21 @@ module.exports = {
     }
   },
 
-  // get favorite restaurant
-  getFavoriteRestaurant: async (req, res, next) => {
-    // TODO: fetch all pinned favorite restaurant
-    console.log("> Get all fav restaurant");
-    try {
-      console.log(req.customer.username);
-      let customer = await Customers.findOne({
-        username: req.customer.username,
-      }).populate("fav");
-      console.log("fav restaurants:", customer.fav.length);
-      res.send(customer.fav);
-    } catch (err) {
-      res.send(err);
-    }
-  },
+  // // get favorite restaurant
+  // getFavoriteRestaurant: async (req, res, next) => {
+  //   // TODO: fetch all pinned favorite restaurant
+  //   console.log("> Get all fav restaurant");
+  //   try {
+  //     console.log(req.customer.username);
+  //     let customer = await Customers.findOne({
+  //       username: req.customer.username,
+  //     }).populate("fav");
+  //     console.log("fav restaurants:", customer.fav.length);
+  //     res.send(customer.fav);
+  //   } catch (err) {
+  //     res.send(err);
+  //   }
+  // },
 
   // middleware for new user login
   addCustomer: async (req, res, next) => {
@@ -270,11 +272,11 @@ module.exports = {
     // TODO: add profile pic to db
     console.log("> add profile");
     try {
-      // resize profile pic to 200x200px before storing to db
+      // resize profile pic to MAX_RESIZE_PX before storing to db
       let resizedBuf = await sharp(req.file.buffer)
         .resize({
-          width: 200,
-          height: 200,
+          width: MAX_RESIZE_PX,
+          height: MAX_RESIZE_PX
         })
         .toBuffer();
       req.customer.profilePic = resizedBuf;
