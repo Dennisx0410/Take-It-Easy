@@ -197,7 +197,7 @@ function AccountInfo() {
   ];
 
   return (
-    <>
+    <div style={{minHeight:"100vh"}}>
       <div className="row">
         <div className="col-1"></div>
         <div className="col-10">
@@ -252,7 +252,7 @@ function AccountInfo() {
         </div>
         <div className="col-1"></div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -371,7 +371,7 @@ function OrderHistory() {
           <CircularProgress color="inherit" />
         </Backdrop>
       ) : (
-      <div className="row">
+      <div className="row" style={{minHeight:"100vh"}}>
         <div className="col-1"></div>
         <div className="col-10">
           <h2>

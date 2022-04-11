@@ -312,7 +312,7 @@ function HeaderBar(props) {
         <div className="header stickyBar">
           <div className="container-fluid text-center">
             <div className="row">
-              <div className="col-1" style={{ padding: "3px" }}>
+              <div className="col-1" style={{ padding: "3px 5px" }}>
                 <Dropdown autoClose="outside" align={"end"}>
                   <DropdownToggle
                     id="noti"
