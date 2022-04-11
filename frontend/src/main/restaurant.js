@@ -136,10 +136,10 @@ function Restaurant() {
                     {qtys[y]}× {x.name} &#8212; HK${x.price*qtys[y]}
                 </Typography>:<></>)}
              <Typography variant="body" display="block">
-                    {Math.min(parseInt(String(customerInfo.points)),pay)}× Points &#8212; HK$ –{Math.min(parseInt(String(customerInfo.points)),pay)}
+                    {parseInt(String(Math.min(parseInt(String(customerInfo.points)),pay)))}× Points &#8212; HK$ –{parseInt(String(Math.min(parseInt(String(customerInfo.points)),pay)))}
                 </Typography>
             {(()=>{
-                return <Box sx={{mt:"40%"}}><h2>Total: HK${Math.max(0,pay-parseInt(String(customerInfo.points)))}</h2></Box>;
+                return <Box sx={{mt:"40%"}}><h2>Total: HK${Math.round((pay-parseInt(String(Math.min(parseInt(String(customerInfo.points)),pay))))*1000)/1000}</h2></Box>;
             })()}
             <ThemeProvider theme={theme}>
             <Box sx={{mt:"5%"}}><Button onClick={async()=>{
@@ -160,8 +160,8 @@ function Restaurant() {
                             'restaurantID': rid,
                             'items':ids,
                             'total':pay,
-                            'couponUsed':Math.min(parseInt(String(customerInfo.points)),pay),
-                            'netTotal':Math.max(0,pay-parseInt(String(customerInfo.points)))
+                            'couponUsed':parseInt(String(Math.min(parseInt(String(customerInfo.points)),pay))),
+                            'netTotal':pay-parseInt(String(Math.min(parseInt(String(customerInfo.points)),pay)))
                     }
                     console.log(body);
                     console.log(JSON.stringify(body));
