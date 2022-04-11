@@ -1,7 +1,7 @@
 import "./admin.css";
 import React from "react";
 import { useState, useEffect } from "react";
-import { Alert, Avatar, Grid, Stack } from "@mui/material";
+import { Alert, Avatar, Backdrop, CircularProgress, Grid, Stack } from "@mui/material";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -143,14 +143,6 @@ function ResetPassword(props) {
   );
 }
 
-// function ResetCustomerPassword(props) {
-//     return ResetPassword('customer');
-// }
-
-// function ResetRestaurantPassword(props) {
-//     return ResetPassword('restaurant');
-// }
-
 function FoodItem(props) {
   let foodItem = props.food;
   console.log(foodItem);
@@ -166,7 +158,6 @@ function Order(props) {
   console.log(props);
   var createDate = props.order.createdAt;
   var updateDate = props.order.updatedAt;
-  // var restaurantName = props.order.restaurant_Info[0].restaurantName;
   var restaurantID = props.order.restaurantID._id;
   var customerID = props.order.customerID._id;
   var orderNo = props.order.orderNo;
@@ -227,14 +218,17 @@ function Order(props) {
 function OrderHistory(props) {
   const [orderHistory, setOrderHistory] = useState([]);
   const [reload, setReload] = useState(true);
+  const [loading, setLoading] = useState(true);
+
   setInterval(() => {
     window.location.reload();
   }, REFRESH_RATE);
-  // const PREFIX='http://localhost:5000';
+
   useEffect(() => {
     const URL = PREFIX + "/admin/order/all";
     const fetchOrder = async () => {
       try {
+        setLoading(true);
         const response = await fetch(URL, {
           method: "GET",
           headers: {
@@ -249,40 +243,53 @@ function OrderHistory(props) {
         }
         setOrderHistory(order_history);
         console.log(order_history);
+        setLoading(false);
       } catch (error) {
         console.log("error", error);
+        setLoading(false);
       }
     };
     if (reload) {
       fetchOrder();
     }
   }, []);
+
   function handleReload() {
     window.location.reload();
   }
+
   return (
     <>
-      <div className="row">
-        <div className="col-10">
-          <h2>
-            <i className="material-icons">receipt_long</i>
-            List of orders:
-            <span style={{ cursor: "pointer" }} onClick={() => handleReload()}>
-              <i className="material-icons">sync</i>
-            </span>
-          </h2>
-          <h6>(refresh on every 30s)</h6>
-          <hr />
-          {orderHistory.length == 0 ? (
-            <h3>You haven't made any orders yet.</h3>
-          ) : (
-            orderHistory.map((order, i) => (
-              <Order order={order} i={i} key={i} />
-            ))
-          )}
+      {loading ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <div className="row">
+          <div className="col-10">
+            <h2>
+              <i className="material-icons">receipt_long</i>
+              List of orders:
+              <span style={{ cursor: "pointer" }} onClick={() => handleReload()}>
+                <i className="material-icons">sync</i>
+              </span>
+            </h2>
+            <h6>(refresh on every 30s)</h6>
+            <hr />
+            {orderHistory.length == 0 ? (
+              <h3>You haven't made any orders yet.</h3>
+            ) : (
+              orderHistory.map((order, i) => (
+                <Order order={order} i={i} key={i} />
+              ))
+            )}
+          </div>
+          <div className="col-2"></div>
         </div>
-        <div className="col-2"></div>
-      </div>
+      )}
     </>
   );
 }
@@ -295,14 +302,13 @@ const useStyles = makeStyles({
 });
 
 function CustomerCard(props) {
-  console.log(props);
   const [ImgUrl, setImgUrl] = useState();
   const [skip, setSkip] = useState(false);
   const classes = useStyles();
+
   let customer = props.customer;
-  // console.log(customer);
-  // let index = props.i;
   let profilePic = null;
+
   if (!skip) {
     if (customer.profilePic != undefined) {
       profilePic = customer.profilePic;
@@ -392,9 +398,9 @@ function CustomerCard(props) {
 }
 
 function CustomerList(props) {
-  // const PREFIX='http://localhost:5000';
   const [reload, setReload] = useState(true);
   const [CustomerList, setCustomerList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   setInterval(() => {
     window.location.reload();
@@ -402,9 +408,9 @@ function CustomerList(props) {
 
   useEffect(() => {
     const URL = PREFIX + "/admin/customer/all";
-    console.log("CA");
     async function fetchData() {
       try {
+        setLoading(true);
         const response = await fetch(URL, {
           method: "GET",
           headers: {
@@ -414,50 +420,61 @@ function CustomerList(props) {
         const customerDetails = await response.json();
         setCustomerList(customerDetails);
         setReload(false);
+        setLoading(false);
       } catch (error) {
         console.log("error", error);
+        setLoading(false);
       }
     }
     if (reload) {
       fetchData();
     }
-    console.log("CB");
   }, []);
 
   return (
     <>
-      <h2>
-        <i className="material-icons">list</i>
-        List of customers:
-        <span
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            window.location.reload();
-          }}
+      {loading ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
         >
-          <i className="material-icons">sync</i>
-        </span>
-      </h2>
-      <h6>(refresh on every 30s)</h6>
-      <h6>Number of customers: {CustomerList.length}</h6>
-      <div>
-        {CustomerList.map((customer, i) => (
-          <CustomerCard customer={customer} i={i} key={i} />
-        ))}
-      </div>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <div>
+          <h2>
+            <i className="material-icons">list</i>
+            List of customers:
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              <i className="material-icons">sync</i>
+            </span>
+          </h2>
+          <h6>(refresh on every 30s)</h6>
+          <h6>Number of customers: {CustomerList.length}</h6>
+          <div>
+            {CustomerList.map((customer, i) => (
+              <CustomerCard customer={customer} i={i} key={i} />
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }
-//
-//Restaurant
+
+// Restaurant
 function RestaurantCard(props) {
-  // const PREFIX='http://localhost:5000';
   const [update, setUpdate] = useState(true);
+
   function handleClick(action, username) {
     setUpdate(false);
     if (action == "Approve") {
       const URL = PREFIX + "/admin/restaurant/approve";
-      console.log("CA");
       async function approve() {
         try {
           const response = await fetch(URL, {
@@ -478,12 +495,8 @@ function RestaurantCard(props) {
         }
       }
       approve();
-      console.log("CB");
     } else if (action == "Reject") {
-      console.log(username);
-
       const URL = PREFIX + "/admin/restaurant/reject";
-      console.log("CA");
       async function reject() {
         try {
           const response = await fetch(URL, {
@@ -505,7 +518,6 @@ function RestaurantCard(props) {
         }
       }
       reject();
-      console.log("CB");
     }
     window.location.reload();
     console.log("setting reload");
@@ -516,8 +528,6 @@ function RestaurantCard(props) {
   const [skip, setSkip] = useState(false);
 
   let restaurant = props.restaurant;
-  // console.log(customer);
-  // let index = props.i;
   if (!skip) {
     let profilePic = restaurant.profilePic;
     let img = Buffer.from(profilePic.data).toString("base64");
@@ -526,120 +536,105 @@ function RestaurantCard(props) {
     setImgUrl(img);
   }
 
-  // skip = true;
-
   return (
-    <div style={{ padding: "5px 0" }}>
-      <Card sx={{ display: "flex" }}>
-        <CardContent sx={{ flex: "1 0 auto" }}>
-          <Box sx={{ display: "flex", flexDirection: "row", px: 1, m: 1 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={10}>
-                <Typography variant="h5" component="div">
-                  <b>{restaurant.username}</b>
-                </Typography>
+    <>
+      <div style={{ padding: "5px 0" }}>
+        <Card sx={{ display: "flex" }}>
+          <CardContent sx={{ flex: "1 0 auto" }}>
+            <Box sx={{ display: "flex", flexDirection: "row", px: 1, m: 1 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={10}>
+                  <Typography variant="h5" component="div">
+                    <b>{restaurant.username}</b>
+                  </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <b
+                    style={
+                      restaurant.approved ? { color: "green" } : { color: "red" }
+                    }
+                  >
+                    {restaurant.approved ? "Approved" : "Not approved"}
+                  </b>
+                </Grid>
+                <Grid item xs={12}>
+                  <h6 style={{ color: "grey" }}>ID: {restaurant._id}</h6>
+                </Grid>
               </Grid>
-              <Grid item xs={2}>
-                <b
-                  style={
-                    restaurant.approved ? { color: "green" } : { color: "red" }
-                  }
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "row", px: 1, m: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", px: 1, m: 1 }}>
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  spacing={2}
+                  height="100%"
                 >
-                  {restaurant.approved ? "Approved" : "Not approved"}
-                </b>
-              </Grid>
-              <Grid item xs={12}>
-                <h6 style={{ color: "grey" }}>ID: {restaurant._id}</h6>
-              </Grid>
-            </Grid>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row", px: 1, m: 1 }}>
-            <Box sx={{ display: "flex", alignItems: "center", px: 1, m: 1 }}>
-              <Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-                spacing={2}
-                height="100%"
-              >
-                <div style={{ position: "relative" }}>
-                  <Avatar
-                    alt="picture"
-                    src={`data:image/jpeg; base64, ${ImgUrl}`}
-                    sx={{ width: 150, height: "auto", maxWidth: "100%" }}
-                  />
-                  <div
-                    className="online-status"
-                    style={{
-                      backgroundColor: restaurant.online ? "green" : "red",
-                    }}
-                  ></div>
-                </div>
-              </Stack>
+                  <div style={{ position: "relative" }}>
+                    <Avatar
+                      alt="picture"
+                      src={`data:image/jpeg; base64, ${ImgUrl}`}
+                      sx={{ width: 150, height: "auto", maxWidth: "100%" }}
+                    />
+                    <div
+                      className="online-status"
+                      style={{
+                        backgroundColor: restaurant.online ? "green" : "red",
+                      }}
+                    ></div>
+                  </div>
+                </Stack>
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", px: 1, m: 1 }}>
+                <Typography component="div" variant="body1">
+                  Address: {restaurant.address}
+                  <br />
+                  Username: {restaurant.username}
+                  <br />
+                  E-mail: {restaurant.email}
+                  <br />
+                  Phone Number: {restaurant.phoneNum}
+                  <br />
+                  License Number: {restaurant.licenseNum}
+                </Typography>
+              </Box>
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center", px: 1, m: 1 }}>
-              <Typography component="div" variant="body1">
-                Address: {restaurant.address}
-                <br />
-                Username: {restaurant.username}
-                <br />
-                E-mail: {restaurant.email}
-                <br />
-                Phone Number: {restaurant.phoneNum}
-                <br />
-                License Number: {restaurant.licenseNum}
-              </Typography>
-            </Box>
-          </Box>
-          {/* menu probably? */}
-          {/* <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                            <CardMedia
-                                display="flex"
-                                component="img"
-                                sx={{ width: 151 }}
-                                image={`data:image/jpg; base64, ${ImgUrl}`}
-                                alt="Live from space album cover"
-                            />
-                        </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                            <Typography component="div" variant="subtitle2">
-                            </Typography>
-                        </Box>
-                    </Box> */}
-          {restaurant.approved ? (
-            ""
-          ) : (
-            <CardActions>
-              <Button
-                size="small"
-                style={{ backgroundColor: "green" }}
-                onClick={() => {
-                  handleClick("Approve", restaurant.username);
-                }}
-              >
-                <span style={{ color: "white", padding: "2px" }}>Approve</span>
-              </Button>
-              <Button
-                size="small"
-                style={{ backgroundColor: "red" }}
-                onClick={() => {
-                  handleClick("Reject", restaurant.username);
-                }}
-              >
-                <span style={{ color: "white", padding: "2px" }}>Reject</span>
-              </Button>
-            </CardActions>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+            {restaurant.approved ? (
+              ""
+            ) : (
+              <CardActions>
+                <Button
+                  size="small"
+                  style={{ backgroundColor: "green" }}
+                  onClick={() => {
+                    handleClick("Approve", restaurant.username);
+                  }}
+                >
+                  <span style={{ color: "white", padding: "2px" }}>Approve</span>
+                </Button>
+                <Button
+                  size="small"
+                  style={{ backgroundColor: "red" }}
+                  onClick={() => {
+                    handleClick("Reject", restaurant.username);
+                  }}
+                >
+                  <span style={{ color: "white", padding: "2px" }}>Reject</span>
+                </Button>
+              </CardActions>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }
+
 function RestaurantList(props) {
-  // const PREFIX='http://localhost:5000';
   const [reload, setReload] = useState(true);
   const [RestaurantList, setRestaurantList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   setInterval(() => {
     window.location.reload();
@@ -647,9 +642,9 @@ function RestaurantList(props) {
 
   useEffect(() => {
     const URL = PREFIX + "/admin/restaurant/all";
-    console.log("CA");
     async function fetchData() {
       try {
+        setLoading(true);
         const response = await fetch(URL, {
           method: "GET",
           headers: {
@@ -664,43 +659,55 @@ function RestaurantList(props) {
         }
         setRestaurantList(restaurantDetails);
         setReload(false);
+        setLoading(false);
       } catch (error) {
         console.log("error", error);
+        setLoading(false);
       }
     }
     if (reload) {
       fetchData();
     }
-    console.log("CB");
   }, []);
 
   return (
     <>
-      <h2>
-        <i className="material-icons">list</i>
-        List of restaurants:
-        <span
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            window.location.reload();
-          }}
+      {loading ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
         >
-          <i className="material-icons">sync</i>
-        </span>
-      </h2>
-      <h6>(refresh on every 30s)</h6>
-      <h6>Number of restaurants: {RestaurantList.length}</h6>
-      <div>
-        {RestaurantList.map((restaurant, i) => (
-          <RestaurantCard
-            restaurant={restaurant}
-            i={i}
-            key={i}
-            setReload={setReload}
-            token={props.token}
-          />
-        ))}
-      </div>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <div>
+          <h2>
+            <i className="material-icons">list</i>
+            List of restaurants:
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              <i className="material-icons">sync</i>
+            </span>
+          </h2>
+          <h6>(refresh on every 30s)</h6>
+          <h6>Number of restaurants: {RestaurantList.length}</h6>
+          <div>
+            {RestaurantList.map((restaurant, i) => (
+              <RestaurantCard
+                restaurant={restaurant}
+                i={i}
+                key={i}
+                setReload={setReload}
+                token={props.token}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -15,25 +15,6 @@ import MaterialIcon from "material-icons-react";
 const PREFIX = "http://localhost:5000";
 const REFRESH_RATE = 30 * 1000; // 30 sec
 
-// import { useNavigate } from 'react-router-dom';
-// let navigate = useNavigate();
-
-// class Debug extends React.Component{
-//     render(){
-// const suggest_type = [{remarks: "Just TAKE it"}, {remarks: "I'm loving IT"}, {remarks: "EASYer's Choice"}];
-// const suggested = [
-//     {filename: "/cuhk-2013.jpg", restaurantName: "Restaurant 1", address:    "address 1", phoneNum: "Restaurant Info1"},
-//     {filename: "/cuhk-2017.jpg", restaurantName: "Restaurant 2", address:    "address 2", phoneNum: "Restaurant Info2"},
-//     {filename: "/sci-2013.jpg", restaurantName: "Restaurant 3", address:    "address 3", phoneNum: "Restaurant Info3"},
-// ];
-
-// const restaurantData = [
-// {filename: "/cuhk-2013.jpg", restaurantName: "adminDefault3AD", address:    "default", phoneNum: "00000000"}
-// ];
-//         return(<></>);
-//     }
-// }
-
 class Suggestion extends React.Component {
     constructor(props) {
         super(props);
@@ -71,12 +52,10 @@ class SuggestionCard extends React.Component {
   }
 
     render() {
-        // let i = this.props.i;
         let suggestion = this.props.suggestion;
         if (suggestion.profilePic != undefined){
             if (!this.state.skip){
                 let profilePic = suggestion.profilePic;
-                // console.log(profilePic);
                 let img = Buffer.from(profilePic.data).toString('base64');
                 this.setState( ()=>
                     {   
@@ -125,7 +104,6 @@ class Gallery extends React.Component {
   render() {
     let bufferFR = [];
     bufferFR = this.props.filteredRestaurants;
-    // console.log(this.props.filteredRestaurants);
     return (
       <>
         <main className="container-fluid">
@@ -164,14 +142,12 @@ class Gallery extends React.Component {
 
 class FileCard extends React.Component {
   handleMOver(index, e) {
-    // console.log(index);
     this.setState(() => {
       if (this.state.selected != index) return { selected: index };
       else return { selected: -1 };
     });
   }
   handleMOut(index, e) {
-    // console.log(index);
     this.setState(() => {
       // if (this.state.selected = index)
       return { selected: -1 };
@@ -263,77 +239,9 @@ class FileCard extends React.Component {
   }
 }
 
-// async function getAvailableRestaurants(url) {
-//     const response = await fetch(
-//         url, {
-//         method: 'GET',
-//         headers: {
-//             'Authorization': 'Bearer '+sessionStorage.getItem("token")
-//         }}
-//     );
-//     const restaurantDetails = await response.json();
-//     console.log("Restaurants:")
-//     console.log(restaurantDetails);
-
-//     const availableR = restaurantDetails.filter((restaurants) => {
-//         // const available = true;
-//         const available = restaurants.approved && restaurants.online;
-//         return available;
-//     });
-
-//     return availableR;
-// }
-
-// function FavoriteRestaurant() {
-//     const PREFIX='http://localhost:5000';
-//     const [REALrestaurantData, setREALRD] = useState([]);
-
-//     useEffect(async () => {
-//             const url = PREFIX+'/customer/fav';
-//             console.log('in fav');
-//             console.log('A');
-
-//             let availableR;
-//                 try {
-//                     availableR = await getAvailableRestaurants(url);
-//                     console.log(availableR);
-//                     setREALRD(availableR);
-//                 }
-//                 catch (err) {
-//                     console.log('error:', err);
-//                 }
-//             console.log("B");
-//     },[]);
-
-//     const [RErender, setRErender] = useState(true);
-
-//     return (
-//           <>
-//             <div className='Main'>
-//                 <Gallery filteredRestaurants={REALrestaurantData} RErender={RErender} setRErender={setRErender}/>
-//             </div>
-//           </>
-//     );
-// }
-
-// function Main(props) {
-//     console.log(props.action)
-//     if (props.action == 'fav') {
-//         return (
-//             <FavoriteRestaurant/>
-//         );
-//     }
-//     else {
-//         return (
-//             <Main2/>
-//         )
-//     }
-// }
-
 function Main() {
-  // const PREFIX='http://localhost:5000';
-
   const [REALrestaurantData, setREALRD] = useState([]);
+
   useEffect(() => {
     const URL = PREFIX + "/restaurant/approved";
     async function fetchData() {
@@ -347,14 +255,13 @@ function Main() {
         const restaurantDetails = await response.json();
 
         const availableR = restaurantDetails.filter((restaurants) => {
-          // const available = true;
           const available = restaurants.approved && restaurants.online;
           return available;
         });
 
         setREALRD(availableR);
-      } catch (error) {
-        console.log("error", error);
+      } catch (err) {
+        console.log("error", err);
       }
     }
     fetchData();
@@ -381,9 +288,6 @@ function Main() {
       return restaurant_list.slice(-3, restaurant_list.length);
     }
   }
-
-  // console.log("Realthingy:");
-  // console.log(REALrestaurantData);
 
   return (
     <>

@@ -48,13 +48,11 @@ export default function Login(props) {
 
     // check the variable really contains a token, else do handling
     if (res.token != null) {
-      console.log("successfully login");
       props.setToken(res.token);
       sessionStorage.setItem("token", res.token); //Storing Token in Session Storage
       sessionStorage.setItem("username", username);
       sessionStorage.setItem("usertype", usertype);
     } else {
-      console.log(res);
       setLoginStatus(res.name);
       if (
         usertype === "customer" &&
@@ -63,13 +61,11 @@ export default function Login(props) {
           "AccountNotActivatedAndPendingOtp",
         ].includes(res.name)
       ) {
-        console.log("account not activated!");
         navigate("/verification");
       } else if (
         usertype === "restaurant" &&
         res.name === "AccountNotApproved"
       ) {
-        console.log("account not approved!");
         navigate("/verification");
       }
     }

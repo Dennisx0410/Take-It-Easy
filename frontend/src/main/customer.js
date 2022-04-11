@@ -8,6 +8,8 @@ import { Buffer } from "buffer";
 import {
   Alert,
   Avatar,
+  Backdrop,
+  CircularProgress,
   Paper,
   Stack,
   Table,
@@ -19,14 +21,13 @@ import {
 import { Box } from "@mui/system";
 
 const PREFIX = "http://localhost:5000";
-const REFRESH_RATE = 30 * 1000; // 30 sec
 
 function ChangePassword() {
-  // const PREFIX='http://localhost:5000';
-  var oldPassowrd = null,
-    newPassword = null;
   const [CPstatus, setCPstatus] = useState({});
-  const [mask, setMask] = useState(false);
+  const [mask, setMask] = useState(false); 
+  let oldPassowrd = null;
+  let newPassword = null;
+
   function handleSubmit(e) {
     e.preventDefault();
     let loginForm = e.target;
@@ -35,14 +36,11 @@ function ChangePassword() {
     let newpwd = formData.get("newpwd");
     let REnewpwd = formData.get("REnewpwd");
     if (oldpwd == "" || newpwd == "" || REnewpwd == "") {
-      // console.log("Empty");
       setCPstatus({
         name: "EmptyPw",
         message: "Please fill in all the fields.",
       });
     } else if (newpwd != REnewpwd) {
-      // console.log(newpwd);
-      // console.log(REnewpwd);
       setCPstatus({
         name: "NewPwMismatched",
         message:
@@ -51,9 +49,6 @@ function ChangePassword() {
     } else {
       oldPassowrd = oldpwd;
       newPassword = newpwd;
-      // console.log(oldPassowrd);
-      // console.log(newPassword);
-      // setCPstatus("Valid New password");
       const URL = PREFIX + "/customer/changePw";
       const attempt = async () => {
         try {
@@ -70,9 +65,8 @@ function ChangePassword() {
           });
           const attempt_result = await response.json();
           setCPstatus(attempt_result);
-          console.log(attempt_result);
-        } catch (error) {
-          console.log("error", error);
+        } catch (err) {
+          console.log("error", err);
         }
       };
       attempt();
@@ -162,8 +156,6 @@ function ChangePassword() {
 
 function AccountInfo() {
   const [customerInfo, setCustomerInfo] = useState({});
-
-  // const PREFIX='http://localhost:5000';
 
   useEffect(() => {
     const URL = PREFIX + "/customer/data";
@@ -273,7 +265,6 @@ const useStyles = makeStyles({
 
 function FoodItem(props) {
   let foodItem = props.food;
-  console.log(foodItem);
   return (
     <>
       <span style={{ fontSize: "18px" }}>• {foodItem.name}</span>
@@ -283,8 +274,6 @@ function FoodItem(props) {
 }
 
 function Order(props) {
-  console.log("In order");
-  // console.log(props);
   const classes = useStyles();
   var createDate = props.order.createdAt;
   var updateDate = props.order.updatedAt;
@@ -343,17 +332,13 @@ function Order(props) {
 // /order/fetchByCustomer
 function OrderHistory() {
   const [orderHistory, setOrderHistory] = useState([]);
-
-  // const PREFIX='http://localhost:5000';
-
-  // setInterval(() => {
-  //     window.location.reload();
-  // }, REFRESH_RATE);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const URL = PREFIX + "/order/fetchByCustomer";
     const fetchOrder = async () => {
       try {
+        setLoading(true);
         const response = await fetch(URL, {
           method: "GET",
           headers: {
@@ -367,9 +352,10 @@ function OrderHistory() {
           });
         }
         setOrderHistory(order_history);
-        console.log(order_history);
-      } catch (error) {
-        console.log("error", error);
+        setLoading(false);
+      } catch (err) {
+        console.log("error", err);
+        setLoading(false);
       }
     };
     fetchOrder();
@@ -377,6 +363,14 @@ function OrderHistory() {
 
   return (
     <>
+      {loading ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
       <div className="row">
         <div className="col-1"></div>
         <div className="col-10">
@@ -404,6 +398,7 @@ function OrderHistory() {
         </div>
         <div className="col-1"></div>
       </div>
+      )}
     </>
   );
 }

@@ -16,11 +16,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 import MaterialIcon from "material-icons-react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const PREFIX = "http://localhost:5000";
 
@@ -88,7 +86,6 @@ function Restaurant() {
         });
         const json = await response.json();
         let target_restaurant = findRestaurant(json, rid);
-        console.log(target_restaurant);
         let img = Buffer.from(target_restaurant.profilePic.data).toString(
           "base64"
         );
@@ -109,11 +106,10 @@ function Restaurant() {
         });
         const customer_info = await response2.json();
         setCustomerInfo(customer_info);
-        console.log(customer_info.points);
 
         setLoading(false);
-      } catch (error) {
-        console.log("error", error);
+      } catch (err) {
+        console.log("error", err);
       }
     };
 
@@ -191,7 +187,6 @@ function Restaurant() {
                           ids.push(restaurants.menu[j]._id);
                         }
                       }
-                      console.log(ids);
                       let body = {
                         //'customerID':sessionStorage.token,
                         restaurantID: rid,
@@ -213,8 +208,6 @@ function Restaurant() {
                             )
                           ),
                       };
-                      console.log(body);
-                      console.log(JSON.stringify(body));
                       const URL = PREFIX + "/order/add";
                       const response = await fetch(URL, {
                         method: "POST",
@@ -232,8 +225,8 @@ function Restaurant() {
 
                       navigate("/customer/history", { replace: true });
                       window.location.reload();
-                    } catch (error) {
-                      console.log("error", error);
+                    } catch (err) {
+                      console.log("error", err);
                     }
                   };
 
@@ -392,7 +385,6 @@ function Restaurant() {
                         let t = qtys;
                         qtys[y] = Number(e.target.value);
                         setQtys(t);
-                        console.log(qtys);
 
                         let tot = 0;
                         for (let i = 0; i < restaurants.menu.length; i++) {

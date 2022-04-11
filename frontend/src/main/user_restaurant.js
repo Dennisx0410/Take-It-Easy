@@ -69,14 +69,11 @@ function ChangePassword() {
     let newpwd = formData.get("newpwd");
     let REnewpwd = formData.get("REnewpwd");
     if (oldpwd == "" || newpwd == "" || REnewpwd == "") {
-      console.log("Empty");
       setCPstatus({
         name: "EmptyPw",
         message: "Please fill in all the fields.",
       });
     } else if (newpwd != REnewpwd) {
-      console.log(newpwd);
-      console.log(REnewpwd);
       setCPstatus({
         name: "NewPwMismatched",
         message:
@@ -85,9 +82,6 @@ function ChangePassword() {
     } else {
       oldPassowrd = oldpwd;
       newPassword = newpwd;
-      console.log(oldPassowrd);
-      console.log(newPassword);
-      // setCPstatus("Valid New password");
       const URL = PREFIX + "/restaurant/changePw";
       const attempt = async () => {
         try {
@@ -104,9 +98,8 @@ function ChangePassword() {
           });
           const attempt_result = await response.json();
           setCPstatus(attempt_result);
-          console.log(attempt_result);
-        } catch (error) {
-          console.log("error", error);
+        } catch (err) {
+          console.log("error", err);
         }
       };
       attempt();
@@ -241,7 +234,6 @@ function AccountInfo() {
         });
         const restaurant_info = await response.json();
         setRestaurantInfo(restaurant_info);
-        console.log(restaurant_info);
       } catch (err) {
         console.log("error", err);
       }
@@ -342,8 +334,6 @@ function ChangeMenu() {
     e.preventDefault();
 
     let files = e.target.files;
-
-    console.log(files[0], typeof files[0]);
     setFFF(files[0]);
 
     if (files.length === 0) {
@@ -393,10 +383,9 @@ function ChangeMenu() {
         });
         restaurant_info = await response.json();
         setRestaurantInfo(restaurant_info);
-        console.log(restaurant_info);
         setLoading(false);
-      } catch (error) {
-        console.log("error", error);
+      } catch (err) {
+        console.log("error", err);
       }
     };
     fetchData();
@@ -508,11 +497,9 @@ function ChangeMenu() {
                                       body: JSON.stringify({ foodId: x._id }),
                                     });
                                     const json = await response.json();
-                                    console.log(json);
-
                                     window.location.reload(false);
-                                  } catch (error) {
-                                    console.log("error", error);
+                                  } catch (err) {
+                                    console.log("error", err);
                                     window.location.reload(false);
                                   }
                                 };
@@ -676,16 +663,10 @@ function ChangeMenu() {
                                 reader.onerror = (error) => reject(error);
                               });
 
-                            console.log(name, typeof name);
-                            console.log(price, typeof price);
-                            console.log(imgUrl, typeof imgUrl);
                             let imgFile = await toBase64(fff);
-                            console.log(imgFile, typeof imgFile);
                             let imgBuffer = Buffer.from(imgFile, "base64");
-                            console.log(style, typeof style);
 
                             const url = PREFIX + "/restaurant/food";
-                            console.log(fff);
                             let fd = new FormData();
                             fd.append("foodPic", fff);
                             fd.append("name", name);
@@ -704,10 +685,9 @@ function ChangeMenu() {
                                   body: fd,
                                 });
                                 const json = await response.json();
-                                console.log(json);
                                 window.location.reload(false);
-                              } catch (error) {
-                                console.log("error", error);
+                              } catch (err) {
+                                console.log("error", err);
                               }
                             };
 
@@ -735,7 +715,6 @@ function ChangeMenu() {
 
 function FoodItem(props) {
   let foodItem = props.food;
-  console.log(foodItem);
   return (
     <>
       <span style={{ fontSize: "18px" }}>• {foodItem.name}</span>
@@ -745,8 +724,6 @@ function FoodItem(props) {
 }
 
 function Order(props) {
-  console.log("In order");
-  console.log(props);
   const useStyles = makeStyles({
     root: {
       width: "100%",
@@ -764,7 +741,6 @@ function Order(props) {
   function handleClick(orderID) {
     let s_orderID = orderID.toString();
     const URL = PREFIX + "/order/done";
-    console.log("OA");
     async function done() {
       try {
         const response = await fetch(URL, {
@@ -778,15 +754,12 @@ function Order(props) {
           }),
         });
         const done_result = await response.json();
-        console.log(done_result);
       } catch (error) {
         console.log("error", error);
       }
     }
     done();
-    console.log("OB");
     window.location.reload();
-    console.log("setting reload");
   }
 
   return (
@@ -863,14 +836,13 @@ function Order(props) {
 function OrderHistory(props) {
   const [orderHistory, setOrderHistory] = useState([]);
   const [orderListDisplay, setOrderDisplay] = useState();
-  // setInterval(() => {
-  //     window.location.reload();
-  // }, REFRESH_RATE);
-  // const PREFIX='http://localhost:5000';
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const URL = PREFIX + "/order/fetchByRestaurant";
     const fetchOrder = async () => {
       try {
+        setLoading(true);
         const response = await fetch(URL, {
           method: "GET",
           headers: {
@@ -884,8 +856,9 @@ function OrderHistory(props) {
           });
         }
         setOrderHistory(order_history);
-        console.log(order_history);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.log("error", error);
       }
     };
@@ -918,33 +891,41 @@ function OrderHistory(props) {
 
   return (
     <>
-      <div className="row">
-        <div className="col-1"></div>
-        <div className="col-10">
-          <h2>
-            <i className="material-icons">receipt_long</i>
-            Your order history:
-            <span
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                window.location.reload();
-              }}
-            >
-              <i className="material-icons">sync</i>
-            </span>
-          </h2>
-          <h6>(Auto refresh)</h6>
-          <hr />
-          {orderListDisplay}
-        </div>
-        <div className="col-1"></div>
-      </div>
+      {loading ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+          <div className="row">
+            <div className="col-1"></div>
+            <div className="col-10">
+              <h2>
+                <i className="material-icons">receipt_long</i>
+                Your order history:
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                >
+                  <i className="material-icons">sync</i>
+                </span>
+              </h2>
+              <h6>(Auto refresh)</h6>
+              <hr />
+              {orderListDisplay}
+            </div>
+            <div className="col-1"></div>
+          </div>
+      )}
     </>
   );
 }
 
 function UserRestaurant(props) {
-  console.log(props.page);
   if (props.page == "menu") {
     return (
       <div className="userContent">

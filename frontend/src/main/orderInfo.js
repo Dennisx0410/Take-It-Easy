@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./orderInfo.css";
 
+const PREFIX = `http://localhost:5000`;
+
 function OrderInfo(props) {
   let { id } = useParams();
   const [orderInfo, setOrderInfo] = useState({});
-  const [orderDisplay, setOrderDisplay] = useState();
   const [total, setTotal] = useState(0);
-  const PREFIX = `http://localhost:5000`;
   const [loading, setLoading] = useState(true);
 
   const fetchInfo = async () => {
@@ -17,7 +17,6 @@ function OrderInfo(props) {
       },
     });
     const data = await response.json();
-    console.log(data);
     let sum = 0;
     data.items.map((item) => (sum += item.price));
     setTotal(sum);

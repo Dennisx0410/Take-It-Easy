@@ -33,7 +33,6 @@ function Signup(props) {
       usertype: formData.get("usertype"),
     });
     let res = await signup(formData, usertype);
-    console.log(res);
 
     setSignupStatus(res.name);
 
