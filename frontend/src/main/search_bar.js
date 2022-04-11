@@ -51,7 +51,7 @@ export default function SearchBar(props) {
       <div className="col-10">
         <Search>
           <SearchIconWrapper>
-            <SearchIcon />
+            <SearchIcon style={{color: "#8a055e"}}/>
           </SearchIconWrapper>
           <StyledInputBase
             placeholder="Search…"
