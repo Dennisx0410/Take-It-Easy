@@ -92,25 +92,25 @@ class SuggestionCard extends React.Component {
         return (
             <Link to={"/restaurant/"+suggestion._id}>
                 <Card sx={{ display: 'flex' , ml: 2}}>
-                <CardActionArea sx={{ display: 'flex' }}>
-                    <CardMedia
-                    component="img"
-                    height="150px"
-                    width="30%"
-                    image = {`data:image/jpg; base64, ${this.state.ImgUrl}`}
-                    alt={suggestion.restaurantName}
-                    />
-                    <CardContent >
-                    <Typography gutterBottom variant="body" component="div">
-                        <span style={{color: "#567ace"}}>
-                            {this.props.i==0?<MaterialIcon icon="thumb_up"/>:this.props.i==1?<MaterialIcon icon="star"/>:<MaterialIcon icon="local_fire_department"/>}
-                            {/* {suggest_type[i].remarks} */}
-                        </span>
-                        <br/>
-                        {suggestion.restaurantName}
-                    </Typography>
-                    </CardContent>
-                </CardActionArea>
+                  <CardActionArea sx={{ display: 'flex' }}>
+                      <CardMedia
+                      component="img"
+                      height="150px"
+                      width="30%"
+                      image = {`data:image/jpg; base64, ${this.state.ImgUrl}`}
+                      alt={suggestion.restaurantName}
+                      />
+                      <CardContent >
+                      <Typography gutterBottom variant="body" component="div">
+                          <span style={{color: "#567ace"}}>
+                              {this.props.i==0?<MaterialIcon icon="thumb_up"/>:this.props.i==1?<MaterialIcon icon="star"/>:<MaterialIcon icon="local_fire_department"/>}
+                              {/* {suggest_type[i].remarks} */}
+                          </span>
+                          <br/>
+                          {suggestion.restaurantName}
+                      </Typography>
+                      </CardContent>
+                  </CardActionArea>
                 </Card>
             </Link>
         );
