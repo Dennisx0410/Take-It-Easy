@@ -1,28 +1,28 @@
 .Main {
-    background-color: #faf0e5;
-    min-height: 100vh;
+  background-color: #faf0e5;
+  min-height: 100vh;
 }
 
 .custom-container-width {
-    justify-content: center;
-    text-align: justify;
-    display: flex;
-    align-items: center;
+  justify-content: center;
+  text-align: justify;
+  display: flex;
+  align-items: center;
 }
 
 .custom-card {
-    text-align: justify;
-    padding: 0;
+  text-align: justify;
+  padding: 0;
 }
 
 .suggestionMargin {
-    margin: 10px;
+  margin: 10px;
 }
 
 .lowestZ {
-    z-index: 0;
-    text-decoration:none;
+  z-index: 0;
+  text-decoration: none;
 }
 a {
-    text-decoration:none;
+  text-decoration: none;
 }
