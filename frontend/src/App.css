@@ -6,7 +6,7 @@
 .main {
   background-color: rgb(250, 240, 229);
   position: fixed;
-  width: 100%;
+  min-width: 100vw;
   min-height: 100%;
   color: black;
 }

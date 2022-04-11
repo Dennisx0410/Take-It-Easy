@@ -42,10 +42,10 @@ class Suggestion extends React.Component {
     }
     render() {
         return (
-            <main>
+            <main className="container-fluid">
                 <div className="row" >
                     <div className="col-1"></div>
-                    <div className="col-10 align-self-start">
+                    <div className="col-10 ">
                         <h4>Recommended for you:</h4>
                         <div className='lowestZ slide-in-t'>
                             <Box sx={{ display: 'flex', pt:1, pb:1}}>
@@ -95,7 +95,7 @@ class SuggestionCard extends React.Component{
         }
         return (
             <Link to={"/restaurant/"+suggestion._id}>
-                <Card sx={{ display: 'flex' , ml: 1}}>
+                <Card sx={{ display: 'flex' , ml: 2}}>
                 <CardActionArea sx={{ display: 'flex' }}>
                     <CardMedia
                     component="img"
