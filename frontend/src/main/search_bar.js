@@ -10,13 +10,13 @@ const Search = styled("div")(({ theme }) => ({
   "&:hover": {
     backgroundColor: alpha(theme.palette.warning.light, 0.25),
   },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
+  // marginRight: theme.spacing(2),
+  // marginLeft: 0,
   width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
+  // [theme.breakpoints.up("sm")]: {
+  //   marginLeft: theme.spacing(3),
+  //   width: "auto",
+  // },
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -46,24 +46,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchBar(props) {
   return (
-    <div className="row">
-      <div className="col-1"></div>
-      <div className="col-10">
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon style={{color: "#8a055e"}}/>
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ "aria-label": "search" }}
-            onChange={(e) => {
-              props.setSearchQ(e.target.value);
-              props.setRErender(true);
-            }}
-          />
-        </Search>
+    <main className="container-fluid">
+      <div className="row mb-2">
+        <div className="col-1"></div>
+        <div className="col-10">
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon style={{ color: "#8a055e" }} />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ "aria-label": "search" }}
+              onChange={(e) => {
+                props.setSearchQ(e.target.value);
+                props.setRErender(true);
+              }}
+            />
+          </Search>
+        </div>
+        <div className="col-1"></div>
       </div>
-      <div className="col-1"></div>
-    </div>
+    </main>
   );
 }

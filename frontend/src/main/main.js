@@ -8,7 +8,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+import { CardActionArea, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import MaterialIcon from "material-icons-react";
 
@@ -22,7 +22,7 @@ class Suggestion extends React.Component {
     render() {
         return (
             <main className="container-fluid">
-                <div className="row" >
+                <div className="row mb-2" >
                     <div className="col-1"></div>
                     <div className="col-10 ">
                         <h4>Recommended for you:</h4>
@@ -107,7 +107,7 @@ class Gallery extends React.Component {
     return (
       <>
         <main className="container-fluid">
-          <div className="row">
+          <div className="row mb-2">
             <div className="col-1"></div>
             <div className="col-10 align-self-start">
               <h4>
@@ -122,15 +122,20 @@ class Gallery extends React.Component {
                 </span>
               </h4>
 
-              {bufferFR.map((restaurant, i) => (
-                <FileCard
-                  restaurant={restaurant}
-                  i={i}
-                  key={i}
-                  RErender={this.props.RErender}
-                  setRErender={this.props.setRErender}
-                />
-              ))}
+              <Grid container spacing={2}>
+                {bufferFR.map((restaurant, i) => (
+                  <Grid item xs={12} sm={6} md={4}>
+                  <FileCard
+                    restaurant={restaurant}
+                    i={i}
+                    key={i}
+                    RErender={this.props.RErender}
+                    setRErender={this.props.setRErender}
+                  />
+                  </Grid>
+                ))}
+              </Grid>
+              
             </div>
             <div className="col-1"></div>
           </div>
@@ -190,10 +195,8 @@ class FileCard extends React.Component {
       <Link to={"/restaurant/" + restaurant._id}>
         <Card
           sx={{
-            width: "30%",
+            width: "100%",
             display: "inline-block",
-            ml: "2%",
-            mt: "1%",
             height: "380px",
             transition: "transform 0.15s ease-in-out",
             "&:hover": { transform: "scale3d(1.05, 1.05, 1)" },
@@ -294,13 +297,13 @@ function Main() {
       <div className="Main">
         {/* <Debug filteredRestaurants={filteredRestaurants}/> */}
         <Suggestion suggestion={REALsuggested} />
-        <div style={{ paddingTop: "10px" }}>
+        {/* <div style={{ paddingTop: "10px" }}> */}
           <SearchBar
             searchQ={searchQ}
             setSearchQ={setSearchQ}
             setRErender={setRErender}
           />
-        </div>
+        {/* </div> */}
         <Gallery
           filteredRestaurants={filteredRestaurants}
           RErender={RErender}
