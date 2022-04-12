@@ -8,7 +8,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, Grid } from "@mui/material";
+import { CardActionArea, Backdrop, CircularProgress, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import MaterialIcon from "material-icons-react";
 
@@ -254,11 +254,13 @@ class FileCard extends React.Component {
 
 function Main() {
   const [REALrestaurantData, setREALRD] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const URL = PREFIX + "/restaurant/approved";
     async function fetchData() {
       try {
+        setLoading(true);
         const response = await fetch(URL, {
           method: "GET",
           headers: {
@@ -273,7 +275,9 @@ function Main() {
         });
 
         setREALRD(availableR);
+        setLoading(false);
       } catch (err) {
+        setLoading(false);
         console.log("error", err);
       }
     }
@@ -304,22 +308,31 @@ function Main() {
 
   return (
     <>
-      <div className="Main">
-        {/* <Debug filteredRestaurants={filteredRestaurants}/> */}
-        <Suggestion suggestion={REALsuggested} />
-        {/* <div style={{ paddingTop: "10px" }}> */}
-        <SearchBar
-          searchQ={searchQ}
-          setSearchQ={setSearchQ}
-          setRErender={setRErender}
-        />
-        {/* </div> */}
-        <Gallery
-          filteredRestaurants={filteredRestaurants}
-          RErender={RErender}
-          setRErender={setRErender}
-        />
-      </div>
+      {loading ?
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        :
+        <div className="Main">
+          {/* <Debug filteredRestaurants={filteredRestaurants}/> */}
+          <Suggestion suggestion={REALsuggested} />
+          {/* <div style={{ paddingTop: "10px" }}> */}
+          <SearchBar
+            searchQ={searchQ}
+            setSearchQ={setSearchQ}
+            setRErender={setRErender}
+          />
+          {/* </div> */}
+          <Gallery
+            filteredRestaurants={filteredRestaurants}
+            RErender={RErender}
+            setRErender={setRErender}
+          />
+        </div>
+      }
     </>
   );
 }
