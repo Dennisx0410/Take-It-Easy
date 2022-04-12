@@ -259,7 +259,7 @@ function OrderHistory(props) {
   }
 
   return (
-    <>
+    <div style={{minHeight:"100vh"}}>
       {loading ? (
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -290,7 +290,7 @@ function OrderHistory(props) {
           <div className="col-2"></div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 
