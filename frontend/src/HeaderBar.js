@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import MaterialIcon from "material-icons-react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate } from "react-router-dom";
-import { Badge, IconButton, Snackbar, Alert } from "@mui/material";
+import { Badge, IconButton, Snackbar, Alert, Grid } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
 
@@ -209,111 +209,214 @@ function HeaderBar(props) {
     }
   });
 
-  if (props.usertype == "restaurant") {
-    // setSkip(true);
-    return (
-      <>
-        <Snackbar
-          open={snackOpen}
-          autoHideDuration={6000}
-          onClose={handleSnackClose}
-          anchorOrigin={{ vertical, horizontal }}
+  const noti_html = (
+    <>
+      <Dropdown className="btn-block" autoClose="outside" align={"end"}>
+        <DropdownToggle
+          id="noti"
+          className="bg-transparent btn-transparent"
         >
-          <Alert
-            onClose={handleSnackClose}
-            severity="success"
-            sx={{ width: "100%" }}
+          <Badge
+            badgeContent={
+              !notificationList ? 0 : notificationList.length
+            }
+            color="secondary"
           >
-            {snackMessage}
-          </Alert>
-        </Snackbar>
-        <div className="header stickyBar">
-          <div className="container-fluid text-center">
-            <div className="row">
-              <div className="col-2"></div>
-              <div className="col-8">
-                <Link
-                  to="/"
-                  className="header-title "
-                  style={{ textAlign: "center" }}
-                >
-                  <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
-                  <span>
-                    <b>TAKE IT EASY</b>
-                  </span>
-                  <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
-                </Link>
-              </div>
+            <MaterialIcon icon="notifications" color="#FFFFFF" />
+          </Badge>
+        </DropdownToggle>
+        <Dropdown.Menu id="NotiContainer">
+          <Dropdown.ItemText>
+            <div className="noti-Title">Notifications</div>
+          </Dropdown.ItemText>
+          {notificationList}
+        </Dropdown.Menu>
+      </Dropdown>
+    </>
+  );
 
-              <div className="col-1"></div>
-              <div className="col-1 headerpadding bg-transparent btn-transparent">
-                <Dropdown
-                  className="mx-2 bg-transparent btn-transparent"
-                  autoClose="outside"
-                >
-                  <Dropdown.Toggle
-                    id="dropdown-autoclose-outside"
-                    className="bg-transparent btn-transparent"
-                    size="sm"
-                  >
-                    <MaterialIcon icon="account_circle" color="#FFFFFF" />
-                  </Dropdown.Toggle>
+  const points_html = (
+    <>
+      <Grid item xs={1} className="points">
+        <MaterialIcon icon="savings" color="#FFFFFF" />
+        {customerInfo.points >= 0 ? customerInfo.points : -1}
+      </Grid>
+    </>
+  )
 
-                  <Dropdown.Menu>
-                    {/* <Link to="/"></Link> */}
-                    <Dropdown.Item href="/">Menu</Dropdown.Item>
-                    {/* <Link to="/r/profile"></Link> */}
-                    <Dropdown.Item href="/r/profile">Profile</Dropdown.Item>
-                    <Dropdown.Item href="/r/history">
-                      Order History
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item
-                      onClick={async (e) => {
-                        navigate("/", { replace: true });
-                        await closeHandler(e);
-                        props.socket.disconnect();
-                        props.setToken(undefined);
-                        sessionStorage.clear();
-                        navigate("/");
-                      }}
-                    >
-                      Logout and offline
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  } else if (props.usertype == "customer") {
-    // if (skipTriggerFetch == false){
-    //     triggerFetch();
-    //     console.log(skipTriggerFetch);
-    // }
-    return (
-      <>
-        <Snackbar
-          open={snackOpen}
-          autoHideDuration={6000}
-          onClose={handleSnackClose}
-          anchorOrigin={{ vertical, horizontal }}
+  const dropdown_customer = (
+    <>
+      <Dropdown
+        className="bg-transparent btn-transparent"
+        autoClose="outside"
+        style={{ width: "100%" }}
+      >
+        <Dropdown.Toggle
+          id="dropdown-autoclose-outside"
+          className="bg-transparent btn-transparent"
+          size="sm"
         >
-          <Alert
-            onClose={handleSnackClose}
-            severity="success"
-            sx={{ width: "100%" }}
+          <MaterialIcon icon="account_circle" color="#FFFFFF" />
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+          <Dropdown.Item
+            onClick={() => navigate("/", { replace: true })}
           >
-            {snackMessage}
-          </Alert>
-        </Snackbar>
-        <div className="header stickyBar">
-          <div className="container-fluid text-center">
-            <div className="row">
-              <div className="col-1" style={{ padding: "3px 5px" }}>
-                <Dropdown autoClose="outside" align={"end"}>
+            Restaurant
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() =>
+              navigate("/customer/profile", { replace: true })
+            }
+          >
+            Profile
+          </Dropdown.Item>
+          {/* </Link> */}
+          <Dropdown.Item
+            onClick={() =>
+              navigate("/customer/history", { replace: true })
+            }
+          >
+            Order History
+          </Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item
+            onClick={async (e) => {
+              navigate("/", { replace: true });
+              await closeHandler(e);
+              props.socket.disconnect();
+              props.setToken(undefined);
+              sessionStorage.clear();
+            }}
+          >
+            Logout
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </>
+  );
+
+  const dropdown_restaurant = (
+    <>
+      <Dropdown
+        className="mx-2 bg-transparent btn-transparent"
+        autoClose="outside"
+      >
+        <Dropdown.Toggle
+          id="dropdown-autoclose-outside"
+          className="bg-transparent btn-transparent"
+          size="sm"
+        >
+          <MaterialIcon icon="account_circle" color="#FFFFFF" />
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+          {/* <Link to="/"></Link> */}
+          <Dropdown.Item href="/">Menu</Dropdown.Item>
+          {/* <Link to="/r/profile"></Link> */}
+          <Dropdown.Item href="/r/profile">Profile</Dropdown.Item>
+          <Dropdown.Item href="/r/history">
+            Order History
+          </Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item
+            onClick={async (e) => {
+              navigate("/", { replace: true });
+              await closeHandler(e);
+              props.socket.disconnect();
+              props.setToken(undefined);
+              sessionStorage.clear();
+              navigate("/");
+            }}
+          >
+            Logout and offline
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </>
+  )
+
+  const dropdown_admin = (
+    <>
+      <Dropdown
+        className="mx-2 bg-transparent btn-transparent"
+        autoClose="outside"
+      >
+        <Dropdown.Toggle
+          id="dropdown-autoclose-outside"
+          className="bg-transparent "
+          size="sm"
+        >
+          <MaterialIcon icon="account_circle" color="#FFFFFF" />
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu style={{ zIndex: 10 }}>
+          <Dropdown.Item
+            onClick={() => navigate("/", { replace: true })}
+          >
+            Orders
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() =>
+              navigate("/userlist/customers", { replace: true })
+            }
+          >
+            Customers' List
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() =>
+              navigate("/userlist/restaurants", { replace: true })
+            }
+          >
+            Restaurants' List
+          </Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item
+            onClick={async (e) => {
+              navigate("/", { replace: true });
+              await closeHandler(e);
+              props.socket.disconnect();
+              props.setToken(undefined);
+              sessionStorage.clear();
+            }}
+          >
+            Logout
+          </Dropdown.Item>
+          {/* onClick={handleLogout(props.setToken)} */}
+        </Dropdown.Menu>
+      </Dropdown>
+    </>
+  )
+
+
+  return (
+    <>
+      <Snackbar
+        open={snackOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackClose}
+        anchorOrigin={{ vertical, horizontal }}
+      >
+        <Alert
+          onClose={handleSnackClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {snackMessage}
+        </Alert>
+      </Snackbar>
+      <div className="header stickyBar">
+        <div className="container-fluid text-center" style={{height: "100%"}}>
+          <Grid container
+            justifyContent="center"
+            alignItems="center"
+            // wrap="nowrap"
+            style={{ height: "100%" }}
+          >
+            <Grid item xs={2} sm={1}>
+              { props.usertype === "customer" ? noti_html : <></>}
+                {/* <Dropdown className="btn-block" autoClose="outside" align={"end"}>
                   <DropdownToggle
                     id="noti"
                     className="bg-transparent btn-transparent"
@@ -333,165 +436,317 @@ function HeaderBar(props) {
                     </Dropdown.ItemText>
                     {notificationList}
                   </Dropdown.Menu>
-                </Dropdown>
-              </div>
-              <div className="col-1"></div>
-              <div className="col-8">
-                <Link
-                  to="/"
-                  className="header-title "
-                  style={{ textAlign: "center" }}
-                >
+              </Dropdown> */}
+            </Grid>
+            <Grid item xs={0} sm={1}></Grid>
+            <Grid item xs={7} sm={8}>
+              <Link
+                to="/"
+                className="header-title "
+                style={{ textAlign: "center" }}
+              >
+                <div className="d-none d-sm-inline-block">
                   <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
-                  <span>
-                    <b>TAKE IT EASY</b>
-                  </span>
+                </div>
+                <b>TAKE IT EASY</b>
+                <div className="d-none d-sm-inline-block">
                   <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
-                </Link>
-              </div>
+                </div>
+              </Link>
+            </Grid>
 
-              <div className="col-1 points">
-                {/* Points */}
-                <MaterialIcon icon="savings" color="#FFFFFF" />
-                {/* <Points/> */}
-                {customerInfo.points >= 0 ? customerInfo.points : -1}
-              </div>
-              <div className="col-1 headerpadding bg-transparent btn-transparent">
-                <Dropdown
-                  className="bg-transparent btn-transparent"
-                  autoClose="outside"
-                >
-                  <Dropdown.Toggle
-                    id="dropdown-autoclose-outside"
-                    className="bg-transparent btn-transparent"
-                    size="sm"
-                  >
-                    <MaterialIcon icon="account_circle" color="#FFFFFF" />
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    {/* <Link to="/customer/profile">
-                                        Profile */}
-                    <Dropdown.Item
-                      onClick={() => navigate("/", { replace: true })}
-                    >
-                      Restaurant
-                    </Dropdown.Item>
-                    {/* <Dropdown.Item onClick={() => navigate('/customer/fav', { replace: true })}>Fav</Dropdown.Item> */}
-                    <Dropdown.Item
-                      onClick={() =>
-                        navigate("/customer/profile", { replace: true })
-                      }
-                    >
-                      Profile
-                    </Dropdown.Item>
-                    {/* </Link> */}
-                    <Dropdown.Item
-                      onClick={() =>
-                        navigate("/customer/history", { replace: true })
-                      }
-                    >
-                      Order History
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item
-                      onClick={async (e) => {
-                        navigate("/", { replace: true });
-                        await closeHandler(e);
-                        props.socket.disconnect();
-                        props.setToken(undefined);
-                        sessionStorage.clear();
-                      }}
-                    >
-                      Logout
-                    </Dropdown.Item>
-                    {/* onClick={handleLogout(props.setToken)} */}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </div>
-          </div>
+            <Grid item xs={1} className="points">
+              { props.usertype === "customer" ? points_html : <></> }
+                {/* <MaterialIcon icon="savings" color="#FFFFFF" />
+                {customerInfo.points >= 0 ? customerInfo.points : -1} */}
+            </Grid>
+            <Grid item xs={2} sm={1} style={{display: "flex"}}>
+              { 
+                props.usertype === "customer" ? dropdown_customer :
+                  props.usertype == "restaurant" ? dropdown_restaurant :
+                    dropdown_admin
+              }
+            
+            </Grid>
+          </Grid>
         </div>
-      </>
-    );
-  } else if (props.usertype == "admin") {
-    // setSkip(true);
-    return (
-      <>
-        <div className="header stickyBar">
-          <div className="container-fluid text-center">
-            <div className="row">
-              <div className="col-2"></div>
-              <div className="col-8">
-                <Link
-                  to="/"
-                  className="header-title "
-                  style={{ textAlign: "center" }}
-                >
-                  <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
-                  <span>
-                    <b>TAKE IT EASY</b>
-                  </span>
-                  <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
-                </Link>
-              </div>
+      </div>
+    </>
+  );
 
-              <div className="col-1 headerpadding"></div>
-              <div className="col-1 headerpadding bg-transparent btn-transparent rightpadding">
-                <Dropdown
-                  className="mx-2 bg-transparent btn-transparent"
-                  autoClose="outside"
-                >
-                  <Dropdown.Toggle
-                    id="dropdown-autoclose-outside"
-                    className="bg-transparent "
-                    size="sm"
-                  >
-                    <MaterialIcon icon="account_circle" color="#FFFFFF" />
-                  </Dropdown.Toggle>
+  // if (props.usertype == "restaurant") {
+  //   // setSkip(true);
+  //   return (
+  //     <>
+  //       <Snackbar
+  //         open={snackOpen}
+  //         autoHideDuration={6000}
+  //         onClose={handleSnackClose}
+  //         anchorOrigin={{ vertical, horizontal }}
+  //       >
+  //         <Alert
+  //           onClose={handleSnackClose}
+  //           severity="success"
+  //           sx={{ width: "100%" }}
+  //         >
+  //           {snackMessage}
+  //         </Alert>
+  //       </Snackbar>
+  //       <div className="header stickyBar">
+  //         <div className="container-fluid text-center">
+  //           <div className="row">
+  //             <div className="col-2"></div>
+  //             <div className="col-8">
+  //               <Link
+  //                 to="/"
+  //                 className="header-title "
+  //                 style={{ textAlign: "center" }}
+  //               >
+  //                 <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
+  //                 <span>
+  //                   <b>TAKE IT EASY</b>
+  //                 </span>
+  //                 <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
+  //               </Link>
+  //             </div>
 
-                  <Dropdown.Menu style={{ zIndex: 10 }}>
-                    <Dropdown.Item
-                      onClick={() => navigate("/", { replace: true })}
-                    >
-                      Orders
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() =>
-                        navigate("/userlist/customers", { replace: true })
-                      }
-                    >
-                      Customers' List
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() =>
-                        navigate("/userlist/restaurants", { replace: true })
-                      }
-                    >
-                      Restaurants' List
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item
-                      onClick={async (e) => {
-                        navigate("/", { replace: true });
-                        await closeHandler(e);
-                        props.socket.disconnect();
-                        props.setToken(undefined);
-                        sessionStorage.clear();
-                      }}
-                    >
-                      Logout
-                    </Dropdown.Item>
-                    {/* onClick={handleLogout(props.setToken)} */}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
+  //             <div className="col-1"></div>
+  //             <div className="col-1 headerpadding bg-transparent btn-transparent">
+  //               <Dropdown
+  //                 className="mx-2 bg-transparent btn-transparent"
+  //                 autoClose="outside"
+  //               >
+  //                 <Dropdown.Toggle
+  //                   id="dropdown-autoclose-outside"
+  //                   className="bg-transparent btn-transparent"
+  //                   size="sm"
+  //                 >
+  //                   <MaterialIcon icon="account_circle" color="#FFFFFF" />
+  //                 </Dropdown.Toggle>
+
+  //                 <Dropdown.Menu>
+  //                   {/* <Link to="/"></Link> */}
+  //                   <Dropdown.Item href="/">Menu</Dropdown.Item>
+  //                   {/* <Link to="/r/profile"></Link> */}
+  //                   <Dropdown.Item href="/r/profile">Profile</Dropdown.Item>
+  //                   <Dropdown.Item href="/r/history">
+  //                     Order History
+  //                   </Dropdown.Item>
+  //                   <Dropdown.Divider />
+  //                   <Dropdown.Item
+  //                     onClick={async (e) => {
+  //                       navigate("/", { replace: true });
+  //                       await closeHandler(e);
+  //                       props.socket.disconnect();
+  //                       props.setToken(undefined);
+  //                       sessionStorage.clear();
+  //                       navigate("/");
+  //                     }}
+  //                   >
+  //                     Logout and offline
+  //                   </Dropdown.Item>
+  //                 </Dropdown.Menu>
+  //               </Dropdown>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </>
+  //   );
+  // } else if (props.usertype == "customer") {
+  //   return (
+  //     <>
+  //       <Snackbar
+  //         open={snackOpen}
+  //         autoHideDuration={6000}
+  //         onClose={handleSnackClose}
+  //         anchorOrigin={{ vertical, horizontal }}
+  //       >
+  //         <Alert
+  //           onClose={handleSnackClose}
+  //           severity="success"
+  //           sx={{ width: "100%" }}
+  //         >
+  //           {snackMessage}
+  //         </Alert>
+  //       </Snackbar>
+  //       <div className="header stickyBar">
+  //         <div className="container-fluid text-center">
+  //           <div className="row">
+  //             <div className="col-1" style={{ padding: "3px 5px" }}>
+  //               <Dropdown autoClose="outside" align={"end"}>
+  //                 <DropdownToggle
+  //                   id="noti"
+  //                   className="bg-transparent btn-transparent"
+  //                 >
+  //                   <Badge
+  //                     badgeContent={
+  //                       !notificationList ? 0 : notificationList.length
+  //                     }
+  //                     color="secondary"
+  //                   >
+  //                     <MaterialIcon icon="notifications" color="#FFFFFF" />
+  //                   </Badge>
+  //                 </DropdownToggle>
+  //                 <Dropdown.Menu id="NotiContainer">
+  //                   <Dropdown.ItemText>
+  //                     <div className="noti-Title">Notifications</div>
+  //                   </Dropdown.ItemText>
+  //                   {notificationList}
+  //                 </Dropdown.Menu>
+  //               </Dropdown>
+  //             </div>
+  //             <div className="col-1"></div>
+  //             <div className="col-8">
+  //               <Link
+  //                 to="/"
+  //                 className="header-title "
+  //                 style={{ textAlign: "center" }}
+  //               >
+  //                 <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
+  //                 <span>
+  //                   <b>TAKE IT EASY</b>
+  //                 </span>
+  //                 <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
+  //               </Link>
+  //             </div>
+
+  //             <div className="col-1 points">
+  //               {/* Points */}
+  //               <MaterialIcon icon="savings" color="#FFFFFF" />
+  //               {/* <Points/> */}
+  //               {customerInfo.points >= 0 ? customerInfo.points : -1}
+  //             </div>
+  //             <div className="col-1 headerpadding bg-transparent btn-transparent">
+  //               <Dropdown
+  //                 className="bg-transparent btn-transparent"
+  //                 autoClose="outside"
+  //               >
+  //                 <Dropdown.Toggle
+  //                   id="dropdown-autoclose-outside"
+  //                   className="bg-transparent btn-transparent"
+  //                   size="sm"
+  //                 >
+  //                   <MaterialIcon icon="account_circle" color="#FFFFFF" />
+  //                 </Dropdown.Toggle>
+
+  //                 <Dropdown.Menu>
+  //                   <Dropdown.Item
+  //                     onClick={() => navigate("/", { replace: true })}
+  //                   >
+  //                     Restaurant
+  //                   </Dropdown.Item>
+  //                   <Dropdown.Item
+  //                     onClick={() =>
+  //                       navigate("/customer/profile", { replace: true })
+  //                     }
+  //                   >
+  //                     Profile
+  //                   </Dropdown.Item>
+  //                   {/* </Link> */}
+  //                   <Dropdown.Item
+  //                     onClick={() =>
+  //                       navigate("/customer/history", { replace: true })
+  //                     }
+  //                   >
+  //                     Order History
+  //                   </Dropdown.Item>
+  //                   <Dropdown.Divider />
+  //                   <Dropdown.Item
+  //                     onClick={async (e) => {
+  //                       navigate("/", { replace: true });
+  //                       await closeHandler(e);
+  //                       props.socket.disconnect();
+  //                       props.setToken(undefined);
+  //                       sessionStorage.clear();
+  //                     }}
+  //                   >
+  //                     Logout
+  //                   </Dropdown.Item>
+  //                 </Dropdown.Menu>
+  //               </Dropdown>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </>
+  //   );
+  // } else if (props.usertype == "admin") {
+  //   return (
+  //     <>
+  //       <div className="header stickyBar">
+  //         <div className="container-fluid text-center">
+  //           <div className="row">
+  //             <div className="col-2"></div>
+  //             <div className="col-8">
+  //               <Link
+  //                 to="/"
+  //                 className="header-title "
+  //                 style={{ textAlign: "center" }}
+  //               >
+  //                 <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
+  //                 <span>
+  //                   <b>TAKE IT EASY</b>
+  //                 </span>
+  //                 <MaterialIcon icon="takeout_dining" color="#FFFFFF" />
+  //               </Link>
+  //             </div>
+
+  //             <div className="col-1 headerpadding"></div>
+  //             <div className="col-1 headerpadding bg-transparent btn-transparent rightpadding">
+  //               <Dropdown
+  //                 className="mx-2 bg-transparent btn-transparent"
+  //                 autoClose="outside"
+  //               >
+  //                 <Dropdown.Toggle
+  //                   id="dropdown-autoclose-outside"
+  //                   className="bg-transparent "
+  //                   size="sm"
+  //                 >
+  //                   <MaterialIcon icon="account_circle" color="#FFFFFF" />
+  //                 </Dropdown.Toggle>
+
+  //                 <Dropdown.Menu style={{ zIndex: 10 }}>
+  //                   <Dropdown.Item
+  //                     onClick={() => navigate("/", { replace: true })}
+  //                   >
+  //                     Orders
+  //                   </Dropdown.Item>
+  //                   <Dropdown.Item
+  //                     onClick={() =>
+  //                       navigate("/userlist/customers", { replace: true })
+  //                     }
+  //                   >
+  //                     Customers' List
+  //                   </Dropdown.Item>
+  //                   <Dropdown.Item
+  //                     onClick={() =>
+  //                       navigate("/userlist/restaurants", { replace: true })
+  //                     }
+  //                   >
+  //                     Restaurants' List
+  //                   </Dropdown.Item>
+  //                   <Dropdown.Divider />
+  //                   <Dropdown.Item
+  //                     onClick={async (e) => {
+  //                       navigate("/", { replace: true });
+  //                       await closeHandler(e);
+  //                       props.socket.disconnect();
+  //                       props.setToken(undefined);
+  //                       sessionStorage.clear();
+  //                     }}
+  //                   >
+  //                     Logout
+  //                   </Dropdown.Item>
+  //                 </Dropdown.Menu>
+  //               </Dropdown>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </>
+  //   );
+  // }
 }
 
 export default HeaderBar;

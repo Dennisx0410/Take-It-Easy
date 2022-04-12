@@ -12,9 +12,9 @@
 
 a.header-title {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 200%;
+  font-size: calc(100% + 1vw);
   color: #ffffff;
-  padding: 7px 5px;
+  /* padding: 7px 5px; */
   text-decoration: none;
 }
 
@@ -22,13 +22,13 @@ a.header-title {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;
   color: #ffffff;
-  padding: 0.75vw 0 0 0;
-  text-align: right;
+  /* padding: 0.75vw 0 0 0; */
+  /* text-align: right; */
 }
 
-.headerpadding {
+/* .headerpadding {
   padding: 8px 2px;
-}
+} */
 
 a.header-title:link {
   display: inline;
