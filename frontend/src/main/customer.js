@@ -280,7 +280,7 @@ function Order(props) {
   var restaurantName = props.order.restaurantID.restaurantName;
   var restaurantID = props.order.restaurantID._id;
   var orderNo = props.order.orderNo;
-  var hyperLink = `http://localhost:3000/order/${props.order._id}`;
+  var hyperLink = `/order/${props.order._id}`;
   return (
     <>
       <Card className={classes.root}>

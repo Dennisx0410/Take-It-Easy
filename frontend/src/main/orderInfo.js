@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import "./orderInfo.css";
 
 const PREFIX = `http://localhost:5000`;
@@ -76,7 +78,12 @@ function OrderInfo(props) {
       </div>
     );
   } else {
-    return <div>loading</div>;
+    return  <Backdrop
+    sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    open={loading}
+  >
+    <CircularProgress color="inherit" />
+  </Backdrop>;
   }
 }
 
