@@ -72,11 +72,10 @@ class SuggestionCard extends React.Component {
         }
         );
       }
-
     }
     return (
       <Link to={"/restaurant/" + suggestion._id}>
-        <Card sx={{ display: 'flex', width: "30vw", minWidth: 300}}>
+        <Card sx={{ display: 'flex', width: "30%", minWidth: 400}}>
           <CardActionArea sx={{ display: 'flex' }}>
             <CardMedia
               component="img"
