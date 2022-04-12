@@ -774,9 +774,9 @@ function Order(props) {
               </span>
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              Order created at: {createDate} <br />
+              Order created at: {new Date(createDate).toLocaleString()} <br />
               Order finished at:{" "}
-              {props.order.status ? updateDate : "Not finished"}
+              {props.order.status ? new Date(updateDate).toLocaleString() : "Not finished"}
               <br />
               Status:
               <span

@@ -192,9 +192,9 @@ function Order(props) {
             </div>
 
             <Typography variant="body2" color="textSecondary" component="p">
-              Order created at: {createDate} <br />
+              Order created at: {new Date(createDate).toLocaleString()} <br />
               Order finished at:{" "}
-              {props.order.status ? updateDate : "Not finished"}
+              {props.order.status ? new Date(updateDate).toLocaleString() : "Not finished"}
               <br />
               Status:
               <span
@@ -382,11 +382,11 @@ function CustomerCard(props) {
                 <br />
                 Points: {customer.points}
                 <br />
-                Created at: {customer.createdAt}
+                Created at: {new Date(customer.createdAt).toLocaleString()}
                 <br />
-                Last login: {customer.lastLogin}
+                Last login: {new Date(customer.lastLogin).toLocaleString()}
                 <br />
-                Updated at: {customer.updatedAt}
+                Updated at: {new Date(customer.updatedAt).toLocaleString()}
                 <br />
               </Typography>
             </Box>
