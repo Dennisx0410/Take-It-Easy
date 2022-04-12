@@ -25,8 +25,7 @@ app.use("/admin", adminRouter);
 app.use("/order", orderRouter);
 app.use("/notification", notificationRouter);
 
-const CONNECTION_URL =
-  "mongodb+srv://admin:admin@cluster0.1zoxo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const CONNECTION_URL = process.env.DB_URL;
 
 const PORT = process.env.PORT || 5000;
 
