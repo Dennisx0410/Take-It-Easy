@@ -1,7 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import { Buffer } from "buffer";
 import {
   Alert,
@@ -16,35 +14,16 @@ import {
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
 import Box from "@mui/material/Box";
-import Fab from "@mui/material/Fab";
-import SlidingPane from "react-sliding-pane";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import MaterialIcon from "material-icons-react";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
 import { TextField } from "@mui/material";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -361,6 +340,7 @@ function ChangeMenu() {
   const PREFIX = "http://localhost:5000";
 
   const handleClickOpen = () => {
+    setImgUrl("");
     setOpen(true);
   };
   useEffect(() => {
@@ -558,9 +538,12 @@ function ChangeMenu() {
                         type="number"
                         label="Price"
                         onChange={(e) => {
-                          setPrice(Number(e.target.value));
+                          let val = Number(e.target.value);
+                          val = (val < 0 ? -1 : Math.round(val * 100.0) / 100.0);
+                          setPrice(val);
                         }}
                         sx={{ width: "100%" }}
+                        helperText="Please input positive value. Price will be automatically corrected to the nearest 2 decimal places"
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
