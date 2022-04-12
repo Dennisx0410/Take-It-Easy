@@ -26,7 +26,7 @@ app.use("/order", orderRouter);
 app.use("/notification", notificationRouter);
 
 const CONNECTION_URL =
-  "mongodb+srv://User:1234@cluster0.yjmpv.mongodb.net/TakeItEasy?retryWrites=true&w=majority";
+  "mongodb+srv://admin:admin@cluster0.1zoxo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 const PORT = process.env.PORT || 5000;
 
