@@ -6,7 +6,7 @@ import { AccountCircle } from "@mui/icons-material";
 import MaterialIconsReact from "material-icons-react";
 
 async function signup(form, usertype) {
-  return fetch(`http://localhost:5000/${usertype}/signup`, {
+  return fetch(PREFIX + `/${usertype}/signup`, {
     method: "POST",
     body: form,
   }).then((data) => data.json());

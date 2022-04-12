@@ -3,8 +3,10 @@ import "./verification.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 
+const PREFIX = "http://localhost:5000";
+
 async function verify(username, otp) {
-  return fetch(`http://localhost:5000/customer/activate`, {
+  return fetch(PREFIX + `/customer/activate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username: username, otp: otp }),
@@ -12,7 +14,7 @@ async function verify(username, otp) {
 }
 
 async function reverify(username) {
-  return fetch(`http://localhost:5000/customer/reverify`, {
+  return fetch(PREFIX + `/customer/reverify`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username: username }),

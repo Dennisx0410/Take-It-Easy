@@ -6,9 +6,11 @@ import { Alert, MenuItem, TextField } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import MaterialIconsReact from "material-icons-react";
 
+const PREFIX = "http://localhost:5000";
+
 // send login request to get token
 async function loginAttempt(input, usertype) {
-  return fetch(`http://localhost:5000/${usertype}/signin`, {
+  return fetch(PREFIX + `/${usertype}/signin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
