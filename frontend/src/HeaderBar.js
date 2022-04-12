@@ -196,7 +196,6 @@ function HeaderBar(props) {
         });
         const customer_info = await response.json();
         setCustomerInfo(customer_info);
-        console.log('>>1', customer_info)
         setSkip(true);
         // console.log(customer_info);
       } catch (error) {
