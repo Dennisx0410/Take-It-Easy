@@ -20,6 +20,25 @@ class Suggestion extends React.Component {
         super(props);
     }
     render() {
+      if (this.props.suggestion.length == 0){
+        return (
+          <main className="container-fluid">
+              <div className="row mb-2" >
+                  <div className="col-1"></div>
+                  <div className="col-10 ">
+                      <h4>Recommended for you:</h4>
+                      <div className='lowestZ slide-in-t'>
+                          
+                          <h6>There is no restaurant available at the momnet.</h6>
+                          
+                      </div>
+                  </div>
+                  <div className="col-1"></div>
+              </div>
+          </main>
+      );
+      }
+      else{
         return (
             <main className="container-fluid">
                 <div className="row mb-2" >
@@ -38,6 +57,8 @@ class Suggestion extends React.Component {
                 </div>
             </main>
         );
+      }
+        
     }
 }
 
