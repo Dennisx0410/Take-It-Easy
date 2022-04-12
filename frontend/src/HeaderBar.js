@@ -188,7 +188,13 @@ function HeaderBar(props) {
 
   const points_html = (
     <>
+      Points
+      <br></br>
+      <div className="d-none d-md-inline">
+
       <MaterialIcon icon="savings" color="#FFFFFF" />
+      </div>
+      
       {customerInfo.points >= 0 ? customerInfo.points : -1}
     </>
   )
@@ -219,9 +225,19 @@ function HeaderBar(props) {
 
   const dropdown_restaurant = (
     <>
-      <Dropdown.Item href="/">Menu</Dropdown.Item>
-      <Dropdown.Item href="/r/profile">Profile</Dropdown.Item>
-      <Dropdown.Item href="/r/history">
+      <Dropdown.Item
+        onClick={() => navigate("/", { replace: true })}
+      >
+        Menu
+      </Dropdown.Item>
+      <Dropdown.Item
+        onClick={() => navigate("/r/profile", { replace: true })}
+      >
+        Profile
+      </Dropdown.Item>
+      <Dropdown.Item
+        onClick={() => navigate("/r/history", { replace: true })}
+      >
         Order History
       </Dropdown.Item>
     </>
@@ -301,6 +317,7 @@ function HeaderBar(props) {
               <Dropdown
                 className="bg-transparent btn-transparent"
                 autoClose="outside"
+                align="end"
               >
                 <Dropdown.Toggle
                   id="dropdown-autoclose-outside"

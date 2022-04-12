@@ -1,5 +1,6 @@
 .header {
   height: 50px;
+  padding-right: 25px;
   background-image: linear-gradient(to right, #567ace, #b9281d);
 }
 
@@ -21,6 +22,7 @@ a.header-title {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;
   color: #ffffff;
+  text-align: center;
 }
 
 a.header-title:link {
