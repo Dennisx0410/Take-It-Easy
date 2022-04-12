@@ -5,6 +5,8 @@ import { Alert, Avatar, MenuItem, Stack, TextField } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import MaterialIconsReact from "material-icons-react";
 
+const PREFIX = "http://localhost:5000";
+
 async function signup(form, usertype) {
   return fetch(PREFIX + `/${usertype}/signup`, {
     method: "POST",
