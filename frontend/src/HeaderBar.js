@@ -249,7 +249,7 @@ function HeaderBar(props) {
               <div className="col-1"></div>
               <div className="col-1 headerpadding bg-transparent btn-transparent">
                 <Dropdown
-                  className="d-inline mx-2 bg-transparent btn-transparent"
+                  className="mx-2 bg-transparent btn-transparent"
                   autoClose="outside"
                 >
                   <Dropdown.Toggle
@@ -359,7 +359,7 @@ function HeaderBar(props) {
               </div>
               <div className="col-1 headerpadding bg-transparent btn-transparent">
                 <Dropdown
-                  className="d-inline bg-transparent btn-transparent"
+                  className="bg-transparent btn-transparent"
                   autoClose="outside"
                 >
                   <Dropdown.Toggle
@@ -440,7 +440,7 @@ function HeaderBar(props) {
               <div className="col-1 headerpadding"></div>
               <div className="col-1 headerpadding bg-transparent btn-transparent rightpadding">
                 <Dropdown
-                  className="d-inline mx-2 bg-transparent btn-transparent"
+                  className="mx-2 bg-transparent btn-transparent"
                   autoClose="outside"
                 >
                   <Dropdown.Toggle
