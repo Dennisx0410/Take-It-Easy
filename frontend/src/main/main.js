@@ -104,45 +104,73 @@ class Gallery extends React.Component {
   render() {
     let bufferFR = [];
     bufferFR = this.props.filteredRestaurants;
-    return (
-      <>
-        <main className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-1"></div>
-            <div className="col-10 align-self-start">
-              <h4>
-                Restaurants:
-                <span
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    window.location.reload();
-                  }}
-                >
-                  <i className="material-icons">sync</i>
-                </span>
-              </h4>
+      if (bufferFR.length == 0){
+        return(
+          <>
+            <main className="container-fluid">
+              <div className="row mb-2">
+                <div className="col-1"></div>
+                <div className="col-10 align-self-start">
+                  <h4>
+                    Restaurants:
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        window.location.reload();
+                      }}
+                    >
+                      <i className="material-icons">sync</i>
+                    </span>
+                  </h4>
+                  <h5>There is no restaurants available at the moment.</h5>
+                </div>
+                <div className="col-1"></div>
+              </div>
+            </main>
+          </>
+        );
+      }
+      else{ 
+        return (
+          <>
+            <main className="container-fluid">
+              <div className="row mb-2">
+                <div className="col-1"></div>
+                <div className="col-10 align-self-start">
+                  <h4>
+                    Restaurants:
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        window.location.reload();
+                      }}
+                    >
+                      <i className="material-icons">sync</i>
+                    </span>
+                  </h4>
 
-              <Grid container spacing={2}>
-                {bufferFR.map((restaurant, i) => (
-                  <Grid item xs={12} sm={6} md={4}>
-                  <FileCard
-                    restaurant={restaurant}
-                    i={i}
-                    key={i}
-                    RErender={this.props.RErender}
-                    setRErender={this.props.setRErender}
-                  />
+                  <Grid container spacing={2}>
+                    {bufferFR.map((restaurant, i) => (
+                      <Grid item xs={12} sm={6} md={4}>
+                      <FileCard
+                        restaurant={restaurant}
+                        i={i}
+                        key={i}
+                        RErender={this.props.RErender}
+                        setRErender={this.props.setRErender}
+                      />
+                      </Grid>
+                    ))}
                   </Grid>
-                ))}
-              </Grid>
-              
-            </div>
-            <div className="col-1"></div>
-          </div>
-        </main>
-      </>
-    );
-  }
+                  
+                </div>
+                <div className="col-1"></div>
+              </div>
+            </main>
+          </>
+        );
+      }
+    }
 }
 
 class FileCard extends React.Component {
