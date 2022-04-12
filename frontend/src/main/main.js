@@ -21,23 +21,30 @@ class Suggestion extends React.Component {
   }
   render() {
     return (
-      <main className="container-fluid">
-        <div className="row mb-2" >
-          <div className="col-1"></div>
-          <div className="col-10">
-            <h4>Recommended for you:</h4>
-            <div className='lowestZ slide-in-t px-3'>
-              <Box sx={{ display: 'flex', overflowX: "scroll"}}>
-                {this.props.suggestion.map((suggestion, i) => 
-                  <SuggestionCard suggestion={suggestion} i={i} key={i} />
-                )}
-              </Box>
+      <>
+        <main className="container-fluid">
+          <div className="row mb-2" >
+            <div className="col-1"></div>
+            <div className="col-10">
+              <h4>Recommended for you:</h4>
+              <div className='lowestZ slide-in-t px-3'>
+                {
+                  this.props.suggestion.length == 0 ? 
+                  <h6>There is no restaurant available at the momnet.</h6>
+                  :
+                  <Box sx={{ display: 'flex', overflowX: "scroll" }}>
+                    {this.props.suggestion.map((suggestion, i) =>
+                      <SuggestionCard suggestion={suggestion} i={i} key={i} />
+                    )}
+                  </Box>
+                }
+              </div>
             </div>
+            <div className="col-1"></div>
           </div>
-          <div className="col-1"></div>
-        </div>
-      </main>
-    );
+        </main>
+      </>
+    )
   }
 }
 
@@ -103,73 +110,49 @@ class Gallery extends React.Component {
   render() {
     let bufferFR = [];
     bufferFR = this.props.filteredRestaurants;
-    if (bufferFR.length == 0) {
-      return (
-        <>
-          <main className="container-fluid">
-            <div className="row mb-2">
-              <div className="col-1"></div>
-              <div className="col-10 align-self-start">
-                <h4>
-                  Restaurants:
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      window.location.reload();
-                    }}
-                  >
-                    <i className="material-icons">sync</i>
-                  </span>
-                </h4>
-                <h5>There is no restaurants as required available at the moment.</h5>
-              </div>
-              <div className="col-1"></div>
+    return (
+      <>
+        <main className="container-fluid">
+          <div className="row mb-2">
+            <div className="col-1"></div>
+            <div className="col-10 align-self-start">
+              <h4>
+                Restaurants:
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                >
+                  <i className="material-icons">sync</i>
+                </span>
+              </h4>
+              {
+                bufferFR.length == 0 ?
+                  <h5>There is no restaurants as required available at the moment.</h5>
+                  :
+                  <div className="px-3">
+                    <Grid container spacing={2}>
+                      {bufferFR.map((restaurant, i) => (
+                        <Grid item xs={12} sm={6} md={4}>
+                          <FileCard
+                            restaurant={restaurant}
+                            i={i}
+                            key={i}
+                            RErender={this.props.RErender}
+                            setRErender={this.props.setRErender}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </div>
+              }
             </div>
-          </main>
-        </>
-      );
-    }
-    else {
-      return (
-        <>
-          <main className="container-fluid">
-            <div className="row mb-2">
-              <div className="col-1"></div>
-              <div className="col-10 align-self-start">
-                <h4>
-                  Restaurants:
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      window.location.reload();
-                    }}
-                  >
-                    <i className="material-icons">sync</i>
-                  </span>
-                </h4>
-
-                <div className="px-3">
-                  <Grid container spacing={2}>
-                    {bufferFR.map((restaurant, i) => (
-                      <Grid item xs={12} sm={6} md={4}>
-                        <FileCard
-                          restaurant={restaurant}
-                          i={i}
-                          key={i}
-                          RErender={this.props.RErender}
-                          setRErender={this.props.setRErender}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </div>
-              </div>
-              <div className="col-1"></div>
-            </div>
-          </main>
-        </>
-      );
-    }
+            <div className="col-1"></div>
+          </div>
+        </main>
+      </>
+    );
   }
 }
 
