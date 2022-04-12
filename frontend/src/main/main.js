@@ -16,50 +16,36 @@ const PREFIX = "http://localhost:5000";
 const REFRESH_RATE = 30 * 1000; // 30 sec
 
 class Suggestion extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-      if (this.props.suggestion.length == 0){
-        return (
-          <main className="container-fluid">
-              <div className="row mb-2" >
-                  <div className="col-1"></div>
-                  <div className="col-10 ">
-                      <h4>Recommended for you:</h4>
-                      <div className='lowestZ slide-in-t'>
-                          
-                          <h6>There is no restaurant available at the moment.</h6>
-                          
-                      </div>
-                  </div>
-                  <div className="col-1"></div>
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <>
+        <main className="container-fluid">
+          <div className="row mb-2" >
+            <div className="col-1"></div>
+            <div className="col-10">
+              <h4>Recommended for you:</h4>
+              <div className='lowestZ slide-in-t px-3'>
+                {
+                  this.props.suggestion.length == 0 ? 
+                  <h6>There is no restaurant available at the moment.</h6>
+                  :
+                  <Box sx={{ display: 'flex', overflowX: "scroll" }}>
+                    {this.props.suggestion.map((suggestion, i) =>
+                      <SuggestionCard suggestion={suggestion} i={i} key={i} />
+                    )}
+                  </Box>
+                }
               </div>
-          </main>
-      );
-      }
-      else{
-        return (
-            <main className="container-fluid">
-                <div className="row mb-2" >
-                    <div className="col-1"></div>
-                    <div className="col-10 ">
-                        <h4>Recommended for you:</h4>
-                        <div className='lowestZ slide-in-t'>
-                            <Box sx={{ display: 'flex', pt:1, pb:1}}>
-                                {this.props.suggestion.map((suggestion,i)=>
-                                    <SuggestionCard suggestion={suggestion} i={i} key={i}  />
-                                )}
-                            </Box>
-                        </div>
-                    </div>
-                    <div className="col-1"></div>
-                </div>
-            </main>
-        );
-      }
-        
-    }
+            </div>
+            <div className="col-1"></div>
+          </div>
+        </main>
+      </>
+    )
+  }
 }
 
 class SuggestionCard extends React.Component {
@@ -72,49 +58,47 @@ class SuggestionCard extends React.Component {
     };
   }
 
-    render() {
-        let suggestion = this.props.suggestion;
-        if (suggestion.profilePic != undefined){
-            if (!this.state.skip){
-                let profilePic = suggestion.profilePic;
-                let img = Buffer.from(profilePic.data).toString('base64');
-                this.setState( ()=>
-                    {   
-                        return { 
-                            ImgUrl: img,
-                            skip: true
-                        }
-                    }
-                );
-            }
-                
+  render() {
+    let suggestion = this.props.suggestion;
+    if (suggestion.profilePic != undefined) {
+      if (!this.state.skip) {
+        let profilePic = suggestion.profilePic;
+        let img = Buffer.from(profilePic.data).toString('base64');
+        this.setState(() => {
+          return {
+            ImgUrl: img,
+            skip: true
+          }
         }
-        return (
-            <Link to={"/restaurant/"+suggestion._id}>
-                <Card sx={{ display: 'flex' , ml: 2}}>
-                  <CardActionArea sx={{ display: 'flex' }}>
-                      <CardMedia
-                      component="img"
-                      height="150px"
-                      width="30%"
-                      image = {`data:image/jpg; base64, ${this.state.ImgUrl}`}
-                      alt={suggestion.restaurantName}
-                      />
-                      <CardContent >
-                      <Typography gutterBottom variant="body" component="div">
-                          <span style={{color: "#567ace"}}>
-                              {this.props.i==0?<MaterialIcon icon="thumb_up"/>:this.props.i==1?<MaterialIcon icon="star"/>:<MaterialIcon icon="local_fire_department"/>}
-                              {/* {suggest_type[i].remarks} */}
-                          </span>
-                          <br/>
-                          {suggestion.restaurantName}
-                      </Typography>
-                      </CardContent>
-                  </CardActionArea>
-                </Card>
-            </Link>
         );
+      }
     }
+    return (
+      <Link to={"/restaurant/" + suggestion._id}>
+        <Card sx={{ display: 'flex', width: "30%", minWidth: 400}}>
+          <CardActionArea sx={{ display: 'flex' }}>
+            <CardMedia
+              component="img"
+              height="150px"
+              width="auto"
+              image={`data:image/jpg; base64, ${this.state.ImgUrl}`}
+              alt={suggestion.restaurantName}
+            />
+            <CardContent >
+              <Typography gutterBottom variant="body" component="div">
+                <span style={{ color: "#567ace" }}>
+                  {this.props.i == 0 ? <MaterialIcon icon="thumb_up" /> : this.props.i == 1 ? <MaterialIcon icon="star" /> : <MaterialIcon icon="local_fire_department" />}
+                  {/* {suggest_type[i].remarks} */}
+                </span>
+                <br />
+                {suggestion.restaurantName}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Link>
+    );
+  }
 
 }
 
@@ -125,73 +109,50 @@ class Gallery extends React.Component {
   render() {
     let bufferFR = [];
     bufferFR = this.props.filteredRestaurants;
-      if (bufferFR.length == 0){
-        return(
-          <>
-            <main className="container-fluid">
-              <div className="row mb-2">
-                <div className="col-1"></div>
-                <div className="col-10 align-self-start">
-                  <h4>
-                    Restaurants:
-                    <span
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        window.location.reload();
-                      }}
-                    >
-                      <i className="material-icons">sync</i>
-                    </span>
-                  </h4>
+    return (
+      <>
+        <main className="container-fluid">
+          <div className="row mb-2">
+            <div className="col-1"></div>
+            <div className="col-10 align-self-start">
+              <h4>
+                Restaurants:
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                >
+                  <i className="material-icons">sync</i>
+                </span>
+              </h4>
+              {
+                bufferFR.length == 0 ?
                   <h5>There is no restaurants as required available at the moment.</h5>
-                </div>
-                <div className="col-1"></div>
-              </div>
-            </main>
-          </>
-        );
-      }
-      else{ 
-        return (
-          <>
-            <main className="container-fluid">
-              <div className="row mb-2">
-                <div className="col-1"></div>
-                <div className="col-10 align-self-start">
-                  <h4>
-                    Restaurants:
-                    <span
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        window.location.reload();
-                      }}
-                    >
-                      <i className="material-icons">sync</i>
-                    </span>
-                  </h4>
-
-                  <Grid container spacing={2}>
-                    {bufferFR.map((restaurant, i) => (
-                      <Grid item xs={12} sm={6} md={4}>
-                      <FileCard
-                        restaurant={restaurant}
-                        i={i}
-                        key={i}
-                        RErender={this.props.RErender}
-                        setRErender={this.props.setRErender}
-                      />
-                      </Grid>
-                    ))}
-                  </Grid>
-                  
-                </div>
-                <div className="col-1"></div>
-              </div>
-            </main>
-          </>
-        );
-      }
-    }
+                  :
+                  <div className="px-3">
+                    <Grid container spacing={2}>
+                      {bufferFR.map((restaurant, i) => (
+                        <Grid item xs={12} sm={6} md={4}>
+                          <FileCard
+                            restaurant={restaurant}
+                            i={i}
+                            key={i}
+                            RErender={this.props.RErender}
+                            setRErender={this.props.setRErender}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </div>
+              }
+            </div>
+            <div className="col-1"></div>
+          </div>
+        </main>
+      </>
+    );
+  }
 }
 
 class FileCard extends React.Component {
@@ -347,11 +308,11 @@ function Main() {
         {/* <Debug filteredRestaurants={filteredRestaurants}/> */}
         <Suggestion suggestion={REALsuggested} />
         {/* <div style={{ paddingTop: "10px" }}> */}
-          <SearchBar
-            searchQ={searchQ}
-            setSearchQ={setSearchQ}
-            setRErender={setRErender}
-          />
+        <SearchBar
+          searchQ={searchQ}
+          setSearchQ={setSearchQ}
+          setRErender={setRErender}
+        />
         {/* </div> */}
         <Gallery
           filteredRestaurants={filteredRestaurants}
