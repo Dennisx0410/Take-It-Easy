@@ -29,7 +29,7 @@ class Suggestion extends React.Component {
                       <h4>Recommended for you:</h4>
                       <div className='lowestZ slide-in-t'>
                           
-                          <h6>There is no restaurant available at the momnet.</h6>
+                          <h6>There is no restaurant available at the moment.</h6>
                           
                       </div>
                   </div>
