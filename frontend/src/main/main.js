@@ -122,7 +122,7 @@ class Gallery extends React.Component {
                       <i className="material-icons">sync</i>
                     </span>
                   </h4>
-                  <h5>There is no restaurants available at the moment.</h5>
+                  <h5>There is no restaurants as required available at the moment.</h5>
                 </div>
                 <div className="col-1"></div>
               </div>
