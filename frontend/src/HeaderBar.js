@@ -237,10 +237,8 @@ function HeaderBar(props) {
 
   const points_html = (
     <>
-      <Grid item xs={1} className="points">
-        <MaterialIcon icon="savings" color="#FFFFFF" />
-        {customerInfo.points >= 0 ? customerInfo.points : -1}
-      </Grid>
+      <MaterialIcon icon="savings" color="#FFFFFF" />
+      {customerInfo.points >= 0 ? customerInfo.points : -1}
     </>
   )
 
@@ -335,7 +333,7 @@ function HeaderBar(props) {
         </Dropdown.Menu>
       </Dropdown>
     </>
-  )
+  );
 
   const dropdown_admin = (
     <>
@@ -383,12 +381,10 @@ function HeaderBar(props) {
           >
             Logout
           </Dropdown.Item>
-          {/* onClick={handleLogout(props.setToken)} */}
         </Dropdown.Menu>
       </Dropdown>
     </>
-  )
-
+  );
 
   return (
     <>
