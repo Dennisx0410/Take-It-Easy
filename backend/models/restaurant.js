@@ -37,13 +37,9 @@ const restaurantSchema = new Schema({
 });
 
 restaurantSchema.pre("save", async function (next) {
-  console.log("save action detected, check changes");
   const restaurant = this;
 
-  // console.log('orig pw: ', restaurant.password);
-
   if (restaurant.isModified("password")) {
-    console.log("password changed, hash before saving");
     restaurant.password = await bcrypt.hash(restaurant.password, SALTLEN);
   }
   next();
@@ -51,14 +47,12 @@ restaurantSchema.pre("save", async function (next) {
 
 // instance method for generating jwt token
 restaurantSchema.methods.genAuthToken = async function () {
-  console.log("> generating auth token");
   let restaurant = this;
   let token = jwt.sign(
     { _id: restaurant._id.toString(), usertype: "restaurant" },
     process.env.SECRET,
     { expiresIn: EXPIRE }
   );
-  console.log("> generated token");
   return token;
 };
 

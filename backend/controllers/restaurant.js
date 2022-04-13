@@ -15,12 +15,10 @@ const MAX_FILESIZE = 5 * 1024 * 1024; // 5MB
 const upload = multer({
   limits: { fileSize: MAX_FILESIZE }, // 5MB
   fileFilter(req, file, cb) {
-    console.log("file info:", file);
     if (file.mimetype == "image/png" || file.mimetype == "image/jpeg") {
       // jpg, jpeg, jfif are udner image/jpeg
       cb(null, true);
     } else {
-      console.log("cant upload!");
       cb(null, false);
     }
   },
@@ -34,11 +32,9 @@ const authRestaurant = async (username, password) => {
   if (restaurant == null) {
     throw { name: "UserNotFound", message: "User does not exist" };
   }
-  // console.log('restaurant doc:', restaurant.username);
 
   // check if password matched
   let matched = await bcrypt.compare(password, restaurant.password);
-  console.log("compare result:", matched);
   if (!matched) {
     throw { name: "InvalidPassword", message: "Invalid password" };
   }
@@ -48,24 +44,20 @@ const authRestaurant = async (username, password) => {
 
 const getRestaurantByUsername = async (username) => {
   // TODO: get restaurant by username
-  console.log("searching restaurant with username:", username);
   let restaurant = await Restaurants.findOne({ username });
   if (restaurant == null) {
     throw { name: "UserNotExist", message: "User does not exist" };
   }
-  // console.log('restaurant doc:', restaurant.username);
 
   return restaurant;
 };
 
 const getRestaurantById = async (id) => {
   // TODO: get restaurant by id
-  console.log("searching restaurant with id:", id);
   let restaurant = await Restaurants.findOne({ _id: id });
   if (restaurant == null) {
     throw { name: "UserNotExist", message: "User does not exist" };
   }
-  // console.log('restaurant doc:', restaurant.username);
 
   return restaurant;
 };
@@ -83,7 +75,6 @@ module.exports = {
       }).populate("menu");
       res.status(200).send(data);
     } catch (err) {
-      console.log(err);
       res.status(404).send(err);
     }
   },
@@ -94,7 +85,6 @@ module.exports = {
 
       res.status(200).send(list);
     } catch (err) {
-      console.log(err);
       res.status(404).send(err);
     }
   },
@@ -104,7 +94,6 @@ module.exports = {
       let list = await Restaurants.find({ approved: true }).populate("menu");
       res.status(200).send(list);
     } catch (err) {
-      console.log(err);
       res.status(404).send(err);
     }
   },
@@ -114,7 +103,6 @@ module.exports = {
       let data = await Restaurants.find().populate("menu");
       res.status(200).send(data);
     } catch (err) {
-      console.log(err);
       res.status(404).send(err);
     }
   },
@@ -139,8 +127,6 @@ module.exports = {
 
       req.restaurant = restaurant;
 
-      console.log(`New Restaurant Register with username ${req.body.username}`);
-
       // continue to set profile pic
       next();
     } catch (err) {
@@ -150,7 +136,6 @@ module.exports = {
 
   changePw: async (req, res) => {
     // TODO: change pw given old and new password pair (request by user)
-    console.log("> change pw");
     try {
       let passwordOld = req.body.passwordOld;
       let passwordNew = req.body.passwordNew;
@@ -158,7 +143,6 @@ module.exports = {
 
       // check if old pw matched
       let matched = await bcrypt.compare(passwordOld, restaurant.password);
-      console.log("compare result:", matched);
       if (!matched) {
         throw { name: "InvalidPassword", message: "Invalid password" };
       }
@@ -171,7 +155,6 @@ module.exports = {
         };
       }
 
-      console.log("password len:", passwordNew.length);
       // check if new pw is longer than 8 characters
       if (passwordNew.length < 8) {
         throw {
@@ -182,8 +165,6 @@ module.exports = {
 
       restaurant.password = passwordNew;
       await restaurant.save();
-
-      console.log("> pw changed");
 
       // continue to set profile pic
       res
@@ -199,13 +180,11 @@ module.exports = {
 
   resetPw: async (req, res) => {
     // TODO: change pw given username (request by admin)
-    console.log("> reset pw");
     try {
       let passwordNew = req.body.passwordNew;
 
       let restaurant = await getRestaurantByUsername(req.body.username);
 
-      console.log("password len:", passwordNew.length);
       // check if new pw is longer than 8 characters
       if (passwordNew.length < 8) {
         throw {
@@ -232,11 +211,9 @@ module.exports = {
   // middleware
   uploadProfilePic: async (req, res, next) => {
     // TODO: upload profile image with key = 'profile' to server
-    console.log("> upload profile");
     try {
       return upload.single("profile")(req, res, () => {
         if (!req.file) {
-          console.log("> upload failed");
           return res
             .status(400)
             .send({
@@ -244,8 +221,6 @@ module.exports = {
               message: "image should be jpg or png",
             });
         } else {
-          console.log("filesize:", req.file.size);
-          console.log("> Upload Success");
         }
 
         // continue to set store profile pic
@@ -259,7 +234,6 @@ module.exports = {
   // middleware
   setProfilePic: async (req, res, next) => {
     // TODO: add profile pic to db
-    console.log("> add profile");
     try {
       // resize profile pic to 100x100px before storing to db
       let resizedBuf = await sharp(req.file.buffer)
@@ -273,7 +247,6 @@ module.exports = {
 
       next();
     } catch (err) {
-      console.log(err);
       res.send(err);
     }
   },
@@ -281,9 +254,6 @@ module.exports = {
   getProfilePic: async (req, res) => {
     // TODO: view profile image
     try {
-      // res.set('Content-Type', 'image/png');  // disable for testing in postman
-      // res.set('Content-Type', 'image/jpeg');  // disable for testing in postman
-      console.log("> sent profile");
       res.send(req.restaurant.profilePic);
     } catch (err) {
       res.send(err);
@@ -292,22 +262,16 @@ module.exports = {
 
   login: async (req, res) => {
     // TODO: login user by username, password
-    console.log("> login to server");
-    console.log("req.body:", req.body); // username, pw
     try {
-      console.log("now authenticate restaurant");
-
       // authenticate restaurant
       let restaurant = await authRestaurant(
         req.body.username,
         req.body.password
       );
-      // console.log('authenticate successful, with user=', restaurant);
 
       // check account if approved
       if (restaurant.approved == false) {
         // user created account but not approved
-        console.log("restaurant not approved");
         throw { name: "AccountNotApproved", message: "account not approved" };
       }
 
@@ -317,18 +281,14 @@ module.exports = {
       restaurant.online = true;
       await restaurant.save();
 
-      console.log("you get token:", token);
-
       res.status(200).send({ token }); // 200: OK
     } catch (err) {
-      console.log(err);
       res.status(401).send(err); // 401: Unauthorized
     }
   },
 
   logout: async (req, res) => {
     // TODO: logout restaurant after token verification
-    console.log("> logout");
     try {
       req.restaurant.online = false;
       await req.restaurant.save();
@@ -342,11 +302,9 @@ module.exports = {
 
   approveAccount: async (req, res, next) => {
     // TODO: approve account by admin
-    console.log(`> Admin approved restaurant ${req.body.username}`);
 
     try {
       let restaurant = await getRestaurantByUsername(req.body.username);
-      // console.log('restaurant doc:', restaurant);
 
       // check if already approved
       if (restaurant.approved) {
@@ -355,7 +313,6 @@ module.exports = {
 
       // approve account
       restaurant.approved = true;
-      console.log(`${restaurant.restaurantName} approved by admin`);
       await restaurant.save();
 
       req.accStatus = "AccountApproved";
@@ -365,21 +322,14 @@ module.exports = {
       // continue to send email notify restaurant
       next();
     } catch (err) {
-      console.log(err);
       res.status(403).send(err);
     }
   },
 
   rejectAccount: async (req, res, next) => {
     // TODO: reject account by admin
-    console.log(`> Admin rejected restaurant ${req.body.username}`);
-
     try {
       let restaurant = await getRestaurantByUsername(req.body.username);
-      // console.log('restaurant doc:', restaurant);
-
-      // reject account
-      console.log(`${restaurant.restaurantName} rejected by admin`);
 
       req.accStatus = "AccountRejected";
       req.restaurant = restaurant;
@@ -388,7 +338,6 @@ module.exports = {
       // continue to send email notify restaurant
       next();
     } catch (err) {
-      console.log(err);
       res.status(403).send(err);
     }
   },
@@ -396,11 +345,9 @@ module.exports = {
   // Food Related Function
   uploadFoodItemPic: async (req, res, next) => {
     // TODO: upload profile image with key = 'foodPic' to server
-    console.log("> upload Food Item Pic");
     try {
       return upload.single("foodPic")(req, res, () => {
         if (!req.file) {
-          console.log("> upload failed");
           return res
             .status(400)
             .send({
@@ -408,8 +355,6 @@ module.exports = {
               message: "image should be jpg or png",
             });
         } else {
-          console.log("filesize:", req.file.size);
-          console.log("> Upload Success");
         }
 
         // continue to set store Food Item pic
@@ -421,7 +366,6 @@ module.exports = {
   },
 
   addFoodItem: async (req, res) => {
-    console.log("> add Food Item");
     try {
       // resize Food Item pic to MAX_RESIZE_PX before storing to db
       let resizedBuf = await sharp(req.file.buffer)
@@ -440,37 +384,30 @@ module.exports = {
 
       req.restaurant.menu.push(doc._id);
       await req.restaurant.save();
-      console.log("Added Food item to db with _id", doc._id);
       res.send({
         name: "AddedFoodItemSuccessfully",
         message: "Added food item successfully",
       });
     } catch (err) {
-      console.log(err);
       res.send(err);
     }
   },
 
   removeFoodItem: async (req, res) => {
-    console.log("Remove Food Item with ID", req.body.foodId);
     try {
       let idx = req.restaurant.menu.indexOf(req.body.foodId);
       if (idx == -1) {
         throw { name: "FoodNotFound", message: "food is not exist in menu" };
       }
       req.restaurant.menu.splice(idx, 1);
-      console.log(req.restaurant.menu);
       await req.restaurant.save();
 
-      console.log(req.restaurant.menu);
       await foodItem.deleteOne({ _id: req.body.foodId });
-      console.log("Removed Food Item Successfully");
       res.send({
         name: "RemovedFoodItemSuccessfully",
         message: "Removed food item successfully",
       });
     } catch (err) {
-      console.log(err);
       res.send(err);
     }
   },

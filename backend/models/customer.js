@@ -36,13 +36,9 @@ const customerSchema = new Schema(
 
 // listen save action and hash the password before saving
 customerSchema.pre("save", async function (next) {
-  console.log("save action detected, check changes");
   const customer = this;
 
-  // console.log('orig pw: ', customer.password);
-
   if (customer.isModified("password")) {
-    console.log("password changed, hash before saving");
     customer.password = await bcrypt.hash(customer.password, SALTLEN);
   }
   next();
@@ -50,14 +46,12 @@ customerSchema.pre("save", async function (next) {
 
 // instance method for generating jwt token
 customerSchema.methods.genAuthToken = async function () {
-  console.log("> generating auth token");
   let customer = this;
   let token = jwt.sign(
     { _id: customer._id.toString(), usertype: "customer" },
     process.env.SECRET,
     { expiresIn: EXPIRE }
   );
-  console.log("> generated token");
   return token;
 };
 

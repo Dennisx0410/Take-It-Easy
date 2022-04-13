@@ -44,8 +44,6 @@ const sendEmail = async (receiver, template) => {
     subject: template.subject,
     html: template.html,
   });
-
-  console.log("Message sent: %s", email.messageId);
 };
 
 module.exports = {
@@ -53,8 +51,6 @@ module.exports = {
     // TODO: send OTP to customer to verify email
     try {
       // generate OTP
-      console.log("> generating OTP");
-
       let username;
       let otpContainer;
       let customer;
@@ -65,11 +61,8 @@ module.exports = {
 
       if (req.customer) {
         // 1st time verify
-        console.log("> 1st verify");
         customer = req.customer;
         username = customer.username;
-
-        console.log("OTP:", OTP);
 
         // create new OTP to db
         otpContainer = await Otp.create({
@@ -78,10 +71,8 @@ module.exports = {
           wrongTrial: 0,
           expiresAt: expireTime,
         });
-        console.log("> created new otp to db");
       } else {
         // reverify
-        console.log("reverify");
         username = req.body.username;
 
         // already activated
@@ -110,19 +101,13 @@ module.exports = {
 
         if (isExpired || isTooMuchWrongTrial) {
           // expired OTP or too much wrong trial
-          console.log("> reverify");
-
-          console.log("OTP:", OTP);
-
           otpContainer.state = "Pending";
           otpContainer.otp = OTP;
           otpContainer.expiresAt = expireTime;
           otpContainer.wrongTrial = 0;
 
           await otpContainer.save();
-          console.log("> regenerated new otp to db");
         } else {
-          console.log("> pending OTP");
           if (req.accStatus) {
             // only login and signup would have extra status
             throw {
@@ -143,7 +128,6 @@ module.exports = {
         username: customer.username,
         email: customer.email,
       };
-      console.log(receiver);
 
       // email template
       let template = {
@@ -182,14 +166,12 @@ module.exports = {
 
   approvalEmail: async (req, res) => {
     try {
-      console.log("> send approval email");
 
       // receiver info
       let receiver = {
         username: req.restaurant.username,
         email: req.restaurant.email,
       };
-      console.log(receiver);
 
       let template = {
         subject: "[Approved] Signup to Take It Easy",
@@ -217,14 +199,12 @@ module.exports = {
 
   rejectEmail: async (req, res) => {
     try {
-      console.log("> send reject email");
 
       // receiver info
       let receiver = {
         username: req.restaurant.username,
         email: req.restaurant.email,
       };
-      console.log(receiver);
 
       let template = {
         subject: "[Rejected] Signup to Take It Easy",

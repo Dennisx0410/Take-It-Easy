@@ -4,7 +4,6 @@ const socketio = require("./socketIO");
 module.exports = {
   globalNoti: async (req, res) => {
     try {
-      console.log("> Creating Global Notification"); //For Admin Boardcasting Notification to Everyone
       if (req.restaurant != undefined || req.customer != undefined) {
         //Restrict premission to admin
         throw "Global Noti can't be created with normal token!";
@@ -14,11 +13,9 @@ module.exports = {
       noti.sender = "Administrator";
       noti.message = req.body.message;
       noti = await Notification.create(noti);
-      console.log("> Created new noti ", noti);
       socketio.notifyAll(noti);
       res.status(201).send(noti);
     } catch (err) {
-      console.log(err);
       res.status(400).send(err);
     }
   },
@@ -28,7 +25,6 @@ module.exports = {
       let noti = await Notification.find({}).sort({ createdAt: -1 });
       res.status(200).send(noti);
     } catch (err) {
-      console.log(err);
       res.status(400).send(err);
     }
   },
@@ -36,7 +32,6 @@ module.exports = {
   fetchIndividual: async (req, res) => {
     try {
       if (req.customer != undefined) {
-        console.log(`>> ${req.customer.username} is fetching notification`);
         let noti = await Notification.find({
           $or: [{ reciever: req.customer.username }, { reciever: "All" }],
           dismissed: false,
@@ -46,7 +41,6 @@ module.exports = {
         res.status(200).send(noti);
       }
     } catch (err) {
-      console.log(err);
       res.status(401).send(err);
     }
   },
@@ -65,11 +59,9 @@ module.exports = {
       }
       noti.message = req.body.message;
       noti = await Notification.create(noti);
-      console.log("> Created new targeted noti to", noti.reciever);
       socketio.notifySingle(noti.reciever, targettype, noti);
       res.status(201).send(noti);
     } catch (err) {
-      console.log(err);
       res.status(400).send(err);
     }
   },
@@ -83,7 +75,6 @@ module.exports = {
       await noti.save();
       res.status(200).send(`Dismissed Notification with id ${req.params.id}`);
     } catch (err) {
-      console.log(err);
       res.status(400).send(err);
     }
   },
