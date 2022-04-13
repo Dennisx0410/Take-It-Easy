@@ -115,8 +115,6 @@ function HeaderBar(props) {
   // Broswer Closing Logout Handler
   const closeHandler = async (e) => {
     e.preventDefault();
-    console.log(props.token);
-    console.log(props.usertype);
     if (props.usertype === "restaurant") {
       await fetch(PREFIX + `/restaurant/logout`, {
         method: "POST",
@@ -199,73 +197,91 @@ function HeaderBar(props) {
     </>
   )
 
-  const dropdown_customer = (
-    <>
-      <Dropdown.Item
-        onClick={() => navigate("/", { replace: true })}
-      >
-        Restaurant
-      </Dropdown.Item>
-      <Dropdown.Item
-        onClick={() =>
-          navigate("/customer/profile", { replace: true })
-        }
-      >
-        Profile
-      </Dropdown.Item>
-      <Dropdown.Item
-        onClick={() =>
-          navigate("/customer/history", { replace: true })
-        }
-      >
-        Order History
-      </Dropdown.Item>
-    </>
-  );
+  // const dropdown_customer = (
+  //   <>
+  //     <Dropdown.Item
+  //       onClick={() => navigate("/", { replace: true })}
+  //     >
+  //       Restaurant
+  //     </Dropdown.Item>
+  //     <Dropdown.Item
+  //       onClick={() =>
+  //         navigate("/customer/profile", { replace: true })
+  //       }
+  //     >
+  //       Profile
+  //     </Dropdown.Item>
+  //     <Dropdown.Item
+  //       onClick={() =>
+  //         navigate("/customer/history", { replace: true })
+  //       }
+  //     >
+  //       Order History
+  //     </Dropdown.Item>
+  //   </>
+  // );
 
-  const dropdown_restaurant = (
-    <>
-      <Dropdown.Item
-        onClick={() => navigate("/", { replace: true })}
-      >
-        Menu
-      </Dropdown.Item>
-      <Dropdown.Item
-        onClick={() => navigate("/r/profile", { replace: true })}
-      >
-        Profile
-      </Dropdown.Item>
-      <Dropdown.Item
-        onClick={() => navigate("/r/history", { replace: true })}
-      >
-        Order History
-      </Dropdown.Item>
-    </>
-  );
+  // const dropdown_restaurant = (
+  //   <>
+  //     <Dropdown.Item
+  //       onClick={() => navigate("/", { replace: true })}
+  //     >
+  //       Menu
+  //     </Dropdown.Item>
+  //     <Dropdown.Item
+  //       onClick={() => navigate("/r/profile", { replace: true })}
+  //     >
+  //       Profile
+  //     </Dropdown.Item>
+  //     <Dropdown.Item
+  //       onClick={() => navigate("/r/history", { replace: true })}
+  //     >
+  //       Order History
+  //     </Dropdown.Item>
+  //   </>
+  // );
 
-  const dropdown_admin = (
-    <>
-      <Dropdown.Item
-        onClick={() => navigate("/", { replace: true })}
-      >
-        Orders
-      </Dropdown.Item>
-      <Dropdown.Item
-        onClick={() =>
-          navigate("/userlist/customers", { replace: true })
-        }
-      >
-        Customers' List
-      </Dropdown.Item>
-      <Dropdown.Item
-        onClick={() =>
-          navigate("/userlist/restaurants", { replace: true })
-        }
-      >
-        Restaurants' List
-      </Dropdown.Item>
-    </>
-  );
+  // const dropdown_admin = (
+  //   <>
+  //     <Dropdown.Item
+  //       onClick={() => navigate("/", { replace: true })}
+  //     >
+  //       Orders
+  //     </Dropdown.Item>
+  //     <Dropdown.Item
+  //       onClick={() =>
+  //         navigate("/userlist/customers", { replace: true })
+  //       }
+  //     >
+  //       Customers' List
+  //     </Dropdown.Item>
+  //     <Dropdown.Item
+  //       onClick={() =>
+  //         navigate("/userlist/restaurants", { replace: true })
+  //       }
+  //     >
+  //       Restaurants' List
+  //     </Dropdown.Item>
+  //   </>
+  // );
+
+  const pages = {
+    "customer": [
+      { name: "Restaurant", url: "/" },
+      { name: "Profile", url: "/customer/profile" },
+      { name: "Order history", url: "/customer/history" },
+    ],
+    "restaurant": [
+      { name: "Restaurant", url: "/" },
+      { name: "Profile", url: "/r/profile" },
+      { name: "Order history", url: "/r/history" },
+    ], 
+    "admin": [
+      { name: "Orders", url: "/" },
+      { name: "Customers' List", url: "/userlist/customers" },
+      { name: "Restaurants' List", url: "/userlist/restaurants" },
+    ]
+  }
 
   return (
     <>
@@ -329,9 +345,18 @@ function HeaderBar(props) {
 
                 <Dropdown.Menu>
                   {
-                    props.usertype === "customer" ? dropdown_customer :
-                      props.usertype == "restaurant" ? dropdown_restaurant :
-                        dropdown_admin
+                    pages[props.usertype].map(
+                      (page, id) => (
+                        <Dropdown.Item key={id}
+                          onClick={() => navigate(page.url, { replace: true })}
+                        >
+                          {page.name}
+                        </Dropdown.Item>
+                      )
+                    )
+                    // props.usertype === "customer" ? dropdown_customer :
+                    //   props.usertype == "restaurant" ? dropdown_restaurant :
+                    //     dropdown_admin
                   }
                   <Dropdown.Divider />
                   <Dropdown.Item

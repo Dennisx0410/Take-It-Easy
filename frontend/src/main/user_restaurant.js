@@ -430,7 +430,7 @@ function ChangeMenu() {
                 <Box sx={{ mt: "3%", mb: "10%" }}>
                   {restaurantInfo.menu.map((x, y) =>
                     true ? (
-                      <Box sx={{ mt: "1%" }}>
+                      <Box sx={{ mt: "1%" }} key={y}>
                         <Card
                           sx={{ display: "flex", width: "95%", height: "20vh" }}
                         >
@@ -619,11 +619,12 @@ function ChangeMenu() {
                             control={<Radio />}
                             label="None"
                           />
-                          {STYLES.map((x) => (
+                          {STYLES.map((x, id) => (
                             <FormControlLabel
                               value={x}
                               control={<Radio />}
                               label={x}
+                              key={id}
                             />
                           ))}
                         </RadioGroup>

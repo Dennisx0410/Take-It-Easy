@@ -139,7 +139,7 @@ function Restaurant() {
           <h2>Cart:</h2>
           {restaurants.menu.map((x, y) =>
             qtys[y] > 0 ? (
-              <Typography variant="body" display="block">
+              <Typography variant="body" display="block" id={y}>
                 {qtys[y]}× {x.name} &#8212; HK${x.price * qtys[y]}
               </Typography>
             ) : (
