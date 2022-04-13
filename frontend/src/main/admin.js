@@ -22,7 +22,7 @@ function ResetPassword(props) {
   const [mask, setMask] = useState(false);
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(props);
+
     let loginForm = e.target;
     let formData = new FormData(loginForm);
     let username = formData.get("username");
@@ -42,8 +42,6 @@ function ResetPassword(props) {
     } else {
       targetUsername = username;
       newPassword = newpwd;
-      console.log(targetUsername);
-      console.log(newPassword);
       const URL = PREFIX + `/admin/${props.usertype}/resetPw`;
       const attempt = async () => {
         try {
@@ -60,7 +58,6 @@ function ResetPassword(props) {
           });
           const attempt_result = await response.json();
           setCPstatus(attempt_result);
-          console.log(attempt_result);
         } catch (err) {
           console.log("error", err);
         }
@@ -145,7 +142,6 @@ function ResetPassword(props) {
 
 function FoodItem(props) {
   let foodItem = props.food;
-  console.log(foodItem);
   return (
     <>
       <span style={{ fontSize: "18px" }}>• {foodItem.name}</span>
@@ -155,7 +151,6 @@ function FoodItem(props) {
 }
 
 function Order(props) {
-  console.log(props);
   var createDate = props.order.createdAt;
   var updateDate = props.order.updatedAt;
   var restaurantID = props.order.restaurantID._id;
@@ -242,7 +237,6 @@ function OrderHistory(props) {
           });
         }
         setOrderHistory(order_history);
-        console.log(order_history);
         setLoading(false);
       } catch (error) {
         console.log("error", error);
@@ -312,7 +306,6 @@ function CustomerCard(props) {
   if (!skip) {
     if (customer.profilePic != undefined) {
       profilePic = customer.profilePic;
-      console.log(profilePic);
       let img = Buffer.from(profilePic.data).toString("base64");
       setSkip(true);
       setImgUrl(img);
@@ -488,7 +481,6 @@ function RestaurantCard(props) {
             }),
           });
           const approve_result = await response.json();
-          console.log(approve_result);
           props.setReload(true);
         } catch (error) {
           console.log("error", error);
@@ -511,7 +503,6 @@ function RestaurantCard(props) {
             }),
           });
           const approve_result = await response.json();
-          console.log(approve_result);
           props.setReload(true);
         } catch (error) {
           console.log("error", error);
@@ -520,10 +511,8 @@ function RestaurantCard(props) {
       reject();
     }
     window.location.reload();
-    console.log("setting reload");
     setUpdate(true);
   }
-  console.log(props);
   const [ImgUrl, setImgUrl] = useState();
   const [skip, setSkip] = useState(false);
 
