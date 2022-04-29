@@ -24,11 +24,9 @@ const OtpSchema = new Schema(
 
 // listen save action and hash the password before saving
 OtpSchema.pre("save", async function (next) {
-  console.log("save action detected, check changes");
   const otp = this;
 
   if (otp.isModified("otp")) {
-    console.log("otp changed, hash before saving");
     otp.otp = await bcrypt.hash(otp.otp, SALTLEN);
   }
   next();

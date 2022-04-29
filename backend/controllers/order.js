@@ -15,7 +15,6 @@ module.exports = {
         .populate("customerID");
       res.send(orders);
     } catch (err) {
-      console.log(err);
       res.send(err);
     }
   },
@@ -29,7 +28,6 @@ module.exports = {
         .populate("customerID");
       res.send(orders);
     } catch (err) {
-      console.log(err);
       res.send(err);
     }
   },
@@ -43,7 +41,6 @@ module.exports = {
         .populate("customerID");
       res.send(order);
     } catch (err) {
-      console.log(err);
       res.send(err);
     }
   },
@@ -56,14 +53,12 @@ module.exports = {
         .populate("customerID");
       res.send(order);
     } catch (err) {
-      console.log(err);
       res.send(err);
     }
   },
 
   addOrder: async (req, res) => {
     // TODO : Add order to database
-    console.log("> add order");
     try {
       let customer = req.customer;
       let orderDoc = {};
@@ -96,11 +91,9 @@ module.exports = {
       let total = 0;
       orderDoc.items.forEach((food) => {
         total += food.price;
-        console.log("food: ", food.name, "$", food.price, "cum. total:", total);
       });
 
       // check if matched total amount
-      console.log("total(calc)", total, "total(from req)", req.body.total);
       if (total != req.body.total) {
         await Order.deleteOne(orderDoc._id);
         throw {
@@ -116,42 +109,22 @@ module.exports = {
       orderDoc.netTotal = netTotal;
       customer.points -= req.body.couponUsed;
 
-      console.log(
-        "total:",
-        total,
-        "coupon used:",
-        req.body.couponUsed,
-        "netTotal:",
-        netTotal
-      );
-      console.log("points earned:", Math.floor(netTotal / 5));
-
       // update customer points
       customer.points += Math.floor(netTotal / 5);
       await customer.save();
       orderDoc.customerID.points = customer.points;
       await orderDoc.save();
 
-      console.log("> Successfully placed order");
-
       socketio.sendOrder(restaurant.username, orderDoc);
       res.status(201).send(orderDoc);
     } catch (err) {
       res.status(400).send(err);
-      console.log(err);
     }
   },
 
   finishOrder: async (req, res, next) => {
     // TODO: complete an order
-    console.log("> finish order");
     try {
-      //The Request sender is not a restaurant
-      // this part can be ignored because it is catched by verifyToken
-      // if (req.restaurant == undefined) {
-      //   throw {name: 'NotARestaurantError', message: 'Only Restaurant can updated order status!'};
-      // }
-      console.log("Order", req.body.orderNo, "Finish");
       let doc = await Order.findOne({ orderNo: req.body.orderNo });
       //Check if the order is already finished
       if (doc.status) {
@@ -177,7 +150,6 @@ module.exports = {
       targettype = "customer";
       noti.message = `Your order #${orders.orderNo} placed at ${req.restaurant.restaurantName} is ready for pick up!`;
       let notiDoc = await Notification.create(noti);
-      console.log("> Created new targeted noti to", noti.reciever);
       socketio.notifySingle(noti.reciever, targettype, notiDoc);
 
       // continue to notify target customer
@@ -185,7 +157,6 @@ module.exports = {
         .status(200)
         .send({ message: `Order ${doc._id} status have been updated` });
     } catch (err) {
-      console.log(err);
       res.send(err);
     }
   },
@@ -198,7 +169,6 @@ module.exports = {
         .populate("customerID");
       res.status(200).send(orders);
     } catch (err) {
-      console.log(err);
       res.status(400).send(err);
     }
   },

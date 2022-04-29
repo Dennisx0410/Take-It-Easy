@@ -14,14 +14,9 @@ var onlineRestaurant = [];
 
 const pairCustomerID = async (socketId, user_id) => {
   let user = await cust.getCustomerById(user_id);
-  // if (!user.online){
-  //     user.online = true;
-  //     await user.save();
-  // }
   let username = user.username;
   const customer = { socketId, username };
   onlineCustomer.push(customer);
-  console.log(` >>> Paired Customer ${username} with `, socketId);
 };
 
 const findSocketIdWithUsername = (username) => {
@@ -34,13 +29,8 @@ const findSocketIdWithUsername = (username) => {
 const pairRestaurantID = async (socketId, rest_id) => {
   let user = await rest.getRestaurantById(rest_id);
   let username = user.username;
-  // if (!user.online){
-  //     user.online = true;
-  //     await user.save();
-  // }
   const restaurant = { socketId, username };
   onlineRestaurant.push(restaurant);
-  console.log(` >>> Paired Restaurant ${username} with `, socketId);
 };
 
 const findSocketIdWithRestaurantUsername = (username) => {
@@ -66,12 +56,6 @@ io.on("connection", (socket) => {
         (customer) => customer.socketId === socket.id
       );
       if (index !== -1) {
-        console.log(
-          ` >>> Remove Customer Key Pair for ${onlineCustomer[index].socketId} with socket ${onlineCustomer[index].username}`
-        );
-        // let user = await cust.getCustomerByUsername(onlineCustomer[index].username)
-        // user.online = false;
-        // await user.save()
         onlineCustomer.splice(index, 1)[0];
       }
     } else if (data.usertype == "restaurant") {
@@ -80,12 +64,6 @@ io.on("connection", (socket) => {
       );
 
       if (index !== -1) {
-        console.log(
-          ` >>> Remove Restaurant Key Pair for ${onlineRestaurant[index].socketId} with socket ${onlineRestaurant[index].username}`
-        );
-        // let user = await rest.getRestaurantByUsername(onlineRestaurant[index].username)
-        // user.online = false;
-        // await user.save()
         onlineRestaurant.splice(index, 1)[0];
       }
     }
@@ -95,7 +73,6 @@ io.on("connection", (socket) => {
 module.exports = {
   notifyAll: (doc) => {
     io.emit("notification", doc);
-    console.log("> Real Time Notification Sent");
   },
 
   notifySingle: (username, usertype, doc) => {
@@ -103,17 +80,11 @@ module.exports = {
     if (usertype == "customer") {
       index = findSocketIdWithUsername(username);
       if (index != -1) {
-        console.log(
-          `Sent notification to Customer ${username} with socket ID ${onlineCustomer[index].socketId}`
-        );
         io.to(onlineCustomer[index].socketId).emit("notification", doc);
       }
     } else if (usertype == "restaurant") {
       index = findSocketIdWithRestaurantUsername(username);
       if (index != -1) {
-        console.log(
-          `Sent notification to Restaurant ${username} with socket ID ${onlineRestaurant[index].socketId}`
-        );
         io.to(onlineRestaurant[index].socketId).emit("notification", doc);
       }
     }
@@ -123,9 +94,6 @@ module.exports = {
     let index = -1;
     index = findSocketIdWithRestaurantUsername(username);
     if (index != -1) {
-      console.log(
-        `Sent order to Restaurant ${username} with socket ID ${onlineRestaurant[index].socketId}`
-      );
       io.to(onlineRestaurant[index].socketId).emit("recieveOrder", doc);
     }
   },

@@ -7,18 +7,13 @@ module.exports = {
   // middleware for token verification
   verifyToken: async (req, res, next) => {
     // TODO: verify token by matching docs in db
-    //console.log('> verify token');
     try {
       // extract token
       let token = req.header("Authorization").replace("Bearer ", "");
-      //console.log('token:', token);
 
       // decode playload
-      //console.log('ready to decode');
       let data = jwt.verify(token, process.env.SECRET);
-      //console.log('decoded with data:', data);
       let usertype = data.usertype;
-      //console.log('user identity:', usertype);
 
       let user;
       try {
@@ -33,7 +28,6 @@ module.exports = {
         } else if (usertype == "admin") {
           // admin
           req.token = token;
-          //console.log('> verify success')
           return next();
         } else {
           // other user type
@@ -47,9 +41,6 @@ module.exports = {
 
       // check user currently logging in
       if (!user.online) {
-        console.log(
-          `${usertype} request token verification but his is not logging in`
-        );
         throw {
           name: "InactiveUserRequest",
           message: `${usertype} request token verification but his is not logging in`,
@@ -60,10 +51,8 @@ module.exports = {
       req.token = token;
       req[`${usertype}`] = user;
 
-      //console.log('> verify success')
       next();
     } catch (err) {
-      // console.log(err)
       res.status(401).send(err); // 401: unauthorized
     }
   },
