@@ -272,7 +272,7 @@ function HeaderBar(props) {
       { name: "Order history", url: "/customer/history" },
     ],
     "restaurant": [
-      { name: "Restaurant", url: "/" },
+      { name: "Change Menu", url: "/" },
       { name: "Profile", url: "/r/profile" },
       { name: "Order history", url: "/r/history" },
     ], 
