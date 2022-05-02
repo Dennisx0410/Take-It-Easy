@@ -5,7 +5,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert, MenuItem, TextField } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import MaterialIconsReact from "material-icons-react";
-
+/**
+ * This is login related component 
+ * Components
+ * @name loginAttempt
+ * @description a function to communicate with backend
+ * @name Login
+ * @description return the login page
+ */
 const PREFIX = "http://localhost:5000";
 
 // send login request to get token

@@ -7,7 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { Badge, IconButton, Snackbar, Alert, Grid } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
-
+/**
+ * This is the Header bar for the users 
+ * Components
+ * @name HeaderBar
+ * @description return a stick header bar
+ */
 const PREFIX = "http://localhost:5000";
 
 function HeaderBar(props) {
