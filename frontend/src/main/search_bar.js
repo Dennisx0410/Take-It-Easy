@@ -2,7 +2,18 @@ import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-
+/**
+ * This is verification related component 
+ * Components
+ * @name Search
+ * @description  the shape and color of the search bar is defined here  
+ * @name SearchBar
+ * @description  return a SearchBar to the main interface of customer 
+ * @name SearchIconWrapper
+ * @description stling of the search icon from mui
+ * @name StyledInputBase
+ * @description return a styled input area for SearchBar
+ */
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,

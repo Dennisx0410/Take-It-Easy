@@ -11,7 +11,20 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea, Backdrop, CircularProgress, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import MaterialIcon from "material-icons-react";
-
+/**
+ * This is verification related component 
+ * Components
+ * @name Main
+ * @description the main page of customer's interface
+ * @name Suggestion
+ * @description list all suggested restaurant
+ * @name SuggestionCard
+ * @description  return a SugestionCard component which shows a suggested restaurant 
+ * @name Gallery
+ * @description list all customers
+ * @name FileCard
+ * @description  return a CustomerCard component which shows the details of a customer 
+ */
 const PREFIX = "http://localhost:5000";
 const REFRESH_RATE = 30 * 1000; // 30 sec
 

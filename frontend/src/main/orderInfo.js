@@ -3,7 +3,12 @@ import { useParams } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./orderInfo.css";
-
+/**
+ * This is verification related component 
+ * Components
+ * @name OrderInfo
+ * @description return a styled info of an order
+ */
 const PREFIX = `http://localhost:5000`;
 
 function OrderInfo(props) {

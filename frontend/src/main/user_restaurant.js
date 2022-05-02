@@ -30,7 +30,22 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import CardActions from "@material-ui/core/CardActions";
-
+/**
+ * This is verification related component 
+ * Components
+ * @name ChangePassword
+ * @description return a form for user to change password
+ * @name AccountInfo
+ * @description return the account infos of the user
+ * @name FoodItem
+ * @description return the name of a food item
+ * @name ChangeMenu
+ * @description An interface for a restaurant to change their menu
+ * @name Order
+ * @description return an Order component which shows the order details of an order 
+ * @name OrderHistory
+ * @description list all the orders made by the customer
+ */
 const PREFIX = "http://localhost:5000";
 const REFRESH_RATE = 30 * 1000; // 30 sec
 
