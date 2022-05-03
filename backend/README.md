@@ -103,6 +103,7 @@ POST /customer/reverify
 #### Return(json)
 
 - `OtpNotFound`
+- `AlreadyActivated`
 - `PendingOtp`
 - `VerificationEmailSent`
 
