@@ -51,7 +51,7 @@ POST /customer/signup
 #### Return(json)
 
 - `UserAlreadyExisted`
-- `FileExtensionError`
+- `FileError`
 - `SignupSuccessAndVerificationEmailSent`
 
 ## Activate
@@ -227,7 +227,7 @@ POST /customer/profilePic
 - `JsonWebTokenError`
 - `TokenExpiredError`
 - `InactiveUserRequest`
-- `FileExtensionError`
+- `FileError`
 
 ## Get Profile Picture
 
@@ -452,7 +452,7 @@ POST /restaurant/signup
 #### Return
 
 - `UserAlreadyExisted`
-- `FileExtensionError`
+- `FileError`
 - `RegisterationReceived`
 
 ## Signin
@@ -610,7 +610,7 @@ POST /restaurant/profilePic
 - `JsonWebTokenError`
 - `TokenExpiredError`
 - `InactiveUserRequest`
-- `FileExtensionError`
+- `FileError`
 
 ## Get profile picture
 

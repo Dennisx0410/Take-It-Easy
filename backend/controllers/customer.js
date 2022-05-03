@@ -207,8 +207,8 @@ module.exports = {
           return res
             .status(400)
             .send({
-              name: "FileExtensionError",
-              message: "image should be jpg or png",
+              name: "FileError",
+              message: "image should be jpg or png and smaller than 5MB",
             });
         } else {
         }
