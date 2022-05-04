@@ -10,7 +10,26 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@mui/material/Box";
 import { Buffer } from "buffer";
-
+/**
+ * This is verification related component 
+ * Components
+ * @name ResetPassword
+ * @description a function to communicate with backend in terms of resetting password
+ * @name FoodItem
+ * @description return the name of a food item
+ * @name Order
+ * @description return an Order component which shows the order details of an order 
+ * @name OrderHistory
+ * @description list all the orders made by customers
+ * @name CustomerList
+ * @description list all customers
+ * @name CustomerCard
+ * @description  return a CustomerCard component which shows the details of a customer 
+ * @name RestaurantList
+ * @description list all registered restaurants with the Allow/Reject registration functionality
+ * @name RestaurantCard
+ * @description return a RestaurantCard component which shows the details of a registered restaurant 
+ */
 const NOIMG = "";
 const PREFIX = "http://localhost:5000";
 const REFRESH_RATE = 30 * 1000; // 30 sec

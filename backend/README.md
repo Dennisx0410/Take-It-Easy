@@ -48,10 +48,10 @@ POST /customer/signup
 - `phoneNum`: String
 - `profile`: File (jpg/jpeg/jfif/png)
 
-#### Return(json)
+#### Return (json)
 
 - `UserAlreadyExisted`
-- `FileExtensionError`
+- `FileError`
 - `SignupSuccessAndVerificationEmailSent`
 
 ## Activate
@@ -71,7 +71,7 @@ POST /customer/activate
 - `username`: String (unique)
 - `otp`: Integer (6 digit)
 
-#### Return(json)
+#### Return (json)
 
 - `token`
 - `UserNotExist`
@@ -100,9 +100,10 @@ POST /customer/reverify
 - `username`: String (unique)
 - `email`: String
 
-#### Return(json)
+#### Return (json)
 
 - `OtpNotFound`
+- `AlreadyActivated`
 - `PendingOtp`
 - `VerificationEmailSent`
 
@@ -123,7 +124,7 @@ POST /customer/signin
 - `username`: String (unique)
 - `password`: String
 
-#### Return(json)
+#### Return (json)
 
 - `token`
 - `AccountNotActivatedAndPendingOtp`
@@ -149,7 +150,7 @@ POST /customer/changePw
 - `passwordOld`: String
 - `passwordNew`: String
 
-#### Return(json)
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -176,7 +177,7 @@ GET /customer/data
 
 - N/A
 
-#### Return(json)
+#### Return (json)
 
 - json of username, phoneNum, email, points, profilePic
 
@@ -196,7 +197,7 @@ POST /customer/logout
 
 - N/A
 
-#### Return(json)
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -220,14 +221,14 @@ POST /customer/profilePic
 
 - `profile`: File (jpg/jpeg/jfif/png)
 
-#### Return(json)
+#### Return (json)
 
 - `ChangedProfilePic`
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
 - `InactiveUserRequest`
-- `FileExtensionError`
+- `FileError`
 
 ## Get Profile Picture
 
@@ -245,7 +246,7 @@ GET /customer/profilePic
 
 - N/A
 
-#### Return(json)
+#### Return (json)
 
 - File buffer
 - `VerifyError`
@@ -255,7 +256,7 @@ GET /customer/profilePic
 
 ## Other requests
 
-#### Return(json)
+#### Return (json)
 
 - `Forbidden`
 
@@ -280,7 +281,7 @@ POST /admin/signin
 - `username`: String (unique)
 - `password`: String
 
-#### Return(json)
+#### Return (json)
 
 - `token`
 - `UserNotFound`
@@ -299,7 +300,7 @@ GET /admin/customer/all
 
 - N/A
 
-#### Return(json)
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -322,7 +323,7 @@ POST /admin/customer/resetPw
 - `username`: String
 - `passwordNew`: String
 
-#### Return(json)
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -346,7 +347,7 @@ POST /admin/restaurant/approve
 
 - `username`: String
 
-#### Return(json)
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -370,7 +371,7 @@ POST /admin/restaurant/reject
 - `username`: String
 - `reason`: String
 
-#### Return(json)
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -392,7 +393,7 @@ GET /admin/restaurant/all
 
 - N/A
 
-#### Return(json)
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -415,7 +416,7 @@ POST /admin/restaurant/resetPw
 - `username`: String
 - `passwordNew`: String
 
-#### Return(json)
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -449,10 +450,10 @@ POST /restaurant/signup
 - `licenseNum`: String,
 - `profile`: File (jpg/jpeg/jfif/png)
 
-#### Return
+#### Return (json)
 
 - `UserAlreadyExisted`
-- `FileExtensionError`
+- `FileError`
 - `RegisterationReceived`
 
 ## Signin
@@ -472,7 +473,7 @@ POST /restaurant/signin
 - `username`: String,
 - `password`: String
 
-#### Return
+#### Return (json)
 
 - `token`
 - `AccountNotApproved`
@@ -497,7 +498,7 @@ POST /restaurant/changePw
 - `passwordOld`: String
 - `passwordNew`: String
 
-#### Return(json)
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -524,7 +525,7 @@ GET /restaurant/data
 
 - N/A
 
-#### Return
+#### Return (json)
 
 - Restaurant Json document
 
@@ -544,7 +545,7 @@ GET /restaurant/all
 
 - N/A
 
-#### Return
+#### Return (json)
 
 - Array of activated restaurant JSON documents
 
@@ -564,7 +565,7 @@ GET /restaurant/notApproved
 
 - N/A
 
-#### Return
+#### Return (json)
 
 - Array of not activated restaurant Json documents
 
@@ -584,7 +585,7 @@ POST /restaurant/logout
 
 - N/A
 
-#### Return
+#### Return (json)
 
 - `SuccessfullyLogout`
 
@@ -604,13 +605,13 @@ POST /restaurant/profilePic
 
 - `profile`: File (jpg/jpeg/jfif/png)
 
-#### Return
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
 - `TokenExpiredError`
 - `InactiveUserRequest`
-- `FileExtensionError`
+- `FileError`
 
 ## Get profile picture
 
@@ -628,7 +629,7 @@ GET /restaurant/profilePic
 
 - N/A
 
-#### Return
+#### Return (json)
 
 - File buffer
 - `VerifyError`
@@ -656,7 +657,7 @@ POST /restaurant/food
 - `price` : Number,
 - `style` : String
 
-#### Return
+#### Return (json)
 
 - `AddedFoodItemSuccessfully`
 - `VerifyError`
@@ -680,7 +681,7 @@ DELETE /restaurant/food
 
 - `foodId` : ObjectId of food item
 
-#### Return
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -708,9 +709,9 @@ GET /order/fetchByRestaurant
 
 - N/A
 
-#### Return
+#### Return (json)
 
--`List of orders, for which items is aggregate with food item to provide more detail`
+-`List of orders, for which items is populated with food item to provide more detail`
 
 ## Fetch order from the respective customer
 
@@ -728,9 +729,9 @@ GET /order/fetchByCustomer
 
 - N/A
 
-#### Return
+#### Return (json)
 
--`List of orders, for which items is populate with food item to provide more detail`
+-`List of orders, for which items is populated with food item to provide more detail`
 
 ## Create new order and update customer points
 
@@ -753,7 +754,7 @@ POST /order/add
 - couponUsed: Integer
 - netTotal: Real
 
-#### Return
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`
@@ -782,7 +783,7 @@ POST /order/done
 
 - orderNo : String
 
-#### Return
+#### Return (json)
 
 - `VerifyError`
 - `JsonWebTokenError`

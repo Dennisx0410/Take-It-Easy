@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import "./verification.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
-
+/**
+ * This is verification related component 
+ * Components
+ * @name verify
+ * @description a function to communicate with backend
+ * @name Verification
+ * @description return the verification webpage for customers
+ */
 const PREFIX = "http://localhost:5000";
 
 async function verify(username, otp) {

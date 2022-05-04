@@ -19,7 +19,13 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+/**
+ * This is verification related component 
+ * Components
+ * @name Restaurant
+ * @description The interface of a restaurant page showing to a customer to choose food and place an order   
 
+ */
 const PREFIX = "http://localhost:5000";
 
 function Restaurant() {

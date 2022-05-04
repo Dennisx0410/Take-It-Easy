@@ -13,6 +13,14 @@ import UserRestaurant from "./main/user_restaurant";
 import Admin from "./main/admin";
 import OrderInfo from "./main/orderInfo";
 import { io } from "socket.io-client";
+/**
+ * This is the origin of all of the components that will be generated, 
+ * Components
+ * @name NoMatch
+ * @description return a page if the inputted link do not exist in this domain
+ * @name App
+ * @description return the webpage according to the login status and customer type
+ */
 
 function NoMatch() {
   let location = useLocation();

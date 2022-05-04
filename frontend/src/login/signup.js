@@ -4,7 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert, Avatar, MenuItem, Stack, TextField } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import MaterialIconsReact from "material-icons-react";
-
+/**
+ * This is signup related component 
+ * Components
+ * @name signup
+ * @description a function to communicate with backend
+ * @name Signup
+ * @description return all the components related to signup upon different scenarios
+ */
 const PREFIX = "http://localhost:5000";
 
 async function signup(form, usertype) {

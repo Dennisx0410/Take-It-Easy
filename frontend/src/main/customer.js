@@ -19,7 +19,18 @@ import {
   TableRow,
 } from "@mui/material";
 import { Box } from "@mui/system";
-
+/**
+ * This is verification related component 
+ * Components
+ * @name ChangePassword
+ * @description return a form for user to change password
+ * @name AccountInfo
+ * @description return the account infos of the user
+ * @name Order
+ * @description return an Order component which shows the order details of an order 
+ * @name OrderHistory
+ * @description list all the orders made by the customer
+ */
 const PREFIX = "http://localhost:5000";
 
 function ChangePassword() {

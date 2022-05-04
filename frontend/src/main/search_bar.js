@@ -2,7 +2,18 @@ import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-
+/**
+ * This is verification related component 
+ * Components
+ * @name Search
+ * @description  the shape and color of the search bar is defined here  
+ * @name SearchBar
+ * @description  return a SearchBar to the main interface of customer 
+ * @name SearchIconWrapper
+ * @description stling of the search icon from mui
+ * @name StyledInputBase
+ * @description return a styled input area for SearchBar
+ */
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -10,13 +21,7 @@ const Search = styled("div")(({ theme }) => ({
   "&:hover": {
     backgroundColor: alpha(theme.palette.warning.light, 0.25),
   },
-  // marginRight: theme.spacing(2),
-  // marginLeft: 0,
   width: "100%",
-  // [theme.breakpoints.up("sm")]: {
-  //   marginLeft: theme.spacing(3),
-  //   width: "auto",
-  // },
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -33,7 +38,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(5)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
