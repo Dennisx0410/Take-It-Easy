@@ -1,3 +1,21 @@
+/* 
+PROGRAM token - token related functionality
+
+PROGRAMMER: Ip Tsz Ho, Yeung Long Sang
+
+VERSION 1: written 1/3/2022
+
+CHANGE HISTORY: refer to github push history
+
+PURPOSE: Providing token verification function
+
+MODULES:
+jwt: for token authentication
+
+USAGE: 
+middleware for authenticating token and retrieve data from token for other module.
+*/
+
 // package
 const jwt = require("jsonwebtoken");
 const cust = require("./customer");
@@ -6,7 +24,7 @@ const rest = require("./restaurant");
 module.exports = {
   // middleware for token verification
   verifyToken: async (req, res, next) => {
-    // TODO: verify token by matching docs in db
+    //verify token by matching docs in db
     try {
       // extract token
       let token = req.header("Authorization").replace("Bearer ", "");

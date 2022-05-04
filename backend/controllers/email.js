@@ -1,3 +1,22 @@
+/* 
+PROGRAM email - Controller of email functionality
+
+PROGRAMMER: Ip Tsz Ho, Yeung Long Sang
+
+VERSION 1: written 1/3/2022
+
+CHANGE HISTORY: refer to github push history
+
+PURPOSE: Providing functions for the server to send email to user
+
+MODULES:
+otp-generator: generator One-time-password
+nodemailer: enable mailing functionality
+
+USAGE: 
+Exporting email function to other module, mainly for sending customer otp code and notify restaurant approval status.
+*/
+
 // model
 const Otp = require("../models/otp").Otp;
 const Customers = require("../models/customer");
@@ -10,7 +29,9 @@ const { MAX_TRIAL } = require("../models/otp");
 // const
 const EXPIRE = 2 * 60; // 2 min
 
+//Function to generate One-time-password
 const generateOTP = () => {
+  //Generate a 6 digits otp as string, only using character of digits of 0-9
   return otpGenerator
     .generate(6, {
       digits: true,
@@ -21,17 +42,18 @@ const generateOTP = () => {
     .toString();
 };
 
+//Function for sending email
 const sendEmail = async (receiver, template) => {
   // create email transporter
   const transporter = nodemailer.createTransport({
+    //Define service as gmail
     service: "gmail",
-    // host: 'smtp.gmail.email',
-    //port: 587,
-    //secure: false,
+    //Email sender login credential
     auth: {
       user: process.env.GMAIL_USER,
       pass: process.env.GMAIL_PW,
     },
+    //Bypass certificate requirement for current stage of development to prevent error, (Need to review this part during offical deployment) 
     tls: {
       rejectUnauthorized: false,
     },
@@ -46,9 +68,10 @@ const sendEmail = async (receiver, template) => {
   });
 };
 
+//Export functions for other module to use
 module.exports = {
+  //Create and send verification email containing the OTP to customer 
   verifyEmail: async (req, res) => {
-    // TODO: send OTP to customer to verify email
     try {
       // generate OTP
       let username;
@@ -164,6 +187,7 @@ module.exports = {
     }
   },
 
+  //Function for sending notification of approval of a restaurant.
   approvalEmail: async (req, res) => {
     try {
 
@@ -197,6 +221,7 @@ module.exports = {
     }
   },
 
+  //Function for sending notification of rejection of a restaurant.
   rejectEmail: async (req, res) => {
     try {
 

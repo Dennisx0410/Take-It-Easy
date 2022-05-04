@@ -1,14 +1,38 @@
+/* 
+PROGRAM model/customer - A mongoose schema module.
+
+PROGRAMMER: Ip Tsz Ho, Yeung Long Sang
+
+VERSION 1: written 1/3/2022
+
+CHANGE HISTORY: refer to github push history
+
+PURPOSE: Defining essential structure of customer document stored in the database and providing fundamental middleware for customer.
+
+MODULES:
+jwt: Generate json token
+mongoose: Establish connection to our database to store and retrieve data from.
+bcrypt: Perform encryption on the password before saving into the database
+
+USAGE: 
+Define the structure of customer document stored in the mongodb database by mongosoe Schema. Also declared middleware to perform encryption before storing password into database, as well as generating customer token
+*/
+
+
 // packages
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-// const
-const SALTLEN = 8;
+// bcrypt encryption dependencies
+const SALTLEN = 8; 
+
+//jwt dependencies
 // const EXPIRE = 60 * 30; // 30 min
 const EXPIRE = 60 * 60 * 24 * 30; // 1 month
 
+//Defining the structure of customer document
 const customerSchema = new Schema(
   {
     username: {
@@ -31,7 +55,7 @@ const customerSchema = new Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true }  //Providing the time of the last update and created date
 );
 
 // listen save action and hash the password before saving
@@ -56,4 +80,6 @@ customerSchema.methods.genAuthToken = async function () {
 };
 
 const Customers = mongoose.model("Customers", customerSchema);
+
+//Export the Customer document stucture for other module to reference
 module.exports = Customers;

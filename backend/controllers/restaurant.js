@@ -1,3 +1,21 @@
+/* 
+PROGRAM restaurant - Controller of restaurant related functionality
+
+PROGRAMMER: Ip Tsz Ho, Yeung Long Sang
+
+VERSION 1: written 1/3/2022
+
+CHANGE HISTORY: refer to github push history
+
+PURPOSE: Providing functions for the server to handle restaurant related request and provide respond
+
+MODULES:
+socketio: Enable real time communication between server and client
+
+USAGE: 
+Exporting restaurant function to other module. Handling the routed request under /restaurant domain
+*/
+
 // model
 const Restaurants = require("../models/restaurant.js");
 const foodItem = require("../models/food_item.js");
@@ -24,8 +42,8 @@ const upload = multer({
   },
 });
 
+//Function for authenticating restaurant
 const authRestaurant = async (username, password) => {
-  // TODO: authenticate restaurant by username, password and return the restaurant doc if matched
 
   // fetch restaurant by username
   let restaurant = await Restaurants.findOne({ username });
@@ -62,25 +80,31 @@ const getRestaurantById = async (id) => {
   return restaurant;
 };
 
+//Export function for other module to use
 module.exports = {
   getRestaurantById: getRestaurantById,
 
   getRestaurantByUsername: getRestaurantByUsername,
 
+  //Function for getting a single restaurant data by restaurant object id
   getRestaurantData: async (req, res) => {
     try {
       // fetch restaurant by username
       const data = await Restaurants.findOne({
         _id: req.restaurant._id,
-      }).populate("menu");
+      })
+      //Populate menu to provide more detail on the food item
+      .populate("menu");
       res.status(200).send(data);
     } catch (err) {
       res.status(404).send(err);
     }
   },
 
+  //Function to fetch all restaurant waiting for approval
   getNotApprovedRestaurant: async (req, res) => {
     try {
+      //Populate menu to provide more detail on the food item
       let list = await Restaurants.find({ approved: false }).populate("menu");
 
       res.status(200).send(list);
@@ -89,8 +113,10 @@ module.exports = {
     }
   },
 
+  //Function for fetching all approved restaurant
   getApprovedRestaurant: async (req, res) => {
     try {
+      //Populate menu to provide more detail on the food item
       let list = await Restaurants.find({ approved: true }).populate("menu");
       res.status(200).send(list);
     } catch (err) {
@@ -98,8 +124,10 @@ module.exports = {
     }
   },
 
+  //Function for fetching all restaurant data, no matter it is approved or waiting for approval
   getAllRestaurantData: async (req, res) => {
     try {
+      //Populate menu to provide more detail on the food item
       let data = await Restaurants.find().populate("menu");
       res.status(200).send(data);
     } catch (err) {
@@ -134,8 +162,8 @@ module.exports = {
     }
   },
 
+  //Function for handling restaurant change password
   changePw: async (req, res) => {
-    // TODO: change pw given old and new password pair (request by user)
     try {
       let passwordOld = req.body.passwordOld;
       let passwordNew = req.body.passwordNew;
@@ -178,8 +206,9 @@ module.exports = {
     }
   },
 
+  //Function for handle admin request of resetting password of restaurant
   resetPw: async (req, res) => {
-    // TODO: change pw given username (request by admin)
+
     try {
       let passwordNew = req.body.passwordNew;
 
@@ -260,8 +289,8 @@ module.exports = {
     }
   },
 
+  //Function for handling restaurant login
   login: async (req, res) => {
-    // TODO: login user by username, password
     try {
       // authenticate restaurant
       let restaurant = await authRestaurant(
@@ -287,6 +316,7 @@ module.exports = {
     }
   },
 
+  //Function for handling restaurant logout
   logout: async (req, res) => {
     // TODO: logout restaurant after token verification
     try {
@@ -300,8 +330,8 @@ module.exports = {
     }
   },
 
+  //Function for approving a restaurant by the admin
   approveAccount: async (req, res, next) => {
-    // TODO: approve account by admin
 
     try {
       let restaurant = await getRestaurantByUsername(req.body.username);
@@ -326,8 +356,8 @@ module.exports = {
     }
   },
 
+  //Function for the admin to reject an restaurant account
   rejectAccount: async (req, res, next) => {
-    // TODO: reject account by admin
     try {
       let restaurant = await getRestaurantByUsername(req.body.username);
 
@@ -343,6 +373,7 @@ module.exports = {
   },
 
   // Food Related Function
+  //Functino for handling a food item image upload
   uploadFoodItemPic: async (req, res, next) => {
     // TODO: upload profile image with key = 'foodPic' to server
     try {
@@ -364,7 +395,7 @@ module.exports = {
       res.send(err);
     }
   },
-
+  //Function for handling a new addition of food item
   addFoodItem: async (req, res) => {
     try {
       // resize Food Item pic to MAX_RESIZE_PX before storing to db
@@ -374,15 +405,17 @@ module.exports = {
           height: MAX_RESIZE_PX
         })
         .toBuffer();
+      //Create a new food item document
       let doc = new foodItem();
       doc.picture = resizedBuf;
       doc.name = req.body.name;
       doc.price = req.body.price;
       doc.style = req.body.style;
-
+      //Save to db
       doc = await foodItem.create(doc);
-
+      //Push the newly created food item into restaurant menu
       req.restaurant.menu.push(doc._id);
+      //Commit the changes
       await req.restaurant.save();
       res.send({
         name: "AddedFoodItemSuccessfully",
@@ -393,15 +426,19 @@ module.exports = {
     }
   },
 
+  //Function for handling a removal of a food item for menu
   removeFoodItem: async (req, res) => {
     try {
+      //Finding the index of the food item in the restaurant menu array
       let idx = req.restaurant.menu.indexOf(req.body.foodId);
       if (idx == -1) {
         throw { name: "FoodNotFound", message: "food is not exist in menu" };
       }
+      //Remove the element from the array
       req.restaurant.menu.splice(idx, 1);
+      //Commit the changes
       await req.restaurant.save();
-
+      //Delete the food item from food item collection
       await foodItem.deleteOne({ _id: req.body.foodId });
       res.send({
         name: "RemovedFoodItemSuccessfully",

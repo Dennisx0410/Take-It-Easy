@@ -1,3 +1,18 @@
+/* 
+PROGRAM model/food_item - A mongoose schema module.
+
+PROGRAMMER: Ip Tsz Ho, Yeung Long Sang
+
+VERSION 1: written 1/3/2022
+
+CHANGE HISTORY: refer to github push history
+
+PURPOSE: Defining essential structure of otp document stored in the database
+
+USAGE: 
+All active OTP will be stored as the following document, also the OTP will be hashed before saving.
+*/
+
 // packages
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;

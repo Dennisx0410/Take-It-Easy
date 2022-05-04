@@ -1,3 +1,23 @@
+/* 
+PROGRAM model/restaurant - A mongoose schema module.
+
+PROGRAMMER: Ip Tsz Ho, Yeung Long Sang
+
+VERSION 1: written 1/3/2022
+
+CHANGE HISTORY: refer to github push history
+
+PURPOSE: Defining essential structure of restaurant document stored in the database and providing fundamental middleware for restaurant.
+
+MODULES:
+jwt: Generate json token
+mongoose: Establish connection to our database to store and retrieve data from.
+bcrypt: Perform encryption on the password before saving into the database
+
+USAGE: 
+Define the structure of restaurant document stored in the mongodb database by mongosoe Schema. Also declared middleware to perform encryption before storing password into database, as well as generating restaurant token
+*/
+
 // packages
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
@@ -8,7 +28,7 @@ const SALTLEN = 10;
 // const EXPIRE = 60 * 30; // 30 min
 const EXPIRE = 60 * 60 * 24 * 30; // 1 month
 
-// schema
+//Structure if restaurant document
 const restaurantSchema = new Schema({
   username: {
     type: String,
@@ -36,6 +56,7 @@ const restaurantSchema = new Schema({
   ],
 });
 
+//Hash password before saving
 restaurantSchema.pre("save", async function (next) {
   const restaurant = this;
 
@@ -57,4 +78,5 @@ restaurantSchema.methods.genAuthToken = async function () {
 };
 
 const Restaurants = mongoose.model("Restaurants", restaurantSchema);
+//Export restaurant structure and middleware.
 module.exports = Restaurants;

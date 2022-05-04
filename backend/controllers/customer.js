@@ -1,4 +1,22 @@
-// model
+/* 
+PROGRAM customer - Controller of customer related request
+
+PROGRAMMER: Ip Tsz Ho, Yeung Long Sang
+
+VERSION 1: written 1/3/2022
+
+CHANGE HISTORY: refer to github push history
+
+PURPOSE: Providing functions for the server to respond to request
+
+MODULES:
+jwt: Generate json token
+
+USAGE: 
+After router route the request, all customer related request handling function is defined in this module. Generating corresponding respond, communicate with the database.
+*/
+
+//mongoose Schema, Importing the structure of those document
 const Customers = require("../models/customer");
 const Otp = require("../models/otp").Otp;
 
@@ -9,15 +27,17 @@ const sharp = require("sharp");
 
 // const
 const { MAX_TRIAL } = require("../models/otp");
+//Upload picture constrain
 const MAX_RESIZE_PX = 2000; // 2000 pixel
 const MAX_FILESIZE = 5 * 1024 * 1024; // 5MB
 
-// handle for image upload
+//Function for handle image upload
 const upload = multer({
+  //Set the limit of the filesize
   limits: { fileSize: MAX_FILESIZE }, 
   fileFilter(req, file, cb) {
+    //Constrain the type of image file to be accepted
     if (file.mimetype == "image/png" || file.mimetype == "image/jpeg") {
-      // jpg, jpeg, jfif are udner image/jpeg
       cb(null, true);
     } else {
       cb(null, false);
@@ -25,52 +45,62 @@ const upload = multer({
   },
 });
 
+//Function for authenticating user
 const authCustomer = async (username, password) => {
-  // TODO: authenticate customer by username, password and return the customer doc if matched
-  // fetch user by username
+  //Try to find customer document in the database by username
   let customer = await Customers.findOne({ username });
   if (customer == null) {
+    //If not found, throw exception
     throw { name: "UserNotFound", message: "User does not exist" };
   }
 
-  // check if password matched
+  //Check if the password match the hashed password in the database
   let matched = await bcrypt.compare(password, customer.password);
   if (!matched) {
+    //Throw exception if unmatch
     throw { name: "InvalidPassword", message: "Invalid password" };
   }
-
+  //Return customer document
   return customer;
 };
 
+//Function for getting user data by username
 const getCustomerByUsername = async (username) => {
-  // TODO: get customer by username
+  //Try to find customer document in the database by username
   let customer = await Customers.findOne({ username });
   if (customer == null) {
+    //If not found, throw exception
     throw { name: "UserNotExist", message: "User does not exist" };
   }
-
+//Return customer document
   return customer;
 };
 
+//Function for gettign user data by Object_ID, which is the unique id for each document in mongodb
 const getCustomerById = async (id) => {
-  // TODO: get customer by id
+  //Try to find customer document in the database by object id
   let customer = await Customers.findOne({ _id: id });
   if (customer == null) {
+    //If not found, throw exception
     throw { name: "UserNotExist", message: "User does not exist" };
   }
-
+//Return customer document
   return customer;
 };
 
+//Function for fetching all customers
 const getCustomers = async () => {
-  // TODO: get all customers
+  //Fetch all customer documents
   let customers = await Customers.find();
+  //Return the array of customer documents
   return customers;
 };
 
+//Export Functions for other module to reference (Mainly for Router) 
 module.exports = {
+
+  //Function handling fetching customer data request
   getCustomerData: async (req, res) => {
-    // TODO: return customer data
     res.send({
       userID: req.customer._id,
       username: req.customer.username,
@@ -81,12 +111,14 @@ module.exports = {
     });
   },
 
+  //Export the function getCustomerById
   getCustomerById: getCustomerById,
 
+  //Export the function getCustomerByUsername
   getCustomerByUsername: getCustomerByUsername,
 
+  //Function for handling fetching all customer data request
   getAllCustomerData: async (req, res) => {
-    // TODO: get all customers
     try {
       let customers = await getCustomers();
       res.send(customers);
@@ -123,9 +155,9 @@ module.exports = {
       res.status(400).send(err); // 400: Bad request // code 11000 would be sent if username duplicated
     }
   },
-
+  //Function for the customer requesting a password change
   changePw: async (req, res) => {
-    // TODO: change pw given old and new password pair (request by user)
+
     try {
       let passwordOld = req.body.passwordOld;
       let passwordNew = req.body.passwordNew;
@@ -168,8 +200,8 @@ module.exports = {
     }
   },
 
+  //Function for the admin to reset customer password
   resetPw: async (req, res) => {
-    // TODO: change pw given username (request by admin)
     try {
       let passwordNew = req.body.passwordNew;
 
@@ -241,8 +273,8 @@ module.exports = {
     }
   },
 
+  //Function for handling a profile picture fetch request
   getProfilePic: async (req, res) => {
-    // TODO: view profile image
     try {
       res.send(req.customer.profilePic);
     } catch (err) {
@@ -307,9 +339,8 @@ module.exports = {
     }
   },
 
+  //Function to change the account activate status after verifying OTP
   activateAccount: async (req, res) => {
-    // TODO: activate account after verifying OTP
-
     try {
       let customer = await getCustomerByUsername(req.body.username);
 
@@ -329,8 +360,8 @@ module.exports = {
     }
   },
 
+  //Function to handle customer login request
   login: async (req, res, next) => {
-    // TODO: login user by username, password
     try {
       // authenticate customer
       let customer = await authCustomer(req.body.username, req.body.password);
@@ -359,11 +390,13 @@ module.exports = {
     }
   },
 
+  //Function to handle customer logout request.
   logout: async (req, res) => {
     // TODO: logout customer after token verification
     try {
       // update active status
       req.customer.online = false;
+      //Commit the changes to the database
       await req.customer.save();
       res
         .status(200)
