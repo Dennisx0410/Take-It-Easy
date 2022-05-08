@@ -1,0 +1,94 @@
+Date : 2022-05-05 23:30:41
+Directory : e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4
+Total : 57 files,  42459 codes, 1004 comments, 919 blanks, all 44382 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          7 |     35,994 |          0 |          7 |     36,001 |
+| JavaScript |         36 |      5,452 |        978 |        509 |      6,939 |
+| Markdown   |          3 |        546 |          0 |        334 |        880 |
+| CSS        |         10 |        443 |          3 |         68 |        514 |
+| HTML       |          1 |         24 |         23 |          1 |         48 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                          | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                             |         57 |     42,459 |      1,004 |        919 |     44,382 |
+| backend                                                                                       |         23 |      7,822 |        709 |        573 |      9,104 |
+| backend\controllers                                                                           |          8 |      1,122 |        417 |        197 |      1,736 |
+| backend\models                                                                                |          6 |        177 |        123 |         39 |        339 |
+| backend\routers                                                                               |          5 |        129 |        143 |         30 |        302 |
+| frontend                                                                                      |         31 |     34,552 |        295 |        338 |     35,185 |
+| frontend\public                                                                               |          2 |         49 |         23 |          2 |         74 |
+| frontend\src                                                                                  |         26 |      4,440 |        272 |        301 |      5,013 |
+| frontend\src\login                                                                            |          6 |        701 |         36 |         68 |        805 |
+| frontend\src\main                                                                             |         11 |      3,030 |        139 |        165 |      3,334 |
++-----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                      | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\README.md                            | Markdown   |         10 |          0 |          6 |         16 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\README.md                    | Markdown   |        498 |          0 |        295 |        793 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\controllers\admin.js         | JavaScript |         26 |         28 |          8 |         62 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\controllers\customer.js      | JavaScript |        262 |         92 |         55 |        409 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\controllers\email.js         | JavaScript |        181 |         50 |         30 |        261 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\controllers\notification.js  | JavaScript |         76 |         43 |          4 |        123 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\controllers\order.js         | JavaScript |        143 |         53 |         19 |        215 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\controllers\restaurant.js    | JavaScript |        307 |         85 |         60 |        452 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\controllers\socketIO.js      | JavaScript |         87 |         36 |         13 |        136 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\controllers\token.js         | JavaScript |         40 |         30 |          8 |         78 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\index.js                     | JavaScript |         27 |         26 |         10 |         63 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\models\customer.js           | JavaScript |         48 |         27 |         11 |         86 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\models\food_item.js          | JavaScript |         10 |         17 |          4 |         31 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\models\notification.js       | JavaScript |         14 |         17 |          4 |         35 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\models\order.js              | JavaScript |         26 |         18 |          5 |         49 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\models\otp.js                | JavaScript |         30 |         18 |          7 |         55 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\models\restaurant.js         | JavaScript |         49 |         26 |          8 |         83 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\package-lock.json            | JSON       |      5,847 |          0 |          1 |      5,848 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\package.json                 | JSON       |         22 |          0 |          1 |         23 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\routers\admin.js             | JavaScript |         30 |         29 |          8 |         67 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\routers\customer.js          | JavaScript |         32 |         33 |          9 |         74 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\routers\notification.js      | JavaScript |         14 |         27 |          3 |         44 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\routers\order.js             | JavaScript |         15 |         19 |          5 |         39 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\backend\routers\restaurant.js        | JavaScript |         38 |         35 |          5 |         78 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\README.md                   | Markdown   |         38 |          0 |         33 |         71 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\package-lock.json           | JSON       |     29,967 |          0 |          1 |     29,968 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\package.json                | JSON       |         58 |          0 |          1 |         59 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\public\index.html           | HTML       |         24 |         23 |          1 |         48 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\public\manifest.json        | JSON       |         25 |          0 |          1 |         26 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\App.css                 | CSS        |        102 |          0 |         17 |        119 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\App.js                  | JavaScript |        220 |         11 |          8 |        239 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\App.test.js             | JavaScript |          7 |          0 |          2 |          9 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\HeaderBar.css           | CSS        |         54 |          0 |         10 |         64 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\HeaderBar.js            | JavaScript |        287 |         79 |         23 |        389 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\index.css               | CSS        |         13 |          0 |          2 |         15 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\index.js                | JavaScript |         13 |          3 |          3 |         19 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\login\login.css         | CSS        |         26 |          0 |          6 |         32 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\login\login.js          | JavaScript |        174 |         14 |         13 |        201 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\login\signup.css        | CSS        |         30 |          0 |          7 |         37 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\login\signup.js         | JavaScript |        286 |         14 |         20 |        320 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\login\verification.css  | CSS        |         26 |          0 |          6 |         32 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\login\verification.js   | JavaScript |        159 |          8 |         16 |        183 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\admin.css          | CSS        |          9 |          3 |          2 |         14 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\admin.js           | JavaScript |        718 |         22 |         33 |        773 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\customer.js        | JavaScript |        416 |         17 |         17 |        450 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\main.css           | CSS        |         21 |          0 |          5 |         26 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\main.js            | JavaScript |        315 |         20 |         19 |        354 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\orderInfo.css      | CSS        |         53 |          0 |         11 |         64 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\orderInfo.js       | JavaScript |         84 |          6 |          6 |         96 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\restaurant.css     | CSS        |        109 |          0 |          2 |        111 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\restaurant.js      | JavaScript |        383 |         11 |         25 |        419 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\search_bar.js      | JavaScript |         60 |         12 |          4 |         76 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\main\user_restaurant.js | JavaScript |        862 |         48 |         41 |        951 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\reportWebVitals.js      | JavaScript |         12 |          0 |          2 |         14 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\frontend\src\setupTests.js           | JavaScript |          1 |          4 |          1 |          6 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\package-lock.json                    | JSON       |         57 |          0 |          1 |         58 |
+| e:\Marcus\Year3 Sem2\CSCI3100\Project\CSCI3100-GpProj-F4\package.json                         | JSON       |         18 |          0 |          1 |         19 |
+| Total                                                                                         |            |     42,459 |      1,004 |        919 |     44,382 |
++-----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
