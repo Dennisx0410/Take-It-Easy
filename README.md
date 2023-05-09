@@ -1,5 +1,9 @@
 # Group F4 - Take It Easy
 
+It is a group project for CSCI3100 Software Engineering.
+Take It Easy is a online food ordering platform developed in MERN stack. 
+This is a mirrored archive of the original project.
+
 ---
 
 ## CSCI3100 Group Project
